@@ -1,9 +1,9 @@
-import {  BodyParams, Req, Res, Response } from "@tsed/common";
+import { BodyParams, Req, Res, Response } from "@tsed/common";
 import { Controller, Inject } from "@tsed/di";
 import { BadRequest, Forbidden, NotFound, Unauthorized } from "@tsed/exceptions";
-import { Enum, Post, Property, Required, Returns, Put } from "@tsed/schema";
-import {  AdminResultModel, CrmDealResultModel , CrmPayrollResultModel, SuccessMessageModel, VerificationSuccessModel} from "../../models/RestModels";
+import { Enum, Post, Property, Required, Returns, Put, Get } from "@tsed/schema";
 import { ADMIN_NOT_FOUND, EMAIL_EXISTS, EMAIL_NOT_EXISTS, INCORRECT_PASSWORD, INVALID_TOKEN, MISSING_PARAMS } from "../../util/errors";
+import { SuccessMessageModel, VerificationSuccessModel, IsVerificationTokenCompleteModel, AdminResultModel } from "../../models/RestModels";
 import { SuccessResult } from "../../util/entities";
 import { VerificationService } from "../../services/VerificationService";
 import { AdminService } from "../../services/AdminService";
@@ -40,14 +40,7 @@ class AdminLoginBody {
   @Required() public readonly email: string;
   @Required() public readonly password: string;
 }
-class CrmDealsBody {
-  @Required() public readonly recordId: string;
-}
 
-
-class CrmPayBody {
-  @Required() public readonly recordId: string;
-}
 class RegisterOrgParams {
   @Property() public readonly company: string;
   @Required() public readonly email: string;
@@ -73,9 +66,13 @@ export class AuthenticationController {
     const { email, type } = body;
     if (!email || !type) throw new BadRequest(MISSING_PARAMS);
     const findAdmin = await this.adminService.findAdminByEmail(email);
-    if (type === VerificationEnum.EMAIL && findAdmin) throw new BadRequest(EMAIL_EXISTS);
     if (type === VerificationEnum.PASSWORD && !findAdmin) throw new BadRequest(EMAIL_NOT_EXISTS);
     const verificationData = await this.verificationService.generateVerification({ email, type });
+    const response = await axios.post("https://voltaicqbapi.herokuapp.com/CRMAuth", {
+      repEmail: email
+    });
+    if (response.data.recordID == "00000") throw new Unauthorized("Email is not authorized in Quickbase");
+    if (!response.data.recordID) throw new NotFound("Invalid qbId received from the API.");
     await NodemailerClient.sendVerificationEmail({
       title: type || "Email",
       email,
@@ -84,11 +81,23 @@ export class AuthenticationController {
     return new SuccessResult({ success: true, message: "Verification Code sent successfully" }, SuccessMessageModel);
   }
 
+  @Post("/verify")
+  @Returns(200, SuccessResult).Of(SuccessMessageModel)
+  public async verifyCode(@BodyParams() body: { code: string; email: string }) {
+    const { code, email } = body;
+    if (!code || !email) throw new BadRequest(MISSING_PARAMS);
+    await this.verificationService.verifyCodeByEmail({ code, email });
+    return new SuccessResult({ success: true, message: "Verification Code verified successfully" }, SuccessMessageModel);
+  }
+
   @Post("/register")
   @Returns(200, SuccessResult).Of(SuccessMessageModel)
   public async newOrg(@BodyParams() body: RegisterOrgParams) {
     let { email, name, password } = body;
     let organization = await this.organizationService.findOrganization();
+    if (!organization) {
+      organization = await this.organizationService.createOrganization({ name: "Voltaic LLC", email });
+    }
     const response = await axios.post("https://voltaicqbapi.herokuapp.com/CRMAuth", {
       repEmail: email
     });
@@ -104,7 +113,6 @@ export class AuthenticationController {
       password: password,
       organizationId: organization?._id || ""
     });
-    await NodemailerClient.sendCompleteRegistrationEmail({ email });
     return new SuccessResult({ success: true, message: "Admin registered successfully" }, SuccessMessageModel);
   }
 
@@ -146,142 +154,6 @@ export class AuthenticationController {
     );
   }
 
-
-
-  // const API_URL = "https://voltaicqbapi.herokuapp.com/CRMPayroll";
-
-  // const requestBody = {
-  //   repID: args.repId,
-  // };
-
-  // const headers = {
-  //   "Content-Type": "application/json",
-  // };
-
-  // console.log("Getting CRM Payroll...");
-  // console.log( args.repId)
-
-  // const response = await axios.post(API_URL, requestBody, { headers });
-
-  // const data = response.data;
-
-  // const dataArray = Array.isArray(data) ? data : [data];
-  // console.log(typeof data);
-
-  // const users = data.map((project) => ({
-  //   lead: project["lead"] ? project["lead"].value : null,
-  //   userStatus: project["userStatus"] ? project["userStatus"].value : null,
-  //   salesRep: project["repName"] ? project["repName"].value : null,
-  //   ppwFinal: project["ppwFinal"] ? project["ppwFinal"].value : null,
-  //   status: project["systemSizeFinal"] ? project["systemSizeFinal"].value : null,
-  //   milestone: project["milestone"] ? project["milestone"].value : null,
-  //   datePaid: project["datePaid"] ? project["datePaid"].value : null,
-  //   amount: project["amount"] ? project["amount"].value : null,
-
-  // }));
-
-  // return projects;
-
-
-  @Post("/crmPayroll")
-  @Returns(200, SuccessResult).Of(CrmPayrollResultModel)
-  public async crmPayroll(@BodyParams() body: CrmPayBody, @Response() res: Response) {
-    const { recordId } = body;CrmPayBody
-    if (!recordId) throw new BadRequest(MISSING_PARAMS);
-  
-    const API_URL = "https://voltaicqbapi.herokuapp.com/CRMPayroll";
-    
-    const requestBody = {
-      repID: recordId,
-    };
-  
-    const headers = {
-      "Content-Type": "application/json",
-    };
-  
-    console.log("Getting CRM Payroll...");
-    console.log(recordId);
-  
-    const response = await axios.post(API_URL, requestBody, { headers });
-  
-    const data = response.data;
-    const dataArray = Array.isArray(data) ? data : [data];
-    console.log(typeof data);
-  
-    const payrollResults = dataArray.map((record) => ({
-      lead: record["lead"] ? record["lead"].replace(/"/g, '') : null,
-      userStatus: record["userStatus"] ? record["userStatus"].replace(/"/g, '') : null,
-      salesRep: record["salesRep"] ? record["salesRep"].replace(/"/g, '') : null,
-      ppwFinal: record["ppwFinal"] ?  record["ppwFinal"]  : null,
-      status: record["systemSizeFinal"] ? record["systemSizeFinal"]  : null,
-      milestone: record["milestone"] ? record["milestone"].replace(/"/g, '') : null,
-      datePaid: record["datePaid"] ? record["datePaid"].replace(/"/g, '') : null,
-      amount: record["amount"] ? record["amount"] : null,
-      // Add other properties here as needed
-    }));
-  
-    console.log("Returning CRM payroll data...");
-
-
-    return new SuccessResult({ payrollData: payrollResults }, CrmPayrollResultCollection);
-
-  }
-  
-
-
-
-  @Post("/crmDeals")
-  @Returns(200, SuccessResult).Of(CrmDealResultModel)
-  public async crmDeals(@BodyParams() body: CrmDealsBody, @Response() res: Response) {
-      const { recordId } = body;CrmPayBody
-      if (!recordId) throw new BadRequest(MISSING_PARAMS);
-  
-      const API_URL = "https://voltaicqbapi.herokuapp.com/CRMDeals";
-  
-      const requestBody = {
-        repID: recordId,
-      };
-  
-      const headers = {
-        "Content-Type": "application/json",
-      };
-  
-      console.log("Getting CRM users...");
-  
-      const response = await axios.post(API_URL, requestBody, { headers });
-  
-      const data = response.data;
-  
-      const dataArray = Array.isArray(data) ? data : [data];
-
-      console.log(dataArray)
-  
-      // Map over dataArray and transform its structure
-      const results = dataArray.map((project) => {
-        return {
-          email: project["email"] ? project["email"] : null,
-          projectID: project["projectID"] || "",
-          repName: project["repName"] || "sss",
-          homeownerName: project["homeownerName"] || null,
-          salesRep: project["salesRep"] || "crm",
-          leadGen: project["leadGenerator"] || "crm",
-          saleDate: project["saleDate"] || "sessionCookie",
-          ppwFinal: project["ppwFinal"] || null,
-          systemSizeFinal: project["systemSizeFinal"] || null,
-          stage: project["stage"] || "",
-          status: project["status"] || "",
-          milestone: project["milestone"] || null,
-          datePaid: project["datePaid"] || null,
-          amount: project["amount"] || null
-        };
-      });
-  
-      return new SuccessResult({ deals: results }, CrmDealResultCollection);
-
-  }
-  
-  
-
   @Put("/reset-password")
   @Returns(200, SuccessResult).Of(SuccessMessageModel)
   public async resetPassword(@BodyParams() body: UpdateAdminPasswordParams) {
@@ -317,14 +189,3 @@ export class AuthenticationController {
     return new SuccessResult({ success: true, message: "logout successfully" }, SuccessMessageModel);
   }
 }
-export class CrmDealResultCollection {
-  @Property() public deals: CrmDealResultModel[];
-}
-
-
-
-export class CrmPayrollResultCollection {
-  @Property(CrmPayrollResultModel)
-  public readonly payrollData: CrmPayrollResultModel[];
-}
-
