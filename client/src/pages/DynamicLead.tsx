@@ -13,10 +13,11 @@ import { addNewColumn, createCategory, getCategories } from '../redux/middleware
 import { createBulkLead, createLead, deleteLead, getLeads, updateLead } from '../redux/middleware/lead';
 import { setAlert } from '../redux/slice/alertSlice';
 import { categorySelector, loadingCategory } from '../redux/slice/categorySlice';
-import { leadState, loadingLead, openModal } from '../redux/slice/leadSlice';
+import { leadState, leadsList, loadingLead, openModal } from '../redux/slice/leadSlice';
 import { CategoryResponseTypes, CategoryTypes, FieldTypes } from '../types';
 import createAbortController from '../utils/createAbortController';
 import CustomTable from '../components/custom-table/CustomTable';
+import CustomDynamicTable from '../components/custom-table/CustomDynamicTable';
 
 const initialCategoryState = {
   name: '',
@@ -423,7 +424,8 @@ const DynamicLead = () => {
           >
             {!categoryLoading || !leadLoading ? (
               (categories && categories.length && (
-                <CustomTable data={leadsData} headLabel={columnFields} onEditClick={editLead} onDeleteClick={deleteDynamicLead} />
+                // <CustomTable data={leadsData} headLabel={columnFields} onEditClick={editLead} onDeleteClick={deleteDynamicLead} />
+                <CustomDynamicTable data={leadsData} headLabel={columnFields} onEditClick={editLead} onDeleteClick={deleteDynamicLead} />
               )) ||
               'Record does not exist.'
             ) : (
