@@ -424,8 +424,8 @@ const DynamicLead = () => {
           >
             {!categoryLoading || !leadLoading ? (
               (categories && categories.length && (
-                // <CustomTable data={leadsData} headLabel={columnFields} onEditClick={editLead} onDeleteClick={deleteDynamicLead} />
-                <CustomDynamicTable data={leadsData} headLabel={columnFields} onEditClick={editLead} onDeleteClick={deleteDynamicLead} />
+                <CustomTable data={leadsData} headLabel={columnFields} onEditClick={editLead} onDeleteClick={deleteDynamicLead} />
+                // <CustomDynamicTable data={leadsData} headLabel={columnFields} onEditClick={editLead} onDeleteClick={deleteDynamicLead} />
               )) ||
               'Record does not exist.'
             ) : (

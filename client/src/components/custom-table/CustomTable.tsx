@@ -75,7 +75,7 @@ export default function CustomTable({ data, headLabel, onEditClick, onDeleteClic
     disableClickEventBubbling: true,
     editable: column.field === 'actions' ? false : true
   }));
-
+  console.log('rows---', rows);
   return (
     <Box
       sx={{
@@ -83,7 +83,19 @@ export default function CustomTable({ data, headLabel, onEditClick, onDeleteClic
         width: '100%'
       }}
     >
-      <DataGridPro
+      <table className='w-full'>
+        <tr>
+          {headLabel.map((field) => {
+            return <th>{field.name}</th>;
+          })}
+        </tr>
+        <tr>
+          <td>Alfreds Futterkiste</td>
+          <td>Maria Anders</td>
+          <td>Germany</td>
+        </tr>
+      </table>
+      {/* <DataGridPro
         rows={rows || []}
         columns={columns}
         components={{
@@ -98,7 +110,7 @@ export default function CustomTable({ data, headLabel, onEditClick, onDeleteClic
         // onPageSizeChange={(value) => handlePageSizeChange(value)} // handle page size changes
         rowCount={data?.length || 0}
         pageSizeOptions={[10, 25, 50, 100, 200]}
-      />
+      /> */}
     </Box>
   );
 }
