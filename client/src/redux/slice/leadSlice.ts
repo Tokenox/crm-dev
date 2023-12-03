@@ -23,7 +23,10 @@ const leadSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(getLeads.fulfilled, (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload.map((lead) => ({
+        ...lead,
+        id: lead._id
+      }));
       state.loading = false;
     });
     builder.addCase(getLeads.rejected, (state, action) => {

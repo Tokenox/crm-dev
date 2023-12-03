@@ -47,6 +47,7 @@ const DynamicLead = () => {
   const [categoryData, setCategoryData] = useState<CategoryResponseTypes>();
   const [isLeadEdit, setIsLeadEdit] = useState<boolean>(false);
   const [isCategoryEdit, setIsCategoryEdit] = useState<boolean>(false);
+  const [leadListLoading, setLeadListLoading] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
@@ -89,7 +90,14 @@ const DynamicLead = () => {
 
   //! get selected category data
   const getSelectedCategoryData = (id) => {
+    setLeadListLoading(true);
     const categoryData = categories.find((category) => category.id === id);
+    if (categoryData.id === id) {
+      (async () => {
+        await dispatch(getLeads({ categoryId: id, signal }));
+        setLeadListLoading(false);
+      })();
+    }
     const updatedFields = categoryData.fields.map((field) => {
       return {
         ...field,
@@ -99,11 +107,6 @@ const DynamicLead = () => {
     setSelectedCategoryId(categoryData.id);
     setColumnFields(updatedFields);
     setCategoryData(categoryData);
-    if (categoryData.id === id) {
-      (async () => {
-        await dispatch(getLeads({ categoryId: id, signal }));
-      })();
-    }
   };
 
   const handleCsvData = (csvData) => {
@@ -422,14 +425,16 @@ const DynamicLead = () => {
               margin: 1
             }}
           >
-            {!categoryLoading || !leadLoading ? (
-              (categories && categories.length && (
-                <CustomTable data={leadsData} headLabel={columnFields} onEditClick={editLead} onDeleteClick={deleteDynamicLead} />
-                // <CustomDynamicTable data={leadsData} headLabel={columnFields} onEditClick={editLead} onDeleteClick={deleteDynamicLead} />
-              )) ||
-              'Record does not exist.'
+            {categoryLoading || leadListLoading ? (
+              <CircularProgress />
             ) : (
-              <CircularProgress size="30px" sx={{ color: '#0F52BA' }} />
+              <CustomTable
+                data={leadsData}
+                headLabel={columnFields}
+                onEditClick={editLead}
+                onDeleteClick={deleteDynamicLead}
+                loading={leadListLoading}
+              />
             )}
           </Box>
         </Card>

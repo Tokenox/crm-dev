@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import { DataGridPro, GridToolbar } from '@mui/x-data-grid-pro';
 import { Button } from '@mui/material';
@@ -12,21 +12,11 @@ interface CustomTableProps {
   onRowClick?: (row: any) => void;
   onEditClick?: (e: any, row: any) => void;
   onDeleteClick?: (e: any, row: any) => void;
+  loading?: boolean;
 }
 
-export default function CustomTable({ data, headLabel, onEditClick, onDeleteClick }: CustomTableProps) {
+export default function CustomTable({ data, headLabel, loading, onEditClick, onDeleteClick }: CustomTableProps) {
   const [clickedRow, setClickedRow] = React.useState();
-  const [rows, setRows] = React.useState([]);
-
-  useEffect(() => {
-    if (data && data.length) {
-      const rows = data?.map((row) => ({
-        id: row._id,
-        ...row
-      }));
-      setRows(rows);
-    }
-  }, [data]);
 
   const onButtonClick = (e, row) => {
     e.stopPropagation();
@@ -75,7 +65,6 @@ export default function CustomTable({ data, headLabel, onEditClick, onDeleteClic
     disableClickEventBubbling: true,
     editable: column.field === 'actions' ? false : true
   }));
-  console.log('rows---', rows);
   return (
     <Box
       sx={{
@@ -83,20 +72,8 @@ export default function CustomTable({ data, headLabel, onEditClick, onDeleteClic
         width: '100%'
       }}
     >
-      <table className='w-full'>
-        <tr>
-          {headLabel.map((field) => {
-            return <th>{field.name}</th>;
-          })}
-        </tr>
-        <tr>
-          <td>Alfreds Futterkiste</td>
-          <td>Maria Anders</td>
-          <td>Germany</td>
-        </tr>
-      </table>
-      {/* <DataGridPro
-        rows={rows || []}
+      <DataGridPro
+        rows={data || []}
         columns={columns}
         components={{
           Toolbar: GridToolbar
@@ -110,7 +87,9 @@ export default function CustomTable({ data, headLabel, onEditClick, onDeleteClic
         // onPageSizeChange={(value) => handlePageSizeChange(value)} // handle page size changes
         rowCount={data?.length || 0}
         pageSizeOptions={[10, 25, 50, 100, 200]}
-      /> */}
+        loading={loading}
+        rowsLoadingMode="server"
+      />
     </Box>
   );
 }
