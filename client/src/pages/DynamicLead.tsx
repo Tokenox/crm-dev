@@ -338,7 +338,13 @@ const DynamicLead = () => {
             ''}
         </Stack>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-          <Button onClick={() => setIsCategoryModalOpen(true)} variant="contained">
+          <Button
+            onClick={() => {
+              setIsCategoryModalOpen(true);
+              setIsCategoryEdit(false);
+            }}
+            variant="contained"
+          >
             Add Category
           </Button>
           <Button onClick={() => dispatch(openModal(true))} variant="contained">
