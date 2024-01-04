@@ -11,39 +11,27 @@ import { availabilityLoading, availabilitySelector } from '../../redux/slice/ava
 import { createAvailability, deleteAvailability, getAvailability } from '../../redux/middleware/availability';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-interface CalendarProps {
-  value: string;
-  getActionData: (value: string, name: string) => void;
-}
-
 export type AvailabilityPlanState = {
-  events: Array<any>;
   startDate: string;
   endDate: string;
-  clickedEvent: object;
 };
 
 const initialState: AvailabilityPlanState = {
-  events: [],
   startDate: '',
-  endDate: '',
-  clickedEvent: {}
+  endDate: ''
 };
 
 const localizer = momentLocalizer(moment);
 
-const WeekCalender = ({ value, getActionData }: CalendarProps) => {
+const AvailabilityCalender = () => {
   const dispatch = useAppDispatch();
   const { data: availability, events } = useAppSelector(availabilitySelector);
   const loading = useAppSelector(availabilityLoading);
   const { signal, abort } = createAbortController();
   const [addFormValues, setAddFormValues] = React.useState<AvailabilityPlanState>(initialState);
-  const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
-  const [selectedSlot, setSelectedSlot] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEventOpen, setIsEventOpen] = useState<boolean>(false);
   const [eventId, setEventId] = useState<string>('');
-  const [eventSelected, setEventSelected] = useState({ eventSelect: '' });
   const [error, setError] = React.useState<{ title: string; description: string }>({
     title: '',
     description: ''
@@ -70,20 +58,10 @@ const WeekCalender = ({ value, getActionData }: CalendarProps) => {
     setIsModalOpen(false);
     setIsEventOpen(false);
   };
-  const handleSelectedSlot = useCallback(({ start, end, box, nativeEvent }) => {
-    const boundingBox = box;
-    setSelectedSlot({ start, end, boundingBox });
+  const handleSelectedSlot = useCallback(({ start, end }) => {
     setIsModalOpen(true);
     setAddFormValues({ ...addFormValues, startDate: start, endDate: end });
   }, []);
-
-  const setNewAavailability = () => {
-    const { startDate, endDate } = addFormValues;
-    const unavailability = { startDate, endDate };
-    const event = addFormValues.events.slice();
-    event.push(unavailability);
-    setAddFormValues({ ...addFormValues, events: event });
-  };
 
   const deleteAvailabilitySlot = async (eventId) => {
     await dispatch(deleteAvailability({ id: eventId }));
@@ -94,7 +72,6 @@ const WeekCalender = ({ value, getActionData }: CalendarProps) => {
   const handleSelectedEvent = useCallback((event) => {
     setAddFormValues({
       ...addFormValues,
-      clickedEvent: event,
       startDate: event.start,
       endDate: event.end
     });
@@ -104,7 +81,6 @@ const WeekCalender = ({ value, getActionData }: CalendarProps) => {
 
   //! submit planner form
   const submitAvailability = async () => {
-    setNewAavailability();
     const data = {
       startDate: addFormValues.startDate.toString(),
       endDate: addFormValues.endDate.toString()
@@ -267,18 +243,4 @@ const WeekCalender = ({ value, getActionData }: CalendarProps) => {
   );
 };
 
-export default WeekCalender;
-
-type ActionTypes = {
-  id: number;
-  name: string;
-  value: string;
-};
-
-const ACTIONS: ActionTypes[] = [
-  {
-    id: 1,
-    name: 'Schedule Unvaiability',
-    value: 'availability'
-  }
-];
+export default AvailabilityCalender;

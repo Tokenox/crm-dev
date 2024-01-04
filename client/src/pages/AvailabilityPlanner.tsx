@@ -7,7 +7,7 @@ const AvaiabilityPlanner = () => {
     <Container>
       <h1>Availability Planner</h1>
       {/* <MyCalendar value={'email'} getActionData={() => {}} /> */}
-      <AvailabilityCalendar value={'email'} getActionData={() => {}} />
+      <AvailabilityCalendar />
     </Container>
   );
 };
