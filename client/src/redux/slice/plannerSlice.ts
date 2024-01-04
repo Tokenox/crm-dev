@@ -24,7 +24,7 @@ const plannerSlice = createSlice({
         return {
           title: planner.title,
           start: new Date(planner.startDate),
-          end: new Date(planner.endDate)
+          end: new Date(Number(planner.timeOfExecution))
         };
       });
     });

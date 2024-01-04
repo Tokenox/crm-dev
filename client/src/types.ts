@@ -43,8 +43,8 @@ export type PlannerDataTypes = {
   action?: string;
   description?: string;
   startDate: string;
-  endDate: string;
-  timeOfExecution?: string;
+  timeOfExecution: string;
+  source: string;
 };
 
 export type AvailabilityDataTypes = {

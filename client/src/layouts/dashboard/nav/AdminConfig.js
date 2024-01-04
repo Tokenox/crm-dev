@@ -40,7 +40,7 @@ const AdminConfig = [
     icon: icon('ic_cart')
   },
   {
-    title: 'Availability Planner',
+    title: 'Availability',
     path: '/dashboard/availability-planner',
     icon: icon('ic_cart')
   },

@@ -74,9 +74,9 @@ export type PlannerDataTypes = {
   description?: string;
   timeOfExecution: string;
   startDate: string;
-  endDate: string;
   orgId?: string;
   adminId?: string;
+  categoryId?: string;
 };
 
 export type AvailabilityDataTypes = {

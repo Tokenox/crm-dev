@@ -1,12 +1,11 @@
-import { Box, Container } from '@mui/material';
+import { Container } from '@mui/material';
 import React from 'react';
 import AvailabilityCalendar from '../components/calendar/AvailabilityCalender';
 
 const AvaiabilityPlanner = () => {
   return (
     <Container>
-      <h1>Availability Planner</h1>
-      {/* <MyCalendar value={'email'} getActionData={() => {}} /> */}
+      <h1>Availability</h1>
       <AvailabilityCalendar />
     </Container>
   );

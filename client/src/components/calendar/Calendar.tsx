@@ -15,6 +15,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { createPlanner, getPlanners } from '../../redux/middleware/planner';
 import { plannerSelector } from '../../redux/slice/plannerSlice';
 import createAbortController from '../../utils/createAbortController';
+import { getCategories } from '../../redux/middleware/category';
+import { CategoryResponseTypes } from '../../types';
+import { categorySelector } from '../../redux/slice/categorySlice';
 
 interface CalendarProps {
   value: string;
@@ -26,8 +29,8 @@ export type PlannerState = {
   description: string;
   action: string;
   startDate: Dayjs | null;
-  endDate: Dayjs | null;
   timeOfExecution: Dayjs | null;
+  source: string;
 };
 
 const initialState: PlannerState = {
@@ -35,8 +38,8 @@ const initialState: PlannerState = {
   description: '',
   action: 'email',
   startDate: dayjs(new Date()),
-  endDate: dayjs(new Date()),
-  timeOfExecution: dayjs(new Date())
+  timeOfExecution: dayjs(new Date()),
+  source: ''
 };
 
 const localizer = momentLocalizer(moment);
@@ -44,6 +47,7 @@ const localizer = momentLocalizer(moment);
 const MyCalendar = ({ value, getActionData }: CalendarProps) => {
   const dispatch = useAppDispatch();
   const { data: plannerData, events } = useAppSelector(plannerSelector);
+  const categories: CategoryResponseTypes[] = useAppSelector(categorySelector);
   const { signal, abort } = createAbortController();
 
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
@@ -58,6 +62,7 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
   useEffect(() => {
     (async () => {
       await dispatch(getPlanners({ signal }));
+      await dispatch(getCategories({ signal }));
     })();
 
     return () => {
@@ -76,7 +81,7 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
     const boundingBox = box;
     setSelectedSlot({ start, end, boundingBox });
     setDropdownVisible(true);
-    setAddFormValues({ ...addFormValues, startDate: dayjs(start), endDate: dayjs(end) });
+    setAddFormValues({ ...addFormValues, startDate: dayjs(start) });
   }, []);
 
   const handleSelectEvent = useCallback((event) => window.alert(event.title), []);
@@ -95,6 +100,7 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
 
   //! submit planner form
   const submitPlan = async () => {
+    debugger;
     if (!addFormValues.title || !addFormValues.description) {
       setError({ title: 'Please enter title', description: 'Please enter description' });
       return;
@@ -104,8 +110,8 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
       description: addFormValues.description,
       action: addFormValues.action,
       startDate: addFormValues.startDate.toString(),
-      endDate: addFormValues.endDate.toString(),
-      timeOfExecution: addFormValues.timeOfExecution.toString()
+      timeOfExecution: addFormValues.timeOfExecution.toDate().getTime().toString(),
+      source: addFormValues.source
     };
     await dispatch(createPlanner({ planner: data }));
     setIsModalOpen(false);
@@ -205,6 +211,7 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
       <CustomModal title="Add Event" open={isModalOpen} setOpen={setIsModalOpen} handleSubmit={submitPlan}>
         <PlannerForm
           state={addFormValues}
+          categories={categories}
           getFormData={({ name, value }) => {
             setAddFormValues({ ...addFormValues, [name]: value });
             if (name === 'title' && value) setError({ ...error, title: '' });

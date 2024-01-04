@@ -9,15 +9,29 @@ import { TimeClock } from '@mui/x-date-pickers/TimeClock';
 // import { MultiSectionDigitalClock } from '@mui/x-date-pickers/MultiSectionDigitalClock';
 import { PlannerState } from '../calendar/Calendar';
 import { Dayjs } from 'dayjs';
+import { CategoryResponseTypes } from '../../types';
+import CustomSelectField from '../custom-select-field/CustomSelectField';
+
 interface PlannerProps {
   state?: PlannerState;
+  categories: CategoryResponseTypes[];
   error?: { title: string; description: string };
   getFormData?: ({ name, value }: { name: string; value: string | Dayjs }) => void;
 }
 
-const PlannerForm = ({ state, error, getFormData }: PlannerProps) => {
+const PlannerForm = ({ state, error, getFormData, categories }: PlannerProps) => {
+  const [isCustomFieldOpen, setIsCustomFieldOpen] = React.useState(false);
+
   return (
     <Box>
+      <CustomSelectField
+        label={'Select Source'}
+        value={state.source}
+        onChange={(e) => getFormData({ name: 'source', value: e.target.value.toString() })}
+        items={categories.map((category) => category.name)}
+        open={isCustomFieldOpen}
+        setOpen={setIsCustomFieldOpen}
+      />
       <CustomInput
         label="Title"
         name={'title'}
@@ -40,17 +54,14 @@ const PlannerForm = ({ state, error, getFormData }: PlannerProps) => {
               value={state.startDate}
               onChange={(newValue) => getFormData({ name: 'startDate', value: newValue })}
             />
-            <DatePicker
-              label="Close Event"
-              value={state.endDate}
-              onChange={(newValue) => getFormData({ name: 'endDate', value: newValue })}
-            />
             <Box alignItems={'center'}>
               <TimeClock
                 ampm
                 ampmInClock
                 value={state.timeOfExecution}
-                onChange={(newValue) => getFormData({ name: 'timeOfExecution', value: newValue })}
+                onChange={(newValue) => {
+                  getFormData({ name: 'timeOfExecution', value: newValue });
+                }}
               />
             </Box>
             {/* <MultiSectionDigitalClock
