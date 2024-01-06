@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { CategoryResponseTypes } from '../../types';
-import { getCategories, getCategory, addNewColumn, createCategory } from '../middleware/category';
+import { getCategories, getCategory, addNewColumn, createCategory, deleteCategory } from '../middleware/category';
 
 const initialState: { data: CategoryResponseTypes[]; loading: boolean; error: any; category: CategoryResponseTypes } = {
   loading: false,
@@ -64,10 +64,24 @@ const categorySlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     });
+
+    //delete category
+    builder.addCase(deleteCategory.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteCategory.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(deleteCategory.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
   }
 });
 
 export default categorySlice.reducer;
 export const categorySelector = (state) => state.category.data;
+export const categoriesSelector = (state) => state.category;
 export const categoryByIdSelector = (state) => state.category.category;
 export const loadingCategory = (state) => state.category.loading;

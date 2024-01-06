@@ -26,7 +26,7 @@ const persistConfig = {
   storage,
   // Optionally, you can specify which reducers to persist or blacklist specific reducers
   whitelist: ['auth'],
-  blacklist: ['lead', 'category', 'admin', 'error', 'alert', 'planner', 'role']
+  blacklist: ['lead', 'category', 'admin', 'error', 'alert', 'planner', 'role', 'availability']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

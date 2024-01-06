@@ -1,5 +1,5 @@
 import { createReducer, createSlice } from '@reduxjs/toolkit';
-import { createRole, getRoles  } from '../middleware/role';
+import { createRole, deleteRole, getRoles  } from '../middleware/role';
 import { RoleDataTypes } from '../../types';
 
 const initialState = {
@@ -40,6 +40,19 @@ const roleSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(createRole.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    //delete role
+    builder.addCase(deleteRole.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteRole.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(deleteRole.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });

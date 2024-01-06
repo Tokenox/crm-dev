@@ -19,7 +19,12 @@ import {
   Typography,
   IconButton,
   TableContainer,
-  TablePagination
+  TablePagination,
+  Box,
+  Select,
+  SelectChangeEvent,
+  InputLabel,
+  Dialog
 } from '@mui/material';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
@@ -34,7 +39,7 @@ import { loadingRole, roleList } from '../redux/slice/roleSlice';
 import CustomModal from '../components/modals/CustomModal';
 import AddUserForm from '../components/add-user-form/AddUserForm';
 import { setAlert } from '../redux/slice/alertSlice';
-import { createRole, getRoles } from '../redux/middleware/role';
+import { createRole, deleteRole, getRoles } from '../redux/middleware/role';
 import CustomInput from '../components/input/CustomInput';
 // ----------------------------------------------------------------------
 
@@ -97,7 +102,6 @@ export default function UserPage() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isRoleModalOpen, setIsRoleModalOpen] = useState<boolean>(false);
   const [user, setUser] = useState(initialState);
@@ -217,11 +221,15 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             User
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => setIsRoleModalOpen(true)}>
-            Add New Role
-          </Button>
+          <Box sx={{ display: 'flex', gap: '6px' }}>
+            <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => setIsRoleModalOpen(true)}>
+              Add New Role
+            </Button>
+            {/* <Button variant="contained" onClick={() => setDeleteRoleModalOpen(true)}>
+              Delete Role
+            </Button> */}
+          </Box>
         </Stack>
-
         <CustomModal
           title="Add New Role"
           open={isRoleModalOpen}

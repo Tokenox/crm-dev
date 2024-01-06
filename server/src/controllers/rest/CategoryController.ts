@@ -7,7 +7,7 @@ import { AdminService } from "../../services/AdminService";
 import { ADMIN, MANAGER } from "../../util/constants";
 import { SuccessArrayResult, SuccessResult } from "../../util/entities";
 import { ADMIN_NOT_FOUND, CATEGORY_ALREADY_EXISTS, CATEGORY_NOT_FOUND, ORG_NOT_FOUND } from "../../util/errors";
-import { BadRequest } from "@tsed/exceptions";
+import { BadRequest, Unauthorized } from "@tsed/exceptions";
 import { CategoryFieldType } from "../../models/CategoryModel";
 import { FieldTypes } from "../../../types";
 import { LeadService } from "../../services/LeadsService";
@@ -104,7 +104,7 @@ export class CategoryController {
     if (!category) throw new BadRequest(CATEGORY_NOT_FOUND);
     await this.categoryService.deleteCategory(id);
     await this.leadsService.deleteLeadsByCategoryId(category._id);
-    await mongoose.connection.db.dropCollection(category.name);
+    await mongoose.connection.db.dropCollection(`${category.name}s`);
     return new SuccessResult({ success: true, message: "Category deleted successfully" }, SuccessMessageModel);
   }
 }

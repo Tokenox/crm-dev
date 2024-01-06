@@ -9,10 +9,10 @@ import LeadsTable from '../components/csv-table/CsvTable';
 import CustomModal from '../components/modals/CustomModal';
 import CsvUpload from '../components/upload-file/CsvUpload';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { addNewColumn, createCategory, getCategories } from '../redux/middleware/category';
+import { addNewColumn, createCategory, deleteCategory, getCategories } from '../redux/middleware/category';
 import { createBulkLead, createLead, deleteLead, getLeads, updateLead } from '../redux/middleware/lead';
 import { setAlert } from '../redux/slice/alertSlice';
-import { categorySelector, loadingCategory } from '../redux/slice/categorySlice';
+import { categoriesSelector, categoryByIdSelector, categorySelector, loadingCategory } from '../redux/slice/categorySlice';
 import { leadState, loadingLead, openModal } from '../redux/slice/leadSlice';
 import { CategoryResponseTypes, CategoryTypes, FieldTypes } from '../types';
 import createAbortController from '../utils/createAbortController';
@@ -29,6 +29,7 @@ const initialFieldState = {
 
 const DynamicLead = () => {
   const categories: CategoryResponseTypes[] = useAppSelector(categorySelector);
+  const { data: category } = useAppSelector(categoriesSelector);
   const categoryLoading = useAppSelector(loadingCategory);
   const leadLoading = useAppSelector(loadingLead);
   const { data: leadsData, isModalOpen } = useAppSelector(leadState);
@@ -246,6 +247,14 @@ const DynamicLead = () => {
     });
   };
 
+  //Delete Category
+  const deleteCategorybyId = async (categoryId) => {
+    debugger
+    await dispatch(deleteCategory({ id: categoryId }));
+    await dispatch(getCategories({ signal }));
+    //await dispatch(getLeads({ signal }));
+  };
+
   //! Add new category
   const submitCategory = async () => {
     if (!addCategory.name) {
@@ -320,7 +329,7 @@ const DynamicLead = () => {
           }}
           width={'100%'}
         >
-          {(categories &&
+          {(categories && categories.length &&
             categories.map((category: CategoryResponseTypes) => (
               <Button
                 key={category.name}
@@ -402,7 +411,8 @@ const DynamicLead = () => {
             sx={{
               display: 'flex',
               justifyContent: 'flex-end',
-              margin: 1
+              margin: 1,
+              gap: '6px'
             }}
           >
             <Button
@@ -413,6 +423,14 @@ const DynamicLead = () => {
               }}
             >
               Add New Column
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                deleteCategorybyId(selectedCategoryId);
+              }}
+            >
+              Delete Category
             </Button>
           </Box>
           <Box
