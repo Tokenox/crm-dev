@@ -279,11 +279,12 @@ export class DynamicController {
         const lead = leads[i];
         // console.log("lead---------", lead)
         const saleRep = await this.saleRepService.findSaleRepByLeadId(lead._id);
+        if (!saleRep) return;
         console.log("saleRep---------", saleRep);
-        if (!saleRep) {
-          await this.leadsService.updateLeadStatus({ leadId: lead._id, status: LeadStatusEnum.pending, adminId: "" });
-          return updatedLeads.push([]);
-        }
+        // if (!saleRep) {
+        //   await this.leadsService.updateLeadStatus({ leadId: lead._id, status: LeadStatusEnum.open, adminId: "" });
+        //   return updatedLeads.push([]);
+        // }
         const updateLead = await this.leadsService.updateLead({ leadId: lead._id, adminId: saleRep.adminId });
 
         console.log("updateLead--------------------------------------", updateLead);

@@ -13,12 +13,6 @@ export class SaleRepModel {
   score: number;
 
   @Property()
-  offerTime: number;
-
-  @Property()
-  availabilityStatus: boolean;
-
-  @Property()
   availabilityId: string;
 
   @Property()

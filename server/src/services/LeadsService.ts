@@ -62,9 +62,7 @@ export class LeadService {
   }
 
   public async updateLeadStatus({ leadId, adminId, status }: LeadsParamTypes) {
-    console.log("leadId-----------------", leadId);
     const lead = await this.findLeadById(leadId!);
-    console.log("lead-----------------", lead);
     if (!lead) return false;
     return this.lead.findByIdAndUpdate({ _id: lead._id }, { adminId, status });
   }

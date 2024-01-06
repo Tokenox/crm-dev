@@ -6,7 +6,7 @@ import { AdminModel } from "./AdminModel";
 import { LeadStatusEnum } from "../../types";
 import { SaleRepModel } from "./SaleRepModel";
 
-@Model({ name: "leads" })
+@Model({ name: "alllead" })
 export class LeadModel {
   @ObjectID("id")
   _id: string;

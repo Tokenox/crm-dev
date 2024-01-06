@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
-import { categoryModel, plannerModel } from "./model";
+import { categoryModel, leadsModel, plannerModel } from "./model";
 import { NodemailerClient } from "../clients/nodemailer";
+import { LeadStatusEnum } from "types";
 
 export const runJob = async () => {
   const planners = await plannerModel.find();
@@ -23,9 +24,10 @@ export const notifyLeads = async () => {
   console.log("filteredPlanners-------------**", filteredPlanners);
 
   const planners = await plannerModel.find({
-    timeOfExecution: { $lte: new Date().getTime().toString(), 
-    // startDate is today
-    startDate: { $eq: new Date().toISOString().split("T")[0] }
+    timeOfExecution: {
+      $lte: new Date().getTime().toString(),
+      // startDate is today
+      startDate: { $eq: new Date().toISOString().split("T")[0] }
     }
   });
   console.log("planners-------------", planners);
@@ -62,4 +64,10 @@ export const notifyLeads = async () => {
     });
   });
   return "success";
+};
+
+export const claimNextLead = async () => {
+  const leads = await leadsModel.find({
+    status: LeadStatusEnum.open
+  });
 };
