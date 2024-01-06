@@ -187,23 +187,23 @@ export class DynamicController {
     });
     const response = await newRecord.save();
 
-    const salesRep = await this.saleRepService.findSaleRepByScore();
+    const salesRep = await this.saleRepService.findSaleRepBySourceAvailability();
     let isAssigned = false;
-    if (salesRep && salesRep.length) {
+    if (salesRep) {
       const createLead = await this.leadsService.createLead({
         source: source.toLocaleLowerCase(),
         status: LeadStatusEnum.open,
         leadId: response._id,
         categoryId: category._id,
-        adminId: salesRep[0].adminId
+        adminId: salesRep.adminId
       });
       const updateSaleRep = await this.saleRepService.updateSaleRep({
-        id: salesRep[0]._id,
+        id: salesRep._id,
         leadId: createLead._id
       });
       if (updateSaleRep) isAssigned = true;
     }
-    return new SuccessResult({ response, isAssigned }, Object);
+    return new SuccessResult({ isAssigned }, Object);
   }
 
   // claim lead
@@ -239,7 +239,7 @@ export class DynamicController {
       let filteredLeads: any = [];
       for (let i = 0; i < allLeads.length; i++) {
         const lead = allLeads[i];
-        const salesRep = await this.saleRepService.findSaleRepBySourceAvailability(lead.leadId);
+        const salesRep = await this.saleRepService.findSaleRepBySourceAvailabilityByLeadId(lead.leadId);
         console.log("salesRep--------------------------------------", salesRep);
         if (!salesRep) return;
         const category = await this.categoryServices.findCategoryById(lead.categoryId);
@@ -272,7 +272,6 @@ export class DynamicController {
     const leads = await this.leadsService.getOpenLeads({ status: LeadStatusEnum.open });
     console.log("leads--------------------------------------**", leads);
     if (!leads.length) return;
-    // const salesRep = await this.saleRepService.findSaleRepByLeadIds(leadIds);
     // now assign these leads to that sale rep
     const updateLeads = async (leads: LeadModel[]) => {
       let updatedLeads: any = [];
@@ -282,7 +281,6 @@ export class DynamicController {
         const saleRep = await this.saleRepService.findSaleRepByLeadId(lead._id);
         console.log("saleRep---------", saleRep);
         if (!saleRep) {
-          console.log("saleRep--------------------init");
           await this.leadsService.updateLeadStatus({ leadId: lead._id, status: LeadStatusEnum.pending, adminId: "" });
           return updatedLeads.push([]);
         }

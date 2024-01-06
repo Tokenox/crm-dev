@@ -104,7 +104,7 @@ export class CategoryController {
     if (!category) throw new BadRequest(CATEGORY_NOT_FOUND);
     await this.categoryService.deleteCategory(id);
     await this.leadsService.deleteLeadsByCategoryId(category._id);
-    await mongoose.connection.db.dropCollection(category.name);
+    await mongoose.connection.db.dropCollection(`${category.name}s`);
     return new SuccessResult({ success: true, message: "Category deleted successfully" }, SuccessMessageModel);
   }
 }

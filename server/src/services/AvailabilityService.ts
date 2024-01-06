@@ -34,15 +34,31 @@ export class AvailabilityService {
   }
 
   // find availability that does not greater than the current date
-  public async findAvailabilityByDateAndRep(repId: string) {
+  public async findAvailabilityByDateAndRep(adminId: string) {
     const currentDate = new Date().getTime();
     const availability = await this.availability.find({
       startDate: { $lte: currentDate },
       endDate: { $gte: currentDate },
-      adminId: repId
+      adminId: adminId
     });
-    // console.log("availability-----------", availability);
+    console.log("findAvailabilityByDateAndRep---------------------", availability);
     if (availability.length) return false;
     return true;
+  }
+
+  public async updateAvailabilityScore({ adminId, score }: { adminId: string; score: number }) {
+    return await this.availability.updateMany({ adminId }, { $set: { saleRepScore: score } });
+  }
+
+  // find availability that does not exist in startTime and endTime and saleRepScore is greater
+  public async findAvailabilityByScore() {
+    const currentDate = new Date().getTime();
+    const availability = await this.availability.find({
+      startDate: { $lte: currentDate },
+      endDate: { $gte: currentDate }
+    }).sort({ saleRepScore: -1 }).limit(1);
+    console.log("findAvailabilityByScore---------------------", availability);
+    if (!availability.length) return false;
+    return availability;
   }
 }

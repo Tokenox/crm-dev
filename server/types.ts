@@ -80,8 +80,8 @@ export type PlannerDataTypes = {
 };
 
 export type AvailabilityDataTypes = {
-  startDate: string;
-  endDate: string;
+  startDate: number;
+  endDate: number;
   adminId?: string;
 };
 

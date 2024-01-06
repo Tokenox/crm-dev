@@ -9,6 +9,7 @@ import { Unauthorized } from "@tsed/exceptions";
 import { ADMIN_NOT_FOUND, ORG_NOT_FOUND } from "../../util/errors";
 import { AvailabilityService } from "../../services/AvailabilityService";
 import { normalizeData } from "../../helper";
+import { SaleRepService } from "../../services/SaleRepService";
 
 class AvailabilityBodyTypes {
   @Property() public readonly startDate: string;
@@ -19,6 +20,7 @@ class AvailabilityBodyTypes {
 export class AvailabilityController {
   @Inject() private adminService: AdminService;
   @Inject() private availabilityService: AvailabilityService;
+  @Inject() private saleRepService: SaleRepService;
 
   @Get()
   @Returns(200, SuccessArrayResult).Of(Pagination).Nested(AvailabilityResultModel)
@@ -37,8 +39,8 @@ export class AvailabilityController {
     if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
     const { startDate, endDate } = body;
     const response = await this.availabilityService.createAvailability({
-      startDate,
-      endDate,
+      startDate: new Date(startDate).getTime(),
+      endDate: new Date(endDate).getTime(),
       adminId
     });
     const result = {

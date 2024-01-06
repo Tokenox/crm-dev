@@ -8,6 +8,9 @@ export class AvailabilityModel {
   @ObjectID("id")
   _id: string;
 
+  @Property()
+  saleRepScore: number;
+
   @Required()
   startDate: number;
 
