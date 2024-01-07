@@ -18,6 +18,7 @@ import { CategoryResponseTypes, CategoryTypes, FieldTypes } from '../types';
 import createAbortController from '../utils/createAbortController';
 import CustomTable from '../components/custom-table/CustomTable';
 import { authSelector } from '../redux/slice/authSlice';
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 
 const initialCategoryState = {
   name: '',
@@ -35,7 +36,7 @@ const DynamicLead = () => {
   const categories: CategoryResponseTypes[] = useAppSelector(categorySelector);
   const categoryLoading = useAppSelector(loadingCategory);
   const leadLoading = useAppSelector(loadingLead);
-  const { data: leadsData, allLeads, isModalOpen } = useAppSelector(leadState);
+  const { data: leadsData, allLeads, isModalOpen, allLeadsLoading } = useAppSelector(leadState);
   const dispatch = useAppDispatch();
   const { signal, abort } = createAbortController();
   const [uploadedLeads, setUploadedLeads] = useState([]);
@@ -303,7 +304,22 @@ const DynamicLead = () => {
         <title> Dynamic Leads | Minimal UI </title>
       </Helmet>
       <Container>
-        <h2>Dynamic Lead</h2>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <h2>Dynamic Lead</h2>
+          <Button
+            variant="contained"
+            onClick={async () => {
+              if (isAllLeadOpen) {
+                await dispatch(leadsForSuperAdmin({ skip: 0, take: 10 }));
+              } else {
+                await dispatch(getCategories({}));
+                await dispatch(getLeads({ categoryId: selectedCategoryId }));
+              }
+            }}
+          >
+            <RotateLeftIcon fontSize="large" />
+          </Button>
+        </Box>
         <Stack
           direction="row"
           alignItems="center"
@@ -355,7 +371,8 @@ const DynamicLead = () => {
             </Button>
           )}
         </Stack>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+
+        {/* <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
           <Button onClick={() => setIsCategoryModalOpen(true)} variant="contained">
             Add Category
           </Button>
@@ -365,7 +382,7 @@ const DynamicLead = () => {
           <Button onClick={() => setIsAddLeadModalOpen(true)} variant="contained">
             Add Lead
           </Button>
-        </Box>
+        </Box> */}
         <Box>
           <CustomModal
             title="Upload Lead CSV"
@@ -425,7 +442,7 @@ const DynamicLead = () => {
               margin: 1
             }}
           >
-            <Button
+            {/* <Button
               variant="contained"
               onClick={() => {
                 setIsCategoryModalOpen(true);
@@ -433,7 +450,7 @@ const DynamicLead = () => {
               }}
             >
               Add New Column
-            </Button>
+            </Button> */}
           </Box>
           <Box
             sx={{
@@ -443,20 +460,26 @@ const DynamicLead = () => {
               margin: 1
             }}
           >
-            {categoryLoading || leadListLoading ? (
-              <CircularProgress />
-            ) : isAllLeadOpen ? (
-              allLeads &&
-              allLeads.items &&
-              allLeads.items.length && <CustomTable data={allLeads.items} headLabel={getColumns(allLeads.items)} loading={leadListLoading} />
+            {isAllLeadOpen ? (
+              allLeadsLoading ? (
+                <CircularProgress />
+              ) : (
+                <CustomTable data={allLeads} headLabel={getColumns(allLeads)} loading={allLeadsLoading} />
+              )
             ) : (
-              <CustomTable
-                data={leadsData}
-                headLabel={columnFields}
-                onEditClick={editLead}
-                onDeleteClick={deleteDynamicLead}
-                loading={leadListLoading}
-              />
+              <>
+                {categoryLoading || leadListLoading ? (
+                  <CircularProgress />
+                ) : (
+                  <CustomTable
+                    data={leadsData}
+                    headLabel={columnFields}
+                    onEditClick={editLead}
+                    onDeleteClick={deleteDynamicLead}
+                    loading={leadListLoading}
+                  />
+                )}
+              </>
             )}
           </Box>
         </Card>

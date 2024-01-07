@@ -4,7 +4,7 @@ import { setAlert } from '../slice/alertSlice';
 
 const getLeads = createAsyncThunk(
   'dynamic/get',
-  async ({ categoryId, signal }: { categoryId: string; signal: AbortSignal }, { dispatch }) => {
+  async ({ categoryId, signal }: { categoryId: string; signal?: AbortSignal }, { dispatch }) => {
     try {
       const { data } = await get(`/dynamic/${categoryId}`, { signal });
 

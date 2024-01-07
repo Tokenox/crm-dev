@@ -12,13 +12,22 @@ import {
   leadsForSuperAdmin
 } from '../middleware/lead';
 
-const initialState: { data: LeadsTypes[]; claimData: any; allLeads: any; loading: boolean; isModalOpen: boolean; error: any } = {
+const initialState: {
+  data: LeadsTypes[];
+  claimData: any;
+  allLeads: any;
+  loading: boolean;
+  allLeadsLoading: boolean;
+  isModalOpen: boolean;
+  error: any;
+} = {
   loading: false,
   data: [],
   claimData: [],
   allLeads: [],
   error: null,
-  isModalOpen: false
+  isModalOpen: false,
+  allLeadsLoading: false
 };
 
 const leadSlice = createSlice({
@@ -141,22 +150,32 @@ const leadSlice = createSlice({
 
     // Get Leads for Super Admin
     builder.addCase(leadsForSuperAdmin.pending, (state) => {
-      state.loading = true;
+      state.allLeadsLoading = true;
     });
     builder.addCase(leadsForSuperAdmin.fulfilled, (state, action) => {
-      state.allLeads = action.payload;
-      state.loading = false;
+      const { items } = action.payload;
+      const leads = items?.map((lead) => ({
+        id: lead.id,
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+        status: lead.status,
+        saleRep: lead.saleRep,
+        source: lead.source
+      }));
+      state.allLeads = leads;
+      state.allLeadsLoading = false;
     });
     builder.addCase(leadsForSuperAdmin.rejected, (state, action) => {
       state.error = action.error;
-      state.loading = false;
+      state.allLeadsLoading = false;
     });
   }
 });
 
 export const leadsList = (state) => state.lead.data;
 export const leadState = (state: {
-  lead: { data: LeadsTypes[]; claimData: any; allLeads; loading: boolean; isModalOpen: boolean; error: any };
+  lead: { data: LeadsTypes[]; claimData: any; allLeads; loading: boolean; allLeadsLoading; isModalOpen: boolean; error: any };
 }) => state.lead;
 export default leadSlice.reducer;
 export const { openModal } = leadSlice.actions;

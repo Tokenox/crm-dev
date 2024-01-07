@@ -334,7 +334,15 @@ export class DynamicController {
         }
         const response = await dynamicModel.find({ _id: lead.leadId });
         const saleRep = await this.adminService.findAdminById(lead.adminId);
-        return { ...response[0]._doc, id: lead._id, adminId: saleRep?._id, saleRep: saleRep?.name, source: lead.source, leadId: lead._id };
+        return {
+          ...response[0]._doc,
+          id: lead._id,
+          adminId: saleRep?._id,
+          saleRep: saleRep?.name,
+          source: lead.source,
+          status: lead.status,
+          leadId: lead._id
+        };
       })
     );
     return new SuccessResult(new Pagination(result, leadCount, AllLeadsResultModel), Pagination);

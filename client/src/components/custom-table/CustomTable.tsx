@@ -2,6 +2,8 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import { DataGridPro, GridToolbar } from '@mui/x-data-grid-pro';
 import { Button } from '@mui/material';
+import { useAppSelector } from '../../hooks/hooks';
+import { authSelector } from '../../redux/slice/authSlice';
 
 interface CustomTableProps {
   data: any[];
@@ -16,8 +18,8 @@ interface CustomTableProps {
 }
 
 export default function CustomTable({ data, headLabel, loading, onEditClick, onDeleteClick }: CustomTableProps) {
-  console.log('data-----[', data);
-  console.log('headLabel-----[', headLabel);
+  const { data: admin } = useAppSelector(authSelector);
+
   // const [clickedRow, setClickedRow] = React.useState();
 
   // const onButtonClick = (e, row) => {
@@ -61,6 +63,9 @@ export default function CustomTable({ data, headLabel, loading, onEditClick, onD
       }
     }
   ];
+  if (!admin.isSuperAdmin) {
+    tableHeader.pop();
+  }
 
   const columns = tableHeader.map((column) => ({
     ...column,
