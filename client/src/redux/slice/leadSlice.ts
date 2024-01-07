@@ -1,11 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { LeadsTypes } from '../../types';
-import { getLead, getLeads, createLead, createBulkLead, updateLead, deleteLead, getLeadsForClaim, claimLead } from '../middleware/lead';
+import {
+  getLead,
+  getLeads,
+  createLead,
+  createBulkLead,
+  updateLead,
+  deleteLead,
+  getLeadsForClaim,
+  claimLead,
+  leadsForSuperAdmin
+} from '../middleware/lead';
 
-const initialState: { data: LeadsTypes[]; claimData: any; loading: boolean; isModalOpen: boolean; error: any } = {
+const initialState: { data: LeadsTypes[]; claimData: any; allLeads: any; loading: boolean; isModalOpen: boolean; error: any } = {
   loading: false,
   data: [],
   claimData: [],
+  allLeads: [],
   error: null,
   isModalOpen: false
 };
@@ -127,12 +138,26 @@ const leadSlice = createSlice({
       state.error = action.error;
       state.loading = false;
     });
+
+    // Get Leads for Super Admin
+    builder.addCase(leadsForSuperAdmin.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(leadsForSuperAdmin.fulfilled, (state, action) => {
+      state.allLeads = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(leadsForSuperAdmin.rejected, (state, action) => {
+      state.error = action.error;
+      state.loading = false;
+    });
   }
 });
 
 export const leadsList = (state) => state.lead.data;
-export const leadState = (state: { lead: { data: LeadsTypes[]; claimData: any; loading: boolean; isModalOpen: boolean; error: any } }) =>
-  state.lead;
+export const leadState = (state: {
+  lead: { data: LeadsTypes[]; claimData: any; allLeads; loading: boolean; isModalOpen: boolean; error: any };
+}) => state.lead;
 export default leadSlice.reducer;
 export const { openModal } = leadSlice.actions;
 export const loadingLead = (state) => state.lead.loading;

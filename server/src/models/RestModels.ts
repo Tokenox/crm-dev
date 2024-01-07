@@ -176,8 +176,6 @@ export class SingleCrmDealResultModel {
   }
 }
 
-
-
 export class CrmRateResultModel {
   @Property() public readonly partner: string;
   @Property() public readonly years: string;
@@ -185,10 +183,9 @@ export class CrmRateResultModel {
   @Property() public readonly financing: string;
   @Property() public readonly apr: string;
   @Property() public readonly feerate: string;
-
 }
 
-export class CrmTimelineAvgResultModel{
+export class CrmTimelineAvgResultModel {
   @Property() public readonly saleStage: string;
   @Property() public readonly welcometage: string;
   @Property() public readonly sstage: string;
@@ -200,10 +197,9 @@ export class CrmTimelineAvgResultModel{
   @Property() public readonly installStage: string;
   @Property() public readonly inspectStage: string;
   @Property() public readonly ptoStage: string;
-
 }
 
-export class CrmTimelineResultModel{
+export class CrmTimelineResultModel {
   @Property() public readonly saleStage: string;
   @Property() public readonly welcometage: string;
   @Property() public readonly sstage: string;
@@ -217,7 +213,6 @@ export class CrmTimelineResultModel{
   @Property() public readonly ptoStage: string;
   @Property() public readonly AHJ: string;
 }
-
 
 export class AIResponseModel {
   @Property() public response: string; // removed the readonly modifier
@@ -241,7 +236,6 @@ export class CrmDealRookieResultModel {
   @Property() public readonly milestone: string;
   @Property() public readonly datePaid: string;
   @Property() public readonly amount: string;
-
 }
 export class CrmDealResultModel {
   @Property() public readonly email: string;
@@ -326,4 +320,21 @@ export class SaleRefResultModel {
   @Property() public readonly leads: string[];
   @Property() public readonly createdAt: Date;
   @Property() public readonly updatedAt: Date;
+}
+
+export class AllLeadsResultModel {
+  @Property() public readonly _id: string;
+  @Property() public readonly id: string;
+  @Property() public readonly name: string;
+  @Property() public readonly email: string;
+  @Property() public readonly phone: string;
+  @Property() public readonly isNotify: boolean;
+  @Property() public readonly status: string;
+  @Property() public readonly categoryId: string;
+  @Property() public readonly createdAt: Date;
+  @Property() public readonly updatedAt: Date;
+  @Property() public readonly adminId: string;
+  @Property() public readonly saleRep: string;
+  @Property() public readonly source: string;
+  @Property() public readonly leadId: string;
 }

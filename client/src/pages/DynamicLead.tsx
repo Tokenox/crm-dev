@@ -10,13 +10,14 @@ import CustomModal from '../components/modals/CustomModal';
 import CsvUpload from '../components/upload-file/CsvUpload';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { addNewColumn, createCategory, getCategories } from '../redux/middleware/category';
-import { createBulkLead, createLead, deleteLead, getLeads, updateLead } from '../redux/middleware/lead';
+import { createBulkLead, createLead, deleteLead, getLeads, leadsForSuperAdmin, updateLead } from '../redux/middleware/lead';
 import { setAlert } from '../redux/slice/alertSlice';
 import { categorySelector, loadingCategory } from '../redux/slice/categorySlice';
 import { leadState, loadingLead, openModal } from '../redux/slice/leadSlice';
 import { CategoryResponseTypes, CategoryTypes, FieldTypes } from '../types';
 import createAbortController from '../utils/createAbortController';
 import CustomTable from '../components/custom-table/CustomTable';
+import { authSelector } from '../redux/slice/authSlice';
 
 const initialCategoryState = {
   name: '',
@@ -28,10 +29,13 @@ const initialFieldState = {
 };
 
 const DynamicLead = () => {
+  // get the admin from redux store
+  const { data: admin } = useAppSelector(authSelector);
+
   const categories: CategoryResponseTypes[] = useAppSelector(categorySelector);
   const categoryLoading = useAppSelector(loadingCategory);
   const leadLoading = useAppSelector(loadingLead);
-  const { data: leadsData, isModalOpen } = useAppSelector(leadState);
+  const { data: leadsData, allLeads, isModalOpen } = useAppSelector(leadState);
   const dispatch = useAppDispatch();
   const { signal, abort } = createAbortController();
   const [uploadedLeads, setUploadedLeads] = useState([]);
@@ -47,10 +51,12 @@ const DynamicLead = () => {
   const [isLeadEdit, setIsLeadEdit] = useState<boolean>(false);
   const [isCategoryEdit, setIsCategoryEdit] = useState<boolean>(false);
   const [leadListLoading, setLeadListLoading] = useState<boolean>(false);
+  const [isAllLeadOpen, setIsAllLeadOpen] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
       await dispatch(getCategories({ signal }));
+      setIsAllLeadOpen(false);
     })();
     return () => {
       abort();
@@ -106,6 +112,7 @@ const DynamicLead = () => {
     setSelectedCategoryId(categoryData.id);
     setColumnFields(updatedFields);
     setCategoryData(categoryData);
+    setIsAllLeadOpen(false);
   };
 
   const handleCsvData = (csvData) => {
@@ -132,6 +139,7 @@ const DynamicLead = () => {
 
   const getColumns = useCallback((data: any) => {
     const columns = [];
+    if (!data.length) return columns;
     const keys = Object?.keys(data[0]);
     keys.forEach((key) => {
       columns.push({
@@ -282,6 +290,13 @@ const DynamicLead = () => {
     });
   };
 
+  //! Get all leads for super admin
+  const getAllLeadsForSuperAdmin = async () => {
+    setIsAllLeadOpen(true);
+    setSelectedCategoryId('');
+    await dispatch(leadsForSuperAdmin({ skip: 0, take: 10 }));
+  };
+
   return (
     <Fragment>
       <Helmet>
@@ -334,6 +349,11 @@ const DynamicLead = () => {
               </Button>
             ))) ||
             ''}
+          {admin.isSuperAdmin && (
+            <Button variant={isAllLeadOpen ? 'contained' : 'outlined'} sx={{ minWidth: 'auto' }} onClick={getAllLeadsForSuperAdmin}>
+              All Leads
+            </Button>
+          )}
         </Stack>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
           <Button onClick={() => setIsCategoryModalOpen(true)} variant="contained">
@@ -425,6 +445,10 @@ const DynamicLead = () => {
           >
             {categoryLoading || leadListLoading ? (
               <CircularProgress />
+            ) : isAllLeadOpen ? (
+              allLeads &&
+              allLeads.items &&
+              allLeads.items.length && <CustomTable data={allLeads.items} headLabel={getColumns(allLeads.items)} loading={leadListLoading} />
             ) : (
               <CustomTable
                 data={leadsData}

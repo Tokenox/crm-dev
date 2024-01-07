@@ -16,20 +16,22 @@ interface CustomTableProps {
 }
 
 export default function CustomTable({ data, headLabel, loading, onEditClick, onDeleteClick }: CustomTableProps) {
-  const [clickedRow, setClickedRow] = React.useState();
+  console.log('data-----[', data);
+  console.log('headLabel-----[', headLabel);
+  // const [clickedRow, setClickedRow] = React.useState();
 
-  const onButtonClick = (e, row) => {
-    e.stopPropagation();
-    setClickedRow(row);
-  };
+  // const onButtonClick = (e, row) => {
+  //   e.stopPropagation();
+  //   setClickedRow(row);
+  // };
 
-  // handle page changes
-  const handlePageChange = async (newPage) => {
-    // call api
-  };
-  const handlePageSizeChange = async (newPageSize) => {
-    // call api
-  };
+  // // handle page changes
+  // const handlePageChange = async (newPage) => {
+  //   // call api
+  // };
+  // const handlePageSizeChange = async (newPageSize) => {
+  //   // call api
+  // };
 
   const columnFields = headLabel.map((headCell) => ({
     field: headCell.name,

@@ -5,7 +5,7 @@ import { login, startVerification, register, verifyCode, completeVerification, f
 
 type AuthState = {
   loading: boolean;
-  data: AdminResponseTypes[];
+  data: AdminResponseTypes;
   error: string | null;
   verificationData: any;
   verificationLoading: boolean;
@@ -17,7 +17,7 @@ type AuthState = {
 
 const initialState: AuthState = {
   loading: false,
-  data: [],
+  data: null,
   error: null,
   verificationData: null,
   verificationLoading: false,

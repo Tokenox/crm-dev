@@ -86,4 +86,12 @@ export class LeadService {
   public async getOpenLeadsByAdminId({ adminId, status }: LeadsParamTypes) {
     return this.lead.find({ adminId, status });
   }
+
+  public async getAllLeadsForSuperAdmin({ skip, take }: { skip: number; take: number }) {
+    return this.lead.find().skip(skip).limit(take);
+  }
+
+  public async getLeadsCount() {
+    return this.lead.countDocuments();
+  }
 }

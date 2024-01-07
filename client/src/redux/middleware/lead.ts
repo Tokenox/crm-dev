@@ -105,7 +105,21 @@ const claimLead = createAsyncThunk(
   }
 );
 
-export { getLeads, getLead, createLead, createBulkLead, updateLead, deleteLead, getLeadsForClaim, claimLead };
+const leadsForSuperAdmin = createAsyncThunk(
+  'dynamic/leadForSuperAdmin',
+  async ({ skip, take, signal }: { skip: number; take: number; signal?: AbortSignal }, { dispatch }) => {
+    try {
+      const { data } = await get(`/dynamic/all/leads?skip=${skip}&take=${take}`);
+      return data.data;
+    } catch (error) {
+      const { message } = error.response.data;
+      dispatch(setAlert({ message, type: 'error' }));
+      throw error;
+    }
+  }
+);
+
+export { getLeads, getLead, createLead, createBulkLead, updateLead, deleteLead, getLeadsForClaim, claimLead, leadsForSuperAdmin };
 
 type FieldTypes = {
   name: string;

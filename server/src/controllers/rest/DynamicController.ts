@@ -1,5 +1,5 @@
 import { Controller, Inject } from "@tsed/di";
-import { BodyParams, Context, PathParams } from "@tsed/platform-params";
+import { BodyParams, Context, PathParams, QueryParams } from "@tsed/platform-params";
 import { Delete, Get, Post, Property, Put, Required, Returns } from "@tsed/schema";
 import { Schema, model } from "mongoose";
 import { AdminService } from "../../services/AdminService";
@@ -9,11 +9,12 @@ import { CategoryService } from "../../services/CategoryService";
 import { ADMIN, MANAGER } from "../../util/constants";
 import { BadRequest, Unauthorized } from "@tsed/exceptions";
 import { ADMIN_NOT_FOUND, CATEGORY_ALREADY_EXISTS, CATEGORY_NOT_FOUND, ORG_NOT_FOUND } from "../../util/errors";
-import { SuccessResult } from "../../util/entities";
+import { Pagination, SuccessArrayResult, SuccessResult } from "../../util/entities";
 import { LeadStatusEnum } from "../../../types";
 import { AvailabilityService } from "../../services/AvailabilityService";
 import { SaleRepService } from "../../services/SaleRepService";
 import { LeadModel } from "../../models/LeadsModel";
+import { AllLeadsResultModel } from "../../models/RestModels";
 
 // fields types
 
@@ -312,5 +313,30 @@ export class DynamicController {
     console.log("updatedLeads--------------------------------------", updatedLeads);
 
     return new SuccessResult({ success: true, data: updatedLeads }, Object);
+  }
+
+  // get all lead for super admin
+  @Get("/all/leads")
+  @Returns(200, SuccessResult).Of(Object)
+  async getAllLeads(@QueryParams() { skip, take }: { skip: number; take: number }, @Context() context: Context) {
+    const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN] }, context.get("user"));
+    if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
+    const leadCount = await this.leadsService.getLeadsCount();
+    const allLeads = await this.leadsService.getAllLeadsForSuperAdmin({ skip, take });
+    const result = await Promise.all(
+      allLeads.map(async (lead) => {
+        let dynamicModel;
+        try {
+          dynamicModel = model(lead.source.toLocaleLowerCase());
+        } catch (error) {
+          const schema = new Schema({}, { strict: false });
+          dynamicModel = model(lead.source.toLocaleLowerCase(), schema);
+        }
+        const response = await dynamicModel.find({ _id: lead.leadId });
+        const saleRep = await this.adminService.findAdminById(lead.adminId);
+        return { ...response[0]._doc, id: lead._id, adminId: saleRep?._id, saleRep: saleRep?.name, source: lead.source, leadId: lead._id };
+      })
+    );
+    return new SuccessResult(new Pagination(result, leadCount, AllLeadsResultModel), Pagination);
   }
 }
