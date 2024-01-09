@@ -1,19 +1,19 @@
 import { Controller, Inject } from "@tsed/di";
-import { Delete, Enum, Get, Post, Property, Required, Returns } from "@tsed/schema";
+import { Delete, Get, Post, Required, Returns } from "@tsed/schema";
 import { AdminService } from "../../services/AdminService";
 import { AvailabilityResultModel, IdModel, SuccessMessageModel } from "../../models/RestModels";
 import { Pagination, SuccessArrayResult, SuccessResult } from "../../util/entities";
 import { ADMIN } from "../../util/constants";
 import { BodyParams, Context, PathParams } from "@tsed/platform-params";
-import { Unauthorized } from "@tsed/exceptions";
-import { ADMIN_NOT_FOUND, ORG_NOT_FOUND } from "../../util/errors";
+import { NotFound, Unauthorized } from "@tsed/exceptions";
+import { ADMIN_NOT_FOUND, SALE_REP_NOT_FOUND } from "../../util/errors";
 import { AvailabilityService } from "../../services/AvailabilityService";
 import { normalizeData } from "../../helper";
 import { SaleRepService } from "../../services/SaleRepService";
 
 class AvailabilityBodyTypes {
-  @Property() public readonly startDate: string;
-  @Property() public readonly endDate: string;
+  @Required() public readonly startTime: number;
+  @Required() public readonly endTime: number;
 }
 
 @Controller("/availability")
@@ -37,19 +37,23 @@ export class AvailabilityController {
   public async createAvailability(@BodyParams() body: AvailabilityBodyTypes, @Context() context: Context) {
     const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN] }, context.get("user"));
     if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
-    const { startDate, endDate } = body;
+    const saleRep = await this.saleRepService.findSaleRepByAdminId(adminId);
+    if (!saleRep) throw new NotFound(SALE_REP_NOT_FOUND);
+    const { startTime, endTime } = body;
     const response = await this.availabilityService.createAvailability({
-      startDate: new Date(startDate).getTime(),
-      endDate: new Date(endDate).getTime(),
-      adminId
+      startTime,
+      endTime,
+      saleRepId: saleRep?._id
     });
-    const result = {
+    const availability = {
       _id: response._id,
-      startDate: new Date(response.startDate).toString(),
-      endDate: new Date(response.endDate).toString(),
-      adminId: response.adminId
+      saleRepId: response.saleRepId,
+      startTime: new Date(startTime),
+      endTime: new Date(endTime),
+      createdAt: response.createdAt,
+      updatedAt: response.updatedAt
     };
-    return new SuccessResult(result, AvailabilityResultModel);
+    return new SuccessResult(availability, AvailabilityResultModel);
   }
 
   @Delete("/:id")

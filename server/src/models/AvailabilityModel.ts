@@ -1,15 +1,11 @@
 import { Model, ObjectID, Ref } from "@tsed/mongoose";
-import { CollectionOf, Default, Property, Required } from "@tsed/schema";
-import { AdminModel } from "./AdminModel";
+import { Default, Property, Required } from "@tsed/schema";
 import { SaleRepModel } from "./SaleRepModel";
 
 @Model({ name: "availability" })
 export class AvailabilityModel {
   @ObjectID("id")
   _id: string;
-
-  @Property()
-  saleRepScore: number;
 
   @Required()
   startTime: number;

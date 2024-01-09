@@ -1,8 +1,6 @@
 import { CollectionOf, Default, Property } from "@tsed/schema";
 import { Model, ObjectID, Ref } from "@tsed/mongoose";
-import { AdminModel } from "./AdminModel";
-
-import { LeadModel } from "./LeadModel";
+import { SaleRepModel } from "./SaleRepModel";
 
 export type CategoryFieldType = {
   name: string;
@@ -21,7 +19,7 @@ export class CategoryModel {
   description: string;
 
   @Property()
-  adminId: string;
+  saleRepId: string;
 
   @Property()
   @Default(new Date())
@@ -31,10 +29,6 @@ export class CategoryModel {
   @Default(new Date())
   updatedAt: Date;
 
-  @Ref(() => AdminModel)
-  admin: Ref<AdminModel>;
-
-  @Ref(() => LeadModel)
-  @CollectionOf(() => LeadModel)
-  planners: Ref<LeadModel>[];
+  @Ref(() => SaleRepModel)
+  saleRep: Ref<SaleRepModel>;
 }

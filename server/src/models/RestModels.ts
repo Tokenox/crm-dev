@@ -76,8 +76,12 @@ export class LeadResultModel {
   @Property() public readonly lastName: string;
   @Property() public readonly email: string;
   @Property() public readonly phone: string;
+  @Property() public readonly message: string;
+  @Property() public readonly source: string;
+  @Property() public readonly isNotify: boolean;
+  @Property() public readonly status: string;
+  @Property() public readonly saleRepId: string;
   @Property() public readonly categoryId: string;
-  @Property() public readonly orgId: string;
   @Property() public readonly createdAt: Date;
   @Property() public readonly updatedAt: Date;
 }
@@ -303,9 +307,11 @@ export class PlannerResultModel {
 
 export class AvailabilityResultModel {
   @Property() public readonly _id: string;
-  @Property() public readonly startDate: string;
-  @Property() public readonly endDate: string;
-  @Property() public readonly adminId: string;
+  @Property() public readonly startTime: Date;
+  @Property() public readonly endTime: Date;
+  @Property() public readonly saleRepId: string;
+  @Property() public readonly createdAt: Date;
+  @Property() public readonly updatedAt: Date;
 }
 
 export class RoleResultModel {

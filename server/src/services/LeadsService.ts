@@ -5,6 +5,18 @@ import { MongooseModel } from "@tsed/mongoose";
 import { CategoryModel } from "../models/CategoryModel";
 import { SaleRepService } from "./SaleRepService";
 
+type CreateLeadParams = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  message: string;
+  source: string;
+  categoryId: string;
+  saleRepId: string;
+  status: LeadStatusEnum;
+};
+
 @Injectable()
 export class LeadService {
   constructor(
@@ -42,7 +54,7 @@ export class LeadService {
   }
 
   //! Create
-  public async createLead({ ...params }: LeadModel) {
+  public async createLead({ ...params }: CreateLeadParams) {
     return this.lead.create({
       ...params
     });

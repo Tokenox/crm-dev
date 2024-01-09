@@ -2,6 +2,7 @@ import { Model, ObjectID, Ref } from "@tsed/mongoose";
 import { CollectionOf, Default, Property } from "@tsed/schema";
 import { AdminModel } from "./AdminModel";
 import { AvailabilityModel } from "./AvailabilityModel";
+import { LeadModel } from "./LeadModel";
 
 @Model({ name: "saleRep" })
 export class SaleRepModel {
@@ -31,4 +32,8 @@ export class SaleRepModel {
   @Ref(() => AvailabilityModel)
   @CollectionOf(() => AvailabilityModel)
   availability: Ref<AvailabilityModel>[];
+
+  @Ref(() => LeadModel)
+  @CollectionOf(() => LeadModel)
+  leads: Ref<LeadModel>[];
 }

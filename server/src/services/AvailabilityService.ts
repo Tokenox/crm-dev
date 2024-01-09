@@ -2,6 +2,12 @@ import { Inject, Injectable } from "@tsed/di";
 import { MongooseModel } from "@tsed/mongoose";
 import { AvailabilityModel } from "../models/AvailabilityModel";
 
+type CreateAvailabilityParams = {
+  saleRepId: string;
+  startTime: number;
+  endTime: number;
+};
+
 @Injectable()
 export class AvailabilityService {
   @Inject(AvailabilityModel) private availability: MongooseModel<AvailabilityModel>;
@@ -23,9 +29,8 @@ export class AvailabilityService {
   }
 
   //! Create
-  public async createAvailability({ saleRepId, saleRepScore, startTime, endTime }: AvailabilityModel) {
+  public async createAvailability({ saleRepId, startTime, endTime }: CreateAvailabilityParams) {
     return await this.availability.create({
-      saleRepScore,
       saleRepId,
       startTime,
       endTime

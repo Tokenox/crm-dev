@@ -2,40 +2,20 @@ import { Inject, Injectable } from "@tsed/di";
 import { MongooseModel } from "@tsed/mongoose";
 import { SaleRepModel } from "../models/SaleRepModel";
 import { AvailabilityService } from "./AvailabilityService";
-import { AvailabilityModel } from "src/models/AvailabilityModel";
 
 @Injectable()
 export class SaleRepService {
   @Inject(SaleRepModel) private saleRep: MongooseModel<SaleRepModel>;
-  @Inject() private availability: MongooseModel<AvailabilityModel>;
   @Inject() private availabilityService: AvailabilityService;
 
   //! Find
 
-  //!---------
-  public async findAvailableSaleRep() {
-    const saleRep = await this.saleRep
-      .find()
-      .populate({
-        path: "availability",
-        match: {
-          startTime: { $lte: new Date().getTime() },
-          endTime: { $gte: new Date().getTime() },
-          saleRepId: { $ne: null }
-        }
-      })
-      .sort({ score: -1 })
-      .limit(1);
-    console.log("saleRep-------------------------", saleRep);
-  }
-  //!---------
-
-  public async findSaleRepBySourceAvailability() {
-    const saleRep = await this.saleRep.find().sort({ score: -1 }).limit(5);
+  public async findSaleRep() {
+    const saleRep = await this.saleRep.find().sort({ score: -1 }).limit(10);
     if (!saleRep.length) return false;
     for (let i = 0; i < saleRep.length; i++) {
       const rep = saleRep[i];
-      const availability = await this.availabilityService.findAvailabilityByDateAndRep(rep.adminId);
+      const availability = await this.availabilityService.findAvailabilityByDateAndRep(rep._id);
       if (availability) {
         return rep;
       }

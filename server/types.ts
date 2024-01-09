@@ -38,9 +38,7 @@ export enum RoleEnum {
 export type CategoryBodyTypes = {
   name: string;
   description?: string;
-  adminId?: string;
-  orgId?: string;
-  fields: CategoryFieldType[];
+  saleRepId?: string;
 };
 
 export type RoleBodyTypes = {
