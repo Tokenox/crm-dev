@@ -295,7 +295,7 @@ const DynamicLead = () => {
   const getAllLeadsForSuperAdmin = async () => {
     setIsAllLeadOpen(true);
     setSelectedCategoryId('');
-    await dispatch(leadsForSuperAdmin({ skip: 0, take: 10 }));
+    await dispatch(leadsForSuperAdmin({ skip: 0, take: 10, sort: 'desc', search: '' }));
   };
 
   return (
@@ -310,7 +310,7 @@ const DynamicLead = () => {
             variant="contained"
             onClick={async () => {
               if (isAllLeadOpen) {
-                await dispatch(leadsForSuperAdmin({ skip: 0, take: 10 }));
+                await dispatch(leadsForSuperAdmin({ skip: 0, take: 10, sort: 'desc', search: '' }));
               } else {
                 await dispatch(getCategories({}));
                 await dispatch(getLeads({ categoryId: selectedCategoryId }));

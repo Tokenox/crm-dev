@@ -459,7 +459,7 @@ export default function VCDashboardAppPage() {
                     <Button
                       variant="outlined"
                       onClick={async () => {
-                        await dispatch(claimLead({ id: item._id, leadId: item.leadId, sourceId: item.categoryId }));
+                        await dispatch(claimLead({ id: item._id }));
                         await getClaimableLeads();
                       }}
                     >
