@@ -3,7 +3,7 @@ import { BadRequest, Unauthorized } from "@tsed/exceptions";
 import { BodyParams, Context, PathParams, QueryParams } from "@tsed/platform-params";
 import { Delete, Get, Post, Property, Put, Required, Returns } from "@tsed/schema";
 import { AdminService } from "../../services/AdminService";
-import { ADMIN_NOT_FOUND, EMAIL_EXISTS, ORG_NOT_FOUND, SALE_REP_NOT_FOUND } from "../../util/errors";
+import { ADMIN_NOT_FOUND, SALE_REP_NOT_FOUND } from "../../util/errors";
 import { ADMIN, MANAGER, SALESREP } from "../../util/constants";
 import { Pagination, SuccessArrayResult, SuccessResult } from "../../util/entities";
 import { LeadService } from "../../services/LeadsService";

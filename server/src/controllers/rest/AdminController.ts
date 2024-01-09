@@ -1,9 +1,9 @@
 import { Controller, Inject } from "@tsed/di";
-import { BadRequest, Unauthorized } from "@tsed/exceptions";
+import { Unauthorized } from "@tsed/exceptions";
 import { BodyParams, Context } from "@tsed/platform-params";
 import { Enum, Get, Post, Property, Put, Required, Returns } from "@tsed/schema";
-import { ADMIN_NOT_FOUND, ORG_NOT_FOUND } from "../../util/errors";
-import { AdminResultModel, AdminRoleModel, IdModel, SaleRefResultModel, SuccessMessageModel } from "../../models/RestModels";
+import { ADMIN_NOT_FOUND } from "../../util/errors";
+import { AdminResultModel, AdminRoleModel, SaleRefResultModel, SuccessMessageModel } from "../../models/RestModels";
 import { AdminService } from "../../services/AdminService";
 import { SuccessArrayResult, SuccessResult } from "../../util/entities";
 import { ADMIN } from "../../util/constants";

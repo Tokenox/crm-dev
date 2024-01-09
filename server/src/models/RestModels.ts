@@ -63,9 +63,7 @@ export class CategoryResultModel {
   @Property() public readonly id: string;
   @Property() public readonly name: string;
   @Property() public readonly description: string;
-  @Property() public readonly adminId: string;
-  @Property() public readonly orgId: string;
-  @ArrayOf(Object) public readonly fields: CategoryFieldType[];
+  @Property() public readonly saleRepId: string;
   @Property() public readonly createdAt: Date;
   @Property() public readonly updatedAt: Date;
 }
@@ -296,13 +294,11 @@ export class CrmPayrollResultModel {
 export class PlannerResultModel {
   @Property() public readonly _id: string;
   @Property() public readonly title: string;
-  @Property() @Enum(SocialAction) public readonly action: SocialAction;
+  @Property() public readonly source: string;
   @Property() public readonly description: string;
   @Property() public readonly startDate: string;
-  @Property() public readonly endDate: string;
-  @Property() public readonly timeOfExecution: string;
-  @Property() public readonly adminId: string;
-  @Property() public readonly categoryId: string;
+  @Property() public readonly timeOfExecution: number;
+  @Property() public readonly saleRepId: string;
 }
 
 export class AvailabilityResultModel {

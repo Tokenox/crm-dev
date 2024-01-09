@@ -1,7 +1,5 @@
 import { Context, Inject, Middleware, Req } from "@tsed/common";
 import { AdminService } from "../services/AdminService";
-import { Forbidden } from "@tsed/exceptions";
-import { ORG_NOT_FOUND } from "../util/errors";
 
 /**
  * Authenticates users based on the Authorization header
@@ -17,7 +15,6 @@ export class AuthMiddleware {
     const adminToken = req?.headers?.authorization || req.headers.cookie?.split("session=")[1];
     if (adminToken && !isPublicRoute) {
       const admin = await this.adminService.getActiveAdmin(adminToken);
-      if (!admin.orgId) throw new Forbidden(ORG_NOT_FOUND);
       const _admin = { ...admin.toObject(), id: admin._id };
       ctx.set("user", _admin);
       return;

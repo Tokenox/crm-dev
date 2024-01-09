@@ -2,6 +2,14 @@ import { Inject, Injectable } from "@tsed/di";
 import { MongooseModel } from "@tsed/mongoose";
 import { PlannerModel } from "../models/PlannerModel";
 
+type CreatePlannerParam = {
+  title: string;
+  source: string;
+  description: string;
+  timeOfExecution: number;
+  startDate: Date;
+};
+
 @Injectable()
 export class PlannerService {
   @Inject(PlannerModel) private planner: MongooseModel<PlannerModel>;
@@ -16,7 +24,7 @@ export class PlannerService {
   }
 
   //! Create
-  public async createPlanner({ title, source, description, timeOfExecution, startDate }: PlannerModel) {
+  public async createPlanner({ title, source, description, timeOfExecution, startDate }: CreatePlannerParam) {
     return await this.planner.create({
       title,
       source,
