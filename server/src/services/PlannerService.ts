@@ -1,14 +1,12 @@
 import { Inject, Injectable } from "@tsed/di";
 import { MongooseModel } from "@tsed/mongoose";
-import { NodemailerClient } from "../clients/nodemailer";
-import { PlannerDataTypes } from "../../types";
 import { PlannerModel } from "../models/PlannerModel";
 
 @Injectable()
 export class PlannerService {
-  // constructor(@Inject(PlannerModel) private planner: MongooseModel<PlannerModel>) {}
   @Inject(PlannerModel) private planner: MongooseModel<PlannerModel>;
 
+  //! Find
   public async findPlanner() {
     return await this.planner.find();
   }
@@ -17,16 +15,34 @@ export class PlannerService {
     return await this.planner.findById({ _id: id });
   }
 
-  public async createPlanner({ title, action, description, startDate, timeOfExecution, orgId, adminId, categoryId }: PlannerDataTypes) {
+  //! Create
+  public async createPlanner({ title, source, description, timeOfExecution, startDate }: PlannerModel) {
     return await this.planner.create({
       title,
-      action,
+      source,
       description,
-      startDate: new Date(startDate),
       timeOfExecution,
-      orgId,
-      adminId,
-      categoryId
+      startDate
     });
+  }
+
+  //! Update
+  public async updatePlanner({ _id, title, source, description, timeOfExecution, startDate }: PlannerModel) {
+    return await this.planner.findByIdAndUpdate(
+      { _id },
+      {
+        title,
+        source,
+        description,
+        timeOfExecution,
+        startDate,
+        updatedAt: new Date()
+      }
+    );
+  }
+
+  //! Delete
+  public async deletePlanner(id: string) {
+    return await this.planner.deleteOne({ _id: id });
   }
 }

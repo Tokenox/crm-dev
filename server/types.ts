@@ -89,7 +89,10 @@ export enum LeadStatusEnum {
   open = "open",
   claim = "claim",
   close = "close",
-  pending = "pending"
+  pending = "pending",
+  reject = "reject",
+  recommend = "recommend",
+  contact = "contact" // sales rep already contacted the lead
 }
 
 export type LeadsParamTypes = {

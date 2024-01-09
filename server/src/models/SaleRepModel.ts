@@ -2,7 +2,6 @@ import { Model, ObjectID, Ref } from "@tsed/mongoose";
 import { CollectionOf, Default, Property } from "@tsed/schema";
 import { AdminModel } from "./AdminModel";
 import { AvailabilityModel } from "./AvailabilityModel";
-import { LeadModel } from "./LeadsModel";
 
 @Model({ name: "saleRep" })
 export class SaleRepModel {
@@ -13,13 +12,10 @@ export class SaleRepModel {
   score: number;
 
   @Property()
-  availabilityId: string;
-
-  @Property()
   adminId: string;
 
-  @Property()
-  leads: string[];
+  @CollectionOf(String)
+  leadIds: string[];
 
   @Property()
   @Default(new Date())
@@ -35,8 +31,4 @@ export class SaleRepModel {
   @Ref(() => AvailabilityModel)
   @CollectionOf(() => AvailabilityModel)
   availability: Ref<AvailabilityModel>[];
-
-  @Ref(() => LeadModel)
-  @CollectionOf(() => LeadModel)
-  lead: Ref<LeadModel>[];
 }

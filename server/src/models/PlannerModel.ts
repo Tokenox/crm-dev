@@ -1,9 +1,5 @@
-import { Model, ObjectID, Ref } from "@tsed/mongoose";
+import { Model, ObjectID } from "@tsed/mongoose";
 import { Default, Property, Required } from "@tsed/schema";
-import { SocialAction } from "../../types";
-import { AdminModel } from "./AdminModel";
-import { OrganizationModel } from "./OrganizationModel";
-import { CategoryModel } from "./CategoryModel";
 
 @Model({ name: "planner" })
 export class PlannerModel {
@@ -14,25 +10,16 @@ export class PlannerModel {
   title: string;
 
   @Property()
-  action: SocialAction;
-
-  @Property()
   description: string;
 
-  @Property()
-  categoryId: string;
+  @Required()
+  source: string;
 
   @Required()
-  timeOfExecution: string;
+  timeOfExecution: number;
 
   @Required()
   startDate: Date;
-
-  @Property()
-  orgId: string;
-
-  @Property()
-  adminId: string;
 
   @Property()
   @Default(new Date())
@@ -41,13 +28,4 @@ export class PlannerModel {
   @Property()
   @Default(new Date())
   updatedAt: Date;
-
-  @Ref(() => OrganizationModel)
-  organization: Ref<OrganizationModel>;
-
-  @Ref(() => AdminModel)
-  admin: Ref<AdminModel>;
-
-  @Ref(() => CategoryModel)
-  category: Ref<CategoryModel>;
 }

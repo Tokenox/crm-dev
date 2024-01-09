@@ -12,13 +12,13 @@ export class AvailabilityModel {
   saleRepScore: number;
 
   @Required()
-  startDate: number;
+  startTime: number;
 
   @Required()
-  endDate: number;
+  endTime: number;
 
   @Property()
-  adminId: string;
+  saleRepId: string;
 
   @Property()
   @Default(new Date())
@@ -28,10 +28,6 @@ export class AvailabilityModel {
   @Default(new Date())
   updatedAt: Date;
 
-  @Ref(() => AdminModel)
-  admin: Ref<AdminModel>;
-
   @Ref(() => SaleRepModel)
-  @CollectionOf(() => SaleRepModel)
-  saleRep: Ref<SaleRepModel>[];
+  saleRep: Ref<SaleRepModel>;
 }

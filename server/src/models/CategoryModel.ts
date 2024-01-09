@@ -1,8 +1,8 @@
-import { ArrayOf, CollectionOf, Default, Property } from "@tsed/schema";
+import { CollectionOf, Default, Property } from "@tsed/schema";
 import { Model, ObjectID, Ref } from "@tsed/mongoose";
 import { AdminModel } from "./AdminModel";
-import { OrganizationModel } from "./OrganizationModel";
-import { PlannerModel } from "./PlannerModel";
+
+import { LeadModel } from "./LeadModel";
 
 export type CategoryFieldType = {
   name: string;
@@ -20,14 +20,8 @@ export class CategoryModel {
   @Property()
   description: string;
 
-  @ArrayOf(Object)
-  fields: CategoryFieldType[];
-
   @Property()
   adminId: string;
-
-  @Property()
-  orgId: string;
 
   @Property()
   @Default(new Date())
@@ -40,10 +34,7 @@ export class CategoryModel {
   @Ref(() => AdminModel)
   admin: Ref<AdminModel>;
 
-  @Ref(() => OrganizationModel)
-  org: Ref<OrganizationModel>;
-
-  @Ref(() => PlannerModel)
-  @CollectionOf(() => PlannerModel)
-  planners: Ref<PlannerModel>[];
+  @Ref(() => LeadModel)
+  @CollectionOf(() => LeadModel)
+  planners: Ref<LeadModel>[];
 }

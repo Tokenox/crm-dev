@@ -13,7 +13,7 @@ import { Pagination, SuccessArrayResult, SuccessResult } from "../../util/entiti
 import { LeadStatusEnum } from "../../../types";
 import { AvailabilityService } from "../../services/AvailabilityService";
 import { SaleRepService } from "../../services/SaleRepService";
-import { LeadModel } from "../../models/LeadsModel";
+import { LeadModel } from "../../models/LeadModel";
 import { AllLeadsResultModel } from "../../models/RestModels";
 
 // fields types

@@ -1,8 +1,6 @@
 import { Default, Property, Enum } from "@tsed/schema";
 import { Model, ObjectID, Ref } from "@tsed/mongoose";
-import { OrganizationModel } from "./OrganizationModel";
 import { CategoryModel } from "./CategoryModel";
-import { AdminModel } from "./AdminModel";
 import { LeadStatusEnum } from "../../types";
 import { SaleRepModel } from "./SaleRepModel";
 
@@ -12,20 +10,35 @@ export class LeadModel {
   _id: string;
 
   @Property()
+  firstName: string;
+
+  @Property()
+  lastName: string;
+
+  @Property()
+  email: string;
+
+  @Property()
+  phone: string;
+
+  @Property()
+  message: string;
+
+  @Property()
   source: string;
 
   @Property()
+  @Default(false)
+  isNotify: boolean;
+
   @Enum(LeadStatusEnum)
   status: LeadStatusEnum;
-
-  @Property()
-  leadId: string;
 
   @Property()
   categoryId: string;
 
   @Property()
-  adminId: string;
+  saleRepId: string;
 
   @Property()
   @Default(new Date())
@@ -38,12 +51,6 @@ export class LeadModel {
   @Ref(() => CategoryModel)
   category: Ref<CategoryModel>;
 
-  @Ref(() => OrganizationModel)
-  org: Ref<OrganizationModel>;
-
-  @Ref(() => AdminModel)
-  admin: Ref<AdminModel>;
-
   @Ref(() => SaleRepModel)
-  lead: Ref<SaleRepModel>;
+  saleRep: Ref<SaleRepModel>;
 }
