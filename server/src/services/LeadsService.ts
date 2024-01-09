@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@tsed/di";
 import { LeadModel } from "../models/LeadModel";
-import { LeadStatusEnum } from "../../types";
+import { LeadStatusEnum, PaginationTypes } from "../../types";
 import { MongooseModel } from "@tsed/mongoose";
 import { CategoryModel } from "../models/CategoryModel";
 import { SaleRepService } from "./SaleRepService";
@@ -26,8 +26,39 @@ export class LeadService {
   @Inject() private saleRepService: SaleRepService;
 
   //! Find
-  public async findLeads({ skip, take }: { skip: number; take: number }) {
-    return this.lead.find().skip(skip).limit(take);
+  public async findLeads({ skip, take, search, sort = "desc" }: PaginationTypes) {
+    const leads = await this.lead
+      .find({
+        firstName: { $regex: search, $options: "i" },
+        lastName: { $regex: search, $options: "i" },
+        email: { $regex: search, $options: "i" },
+        phone: { $regex: search, $options: "i" }
+      })
+      .skip(skip || 0)
+      .limit(take || 10)
+      .sort({ createdAt: sort });
+    return leads;
+  }
+
+  public async findLeadsBySource({
+    saleRepId,
+    status,
+    source,
+    skip,
+    take,
+    sort = "desc"
+  }: { saleRepId: string; status: LeadStatusEnum } & PaginationTypes) {
+    const leads = await this.lead
+      .find({
+        saleRepId,
+        source: source?.toLocaleLowerCase(),
+        status
+      })
+      .skip(skip || 0)
+      .limit(take || 10)
+      .sort({ createdAt: sort });
+    const count = await this.lead.countDocuments({ saleRepId, source });
+    return { leads, count };
   }
 
   public async findLead(id: string) {
@@ -42,7 +73,7 @@ export class LeadService {
     return this.lead.find({ status });
   }
 
-  public async getLeadByStatusAndRep({ status, saleRepId }: LeadModel) {
+  public async findLeadByStatusAndRep({ status, saleRepId }: { status: LeadStatusEnum; saleRepId: string }) {
     return this.lead.find({
       status,
       saleRepId
@@ -51,6 +82,14 @@ export class LeadService {
 
   public async getLeadsCount() {
     return this.lead.countDocuments();
+  }
+
+  public async findLeadByTime({ status }: { status: LeadStatusEnum }) {
+    const time = new Date(new Date().getTime() - 15 * 60000);
+    return this.lead.find({
+      status,
+      updatedAt: { $lte: time }
+    });
   }
 
   //! Create
@@ -76,20 +115,21 @@ export class LeadService {
     );
   }
 
-  public async updateLeadStatus({ _id, status }: LeadModel) {
+  public async updateLeadStatus({ id, status }: { id: string; status: LeadStatusEnum }) {
     return this.lead.findByIdAndUpdate(
-      { _id },
+      { _id: id },
       {
         status
       }
     );
   }
 
-  public async updateLeadSaleRep({ _id, saleRepId }: LeadModel) {
+  public async updateLeadSaleRep({ id, saleRepId }: { id: string; saleRepId: string }) {
     return this.lead.findByIdAndUpdate(
-      { _id },
+      { _id: id },
       {
-        saleRepId
+        saleRepId,
+        updatedAt: new Date()
       }
     );
   }
@@ -100,6 +140,18 @@ export class LeadService {
       {
         status,
         saleRepId
+      }
+    );
+  }
+
+  public async updateLeadsTime(leadIds: string[]) {
+    const time = new Date();
+    return this.lead.updateMany(
+      {
+        _id: { $in: leadIds }
+      },
+      {
+        updatedAt: new Date()
       }
     );
   }

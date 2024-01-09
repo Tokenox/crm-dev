@@ -11,7 +11,6 @@ export interface JWTPayload {
   email: string;
   id: string;
   role: string;
-  company?: string;
   ip?: string;
   device?: string;
 }
@@ -100,3 +99,5 @@ export type LeadsParamTypes = {
   adminId?: string;
   categoryId?: string;
 };
+
+export type PaginationTypes = { source?: string; skip?: number; take?: number; search?: string; sort?: "asc" | "desc" };

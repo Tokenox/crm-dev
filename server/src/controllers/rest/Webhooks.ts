@@ -2,7 +2,7 @@ import { Controller, Inject } from "@tsed/di";
 import { LeadService } from "../../services/LeadsService";
 import { Post, Property, Required, Returns, object } from "@tsed/schema";
 import { SuccessResult } from "../../util/entities";
-import { LeadResultModel } from "../../models/RestModels";
+import { LeadResultModel, SuccessMessageModel } from "../../models/RestModels";
 import { BodyParams } from "@tsed/platform-params";
 import { SaleRepService } from "../../services/SaleRepService";
 import { CategoryService } from "../../services/CategoryService";
@@ -46,7 +46,23 @@ export class Webhook {
       categoryId: category?._id,
       status: LeadStatusEnum.open
     });
-    await this.saleRepService.updateSaleRepLeadIds({ id: saleRep._id, leadIds: [response._id] });
+    await this.saleRepService.updateSaleRepLeadIds({ id: saleRep._id, leadId: response._id });
     return new SuccessResult(normalizeObject(response), LeadResultModel);
+  }
+
+  @Post("/assign/lead")
+  @Returns(200, SuccessResult).Of(LeadResultModel)
+  public async assignLeadWebhook() {
+    const leads = await this.leadService.findLeadByTime({ status: LeadStatusEnum.open });
+    if (!leads.length) return;
+    for (let i = 0; i < leads.length; i++) {
+      const lead = leads[i];
+      const saleRep = await this.saleRepService.findSaleRepByLeadId(lead._id);
+      if (saleRep) {
+        await this.leadService.updateLeadSaleRep({ id: lead._id, saleRepId: saleRep._id });
+        await this.saleRepService.updateSaleRepLeadIds({ id: saleRep._id, leadId: lead._id });
+      }
+    }
+    return new SuccessResult({ success: true, message: `${leads.length} open` }, SuccessMessageModel);
   }
 }

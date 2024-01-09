@@ -11,7 +11,7 @@ export class SaleRepService {
   //! Find
 
   public async findSaleRep() {
-    const saleRep = await this.saleRep.find().sort({ score: -1 }).limit(10);
+    const saleRep = await this.saleRep.find().sort({ score: -1 }).limit(5);
     if (!saleRep.length) return false;
     for (let i = 0; i < saleRep.length; i++) {
       const rep = saleRep[i];
@@ -22,34 +22,27 @@ export class SaleRepService {
     }
   }
 
-  public async findSaleRepBySourceAvailabilityByLeadId(leadId: string) {
-    const saleRep = await this.saleRep
-      .find({ leads: { $ne: leadId } })
-      .sort({ score: -1 })
-      .limit(1);
-    if (!saleRep.length) return false;
-    const availability = this.availabilityService.findAvailabilityByDateAndRep(saleRep[0].id);
-    if (!availability) return false;
-    return saleRep;
-  }
-
   public async findSaleRepByLeadId(leadId: string) {
     const saleRep = await this.saleRep
       .find({
-        leads: {
+        leadIds: {
           $nin: [leadId]
         }
       })
       .sort({ score: -1 })
-      .limit(1);
+      .limit(5);
     if (!saleRep.length) return false;
     for (let i = 0; i < saleRep.length; i++) {
       const rep = saleRep[i];
-      const availability = await this.availabilityService.findAvailabilityByDateAndRep(rep.adminId);
+      const availability = await this.availabilityService.findAvailabilityByDateAndRep(rep._id);
       if (availability) {
         return rep;
       }
     }
+  }
+
+  public async findSaleRepByAdminId(adminId: string) {
+    return await this.saleRep.findOne({ adminId });
   }
 
   //! Create
@@ -62,11 +55,13 @@ export class SaleRepService {
   }
 
   //! Update
-  public async updateSaleRepLeadIds({ id, leadIds }: { id: string; leadIds: string[] }) {
+  public async updateSaleRepLeadIds({ id, leadId }: { id: string; leadId: string }) {
+    // update saleRep leadIds array with new leadId
     const saleRep = await this.saleRep.findById({ _id: id });
     if (!saleRep) return false;
-    saleRep.leadIds = leadIds;
-    return await saleRep.save();
+    saleRep.leadIds.push(leadId);
+    await saleRep.save();
+    return true;
   }
 
   //! Delete

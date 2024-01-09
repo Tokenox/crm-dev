@@ -41,15 +41,6 @@ export const createSchema = ({ tableName, columns }: { tableName: string; column
   return dynamicModel;
 };
 
-// normalize data
-export const normalizeData = (data: any) => {
-  const result = data.map((item: any) => {
-    const { __v, createdAt, updatedAt, orgId, categoryId, category, ...rest } = item._doc;
-    return rest;
-  });
-  return result;
-};
-
 // get columns for raw data
 export const getColumns = (data: any) => {
   const columns: any = [];
@@ -61,6 +52,15 @@ export const getColumns = (data: any) => {
     });
   });
   return columns;
+};
+
+// normalize data
+export const normalizeData = (data: any) => {
+  const result = data.map((item: any) => {
+    const { __v, createdAt, updatedAt, orgId, categoryId, category, ...rest } = item._doc;
+    return rest;
+  });
+  return result;
 };
 
 // normalize mongooes object to plain object
