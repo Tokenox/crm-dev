@@ -1,5 +1,6 @@
 import { Model, ObjectID } from "@tsed/mongoose";
-import { Default, Property, Required } from "@tsed/schema";
+import { Default, Enum, Property, Required } from "@tsed/schema";
+import { SocialAction } from "../../types";
 
 @Model({ name: "planner" })
 export class PlannerModel {
@@ -14,6 +15,10 @@ export class PlannerModel {
 
   @Required()
   source: string;
+
+  @Required()
+  @Enum(SocialAction)
+  action: SocialAction;
 
   @Required()
   timeOfExecution: number;

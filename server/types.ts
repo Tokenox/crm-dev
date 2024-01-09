@@ -60,6 +60,7 @@ export type FieldTypes = {
 
 export enum SocialAction {
   email = "email",
+  message = "message",
   instagram = "instagram",
   facebook = "facebook",
   youtube = "youtube"

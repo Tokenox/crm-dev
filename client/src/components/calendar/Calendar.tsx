@@ -16,7 +16,7 @@ import { createPlanner, getPlanners } from '../../redux/middleware/planner';
 import { plannerSelector } from '../../redux/slice/plannerSlice';
 import createAbortController from '../../utils/createAbortController';
 import { getCategories } from '../../redux/middleware/category';
-import { CategoryResponseTypes } from '../../types';
+import { CategoryResponseTypes, SocialActionClient } from '../../types';
 import { categorySelector } from '../../redux/slice/categorySlice';
 
 interface CalendarProps {
@@ -27,7 +27,7 @@ interface CalendarProps {
 export type PlannerState = {
   title: string;
   description: string;
-  action: string;
+  action: SocialActionClient;
   startDate: Dayjs | null;
   timeOfExecution: Dayjs | null;
   source: string;
@@ -36,7 +36,7 @@ export type PlannerState = {
 const initialState: PlannerState = {
   title: '',
   description: '',
-  action: 'email',
+  action: SocialActionClient.email,
   startDate: dayjs(new Date()),
   timeOfExecution: dayjs(new Date()),
   source: ''
@@ -110,7 +110,7 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
       description: addFormValues.description,
       action: addFormValues.action,
       startDate: addFormValues.startDate.toString(),
-      timeOfExecution: addFormValues.timeOfExecution.toDate().getTime().toString(),
+      timeOfExecution: addFormValues.timeOfExecution.toDate().getTime(),
       source: addFormValues.source
     };
     await dispatch(createPlanner({ planner: data }));

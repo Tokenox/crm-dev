@@ -17,7 +17,6 @@ class PlannerBodyTypes {
   @Required() @Enum(SocialAction) public readonly action: SocialAction;
   @Property() public readonly description: string;
   @Property() public readonly startDate: Date;
-  // @Property() public readonly endDate: string;
   @Required() public readonly timeOfExecution: number;
   @Required() public readonly source: string;
 }
@@ -48,6 +47,7 @@ export class PlannerController {
     const response = await this.plannerService.createPlanner({
       title,
       source,
+      action,
       description,
       timeOfExecution,
       startDate

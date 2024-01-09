@@ -43,11 +43,11 @@ export type FieldTypes = {
 };
 
 export type PlannerDataTypes = {
-  title?: string;
-  action?: string;
+  title: string;
+  action: SocialActionClient;
   description?: string;
   startDate: string;
-  timeOfExecution: string;
+  timeOfExecution: number;
   source: string;
 };
 
@@ -96,3 +96,11 @@ export type LeadValueTypes = {
   type: string;
   value: string;
 };
+
+export enum SocialActionClient {
+  email = 'email',
+  message = 'message',
+  instagram = 'instagram',
+  facebook = 'facebook',
+  youtube = 'youtube'
+}

@@ -295,6 +295,7 @@ export class PlannerResultModel {
   @Property() public readonly _id: string;
   @Property() public readonly title: string;
   @Property() public readonly source: string;
+  @Property() public readonly action: string;
   @Property() public readonly description: string;
   @Property() public readonly startDate: string;
   @Property() public readonly timeOfExecution: number;
