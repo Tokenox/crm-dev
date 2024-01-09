@@ -21,11 +21,10 @@ const availabilitySlice = createSlice({
     builder.addCase(getAvailability.fulfilled, (state, action) => {
       state.data = action.payload;
       state.events = action.payload.items.map((availability) => {
-     
         return {
           id: availability._id,
-          start: new Date(availability.startDate),
-          end: new Date(availability.endDate)
+          start: new Date(availability.startTime),
+          end: new Date(availability.endTime)
         };
       });
       state.loading = false;

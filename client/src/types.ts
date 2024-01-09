@@ -52,8 +52,8 @@ export type PlannerDataTypes = {
 };
 
 export type AvailabilityDataTypes = {
-  startDate: string;
-  endDate: string;
+  startTime: number;
+  endTime: number;
 };
 
 export type AvailabilityResponseTypes = {
