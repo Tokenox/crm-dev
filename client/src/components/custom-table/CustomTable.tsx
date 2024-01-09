@@ -8,8 +8,8 @@ import { authSelector } from '../../redux/slice/authSlice';
 interface CustomTableProps {
   data: any[];
   headLabel: {
+    key: string;
     name: string;
-    type?: string;
   }[];
   onRowClick?: (row: any) => void;
   onEditClick?: (e: any, row: any) => void;
@@ -36,32 +36,32 @@ export default function CustomTable({ data, headLabel, loading, onEditClick, onD
   // };
 
   const columnFields = headLabel.map((headCell) => ({
-    field: headCell.name,
-    headerName: headCell.name.charAt(0).toUpperCase() + headCell.name.slice(1),
+    field: headCell.key,
+    headerName: headCell.name,
     width: 200
   }));
 
   const tableHeader = [
-    ...columnFields,
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      description: 'Actions column.',
-      sortable: false,
-      width: 160,
-      renderCell: (params) => {
-        return (
-          <Box display="flex" gap={1}>
-            <Button onClick={(e) => onDeleteClick(e, params.row)} variant="contained">
-              Delete
-            </Button>
-            <Button onClick={(e) => onEditClick(e, params.row)} variant="contained">
-              Edit
-            </Button>
-          </Box>
-        );
-      }
-    }
+    ...columnFields
+    // {
+    //   field: 'actions',
+    //   headerName: 'Actions',
+    //   description: 'Actions column.',
+    //   sortable: false,
+    //   width: 160,
+    //   renderCell: (params) => {
+    //     return (
+    //       <Box display="flex" gap={1}>
+    //         <Button onClick={(e) => onDeleteClick(e, params.row)} variant="contained">
+    //           Delete
+    //         </Button>
+    //         <Button onClick={(e) => onEditClick(e, params.row)} variant="contained">
+    //           Edit
+    //         </Button>
+    //       </Box>
+    //     );
+    //   }
+    // }
   ];
   if (!admin.isSuperAdmin) {
     tableHeader.pop();
@@ -69,8 +69,8 @@ export default function CustomTable({ data, headLabel, loading, onEditClick, onD
 
   const columns = tableHeader.map((column) => ({
     ...column,
-    disableClickEventBubbling: true,
-    editable: column.field === 'actions' ? false : true
+    disableClickEventBubbling: true
+    // editable: column.field === 'actions' ? false : true
   }));
 
   return (

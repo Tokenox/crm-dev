@@ -104,7 +104,7 @@ const leadsForSuperAdmin = createAsyncThunk(
     { dispatch }
   ) => {
     try {
-      const { data } = await get(`/lead/all?skip=${take}&take=${take}&search=${search}&sort=${sort}`);
+      const { data } = await get(`/lead/all?skip=${skip}&take=${take}&search=${search}&sort=${sort}`);
       return data.data;
     } catch (error) {
       const { message } = error.response.data;
@@ -128,7 +128,7 @@ const getLeadBySource = createAsyncThunk(
     { dispatch }
   ) => {
     try {
-      const { data } = await get(`/lead/${source}?skip=${skip}&take=${take}&search=${search}&sort=${sort}`);
+      const { data } = await get(`/lead/${source}?skip=${skip}&take=${take}&search=${search}&sort=${sort}`, { signal });
       return data.data;
     } catch (error) {
       const { message } = error.response.data;

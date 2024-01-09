@@ -9,7 +9,8 @@ import {
   deleteLead,
   getLeadsForClaim,
   claimLead,
-  leadsForSuperAdmin
+  leadsForSuperAdmin,
+  getLeadBySource
 } from '../middleware/lead';
 
 const initialState: {
@@ -155,13 +156,8 @@ const leadSlice = createSlice({
     builder.addCase(leadsForSuperAdmin.fulfilled, (state, action) => {
       const { items } = action.payload;
       const leads = items?.map((lead) => ({
-        id: lead.id,
-        name: lead.name,
-        email: lead.email,
-        phone: lead.phone,
-        status: lead.status,
-        saleRep: lead.saleRep,
-        source: lead.source
+        id: lead._id,
+        ...lead
       }));
       state.allLeads = leads;
       state.allLeadsLoading = false;
@@ -169,6 +165,24 @@ const leadSlice = createSlice({
     builder.addCase(leadsForSuperAdmin.rejected, (state, action) => {
       state.error = action.error;
       state.allLeadsLoading = false;
+    });
+
+    // Get Leads by Source
+    builder.addCase(getLeadBySource.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getLeadBySource.fulfilled, (state, action) => {
+      const { items } = action.payload;
+      const leads = items?.map((lead) => ({
+        id: lead._id,
+        ...lead
+      }));
+      state.data = leads;
+      state.loading = false;
+    });
+    builder.addCase(getLeadBySource.rejected, (state, action) => {
+      state.error = action.error;
+      state.loading = false;
     });
   }
 });

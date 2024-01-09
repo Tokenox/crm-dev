@@ -1,10 +1,14 @@
 export type LeadsTypes = {
-  id?: string;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  categoryId: string;
+  message: string;
+  source: string;
+  status: string;
+  saleRepId: string;
+  isNotify: boolean;
 };
 
 export type CategoryTypes = {
@@ -58,7 +62,6 @@ export type AvailabilityResponseTypes = {
   endDate: string;
   adminId: string;
 };
-
 
 export type RoleDataTypes = {
   _id?: string;
