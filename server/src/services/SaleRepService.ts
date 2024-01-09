@@ -67,7 +67,7 @@ export class SaleRepService {
   //! Delete
   public async deleteLeadId(leadId: string) {
     const saleRep = await this.saleRep.find({
-      leads: {
+      leadIds: {
         $in: [leadId]
       }
     });
