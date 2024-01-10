@@ -8,6 +8,7 @@ import { SaleRepService } from "../../services/SaleRepService";
 import { CategoryService } from "../../services/CategoryService";
 import { LeadStatusEnum } from "../../../types";
 import { normalizeObject } from "../../helper";
+import { TwilioClient } from "../../clients/twilio";
 
 class CreateLeadParams {
   @Required() public source: string;
@@ -64,5 +65,12 @@ export class Webhook {
       }
     }
     return new SuccessResult({ success: true, message: `${leads.length} open` }, SuccessMessageModel);
+  }
+
+  @Post("/sms")
+  @Returns(200, SuccessResult).Of(Object)
+  public async smsWebhook(@BodyParams() body: any) {
+    await TwilioClient.sendVerificationSMS({ to: body.phone, body: "Hello from Twilio!" });
+    return new SuccessResult({ success: true, message: "sms webhook" }, SuccessMessageModel);
   }
 }
