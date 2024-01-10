@@ -24,7 +24,7 @@ export class PlannerModel {
   timeOfExecution: number;
 
   @Required()
-  startDate: Date;
+  startDate: number;
 
   @Property()
   @Default(new Date())

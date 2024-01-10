@@ -46,7 +46,7 @@ export type PlannerDataTypes = {
   title: string;
   action: SocialActionClient;
   description?: string;
-  startDate: string;
+  startDate: number;
   timeOfExecution: number;
   source: string;
 };

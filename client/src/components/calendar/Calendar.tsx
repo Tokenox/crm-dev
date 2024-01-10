@@ -139,11 +139,12 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
       setError({ title: 'Please enter title', description: 'Please enter description' });
       return;
     }
+
     const data = {
       title: addFormValues.title,
       description: addFormValues.description,
       action: addFormValues.action,
-      startDate: addFormValues.startDate.toString(),
+      startDate: addFormValues.startDate.toDate().getTime(),
       timeOfExecution: addFormValues.timeOfExecution.toDate().getTime(),
       source: addFormValues.source
     };

@@ -297,7 +297,7 @@ export class PlannerResultModel {
   @Property() public readonly source: string;
   @Property() public readonly action: string;
   @Property() public readonly description: string;
-  @Property() public readonly startDate: string;
+  @Property() public readonly startDate: Date;
   @Property() public readonly timeOfExecution: number;
   @Property() public readonly saleRepId: string;
 }
