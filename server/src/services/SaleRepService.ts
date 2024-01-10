@@ -45,10 +45,10 @@ export class SaleRepService {
   }
 
   //! Create
-  public async createSaleRep({ adminId }: { adminId: string }) {
+  public async createSaleRep({ adminId, score }: { adminId: string; score?: number }) {
     return this.saleRep.create({
       adminId,
-      score: 10,
+      score: score || 10,
       leadIds: []
     });
   }

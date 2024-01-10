@@ -57,19 +57,4 @@ export class AdminController {
       AdminRoleModel
     );
   }
-
-  @Post("/create/sale-rep")
-  @Returns(200, SuccessResult).Of(SaleRefResultModel)
-  public async createSaleRep(@BodyParams() { _adminId }: { _adminId: string }, @Context() context: Context) {
-    const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN] }, context.get("user"));
-    if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
-    const saleRep = await this.saleRepService.createSaleRep({ adminId: _adminId });
-    return new SuccessResult(
-      {
-        success: true,
-        message: `Sale Rep created successfully ${saleRep}`
-      },
-      SuccessMessageModel
-    );
-  }
 }
