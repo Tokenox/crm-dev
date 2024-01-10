@@ -28,7 +28,7 @@ import { createPasswordHash } from "../../util";
 import { VerificationEnum } from "../../../types";
 import axios from "axios";
 import { SaleRepService } from "../../services/SaleRepService";
-import { normalizeObject } from "../../helper";
+import { normalizeData, normalizeObject } from "../../helper";
 
 export class StartVerificationParams {
   @Required() public readonly email: string;
@@ -227,6 +227,13 @@ export class AuthenticationController {
   public async createSaleRep(@BodyParams() { adminId, score }: CreateSaleRepBody) {
     const saleRep = await this.saleRepService.createSaleRep({ adminId, score });
     return new SuccessResult(normalizeObject(saleRep), SaleRefResultModel);
+  }
+
+  @Get("/sale-rep")
+  @Returns(200, SuccessResult).Of(SaleRefResultModel)
+  public async getSaleRep() {
+    const saleRep = await this.saleRepService.findAll();
+    return new SuccessResult(normalizeData(saleRep), SaleRefResultModel);
   }
 
   //!--------------------------

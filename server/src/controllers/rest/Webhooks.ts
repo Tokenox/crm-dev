@@ -6,9 +6,11 @@ import { LeadResultModel, SuccessMessageModel } from "../../models/RestModels";
 import { BodyParams } from "@tsed/platform-params";
 import { SaleRepService } from "../../services/SaleRepService";
 import { CategoryService } from "../../services/CategoryService";
-import { LeadStatusEnum } from "../../../types";
+import { LeadStatusEnum, SocialAction } from "../../../types";
 import { normalizeObject } from "../../helper";
 import { TwilioClient } from "../../clients/twilio";
+import { PlannerService } from "../../services/PlannerService";
+import { NodemailerClient } from "../../clients/nodemailer";
 
 class CreateLeadParams {
   @Required() public source: string;
@@ -27,6 +29,8 @@ export class Webhook {
   private saleRepService: SaleRepService;
   @Inject()
   private categoryService: CategoryService;
+  @Inject()
+  private plannerService: PlannerService;
 
   @Post("/lead")
   @Returns(200, SuccessResult).Of(LeadResultModel)
@@ -72,5 +76,52 @@ export class Webhook {
   public async smsWebhook(@BodyParams() body: any) {
     await TwilioClient.sendVerificationSMS({ to: body.phone, body: "Hello from Twilio!" });
     return new SuccessResult({ success: true, message: "sms webhook" }, SuccessMessageModel);
+  }
+
+  @Post("/send-emails")
+  @Returns(200, SuccessResult).Of(Object)
+  public async sendEmailWebhook() {
+    const planners = await this.plannerService.findPlannerByTime({ socialAction: SocialAction.email });
+    if (!planners.length) return;
+    for (let i = 0; i < planners.length; i++) {
+      const planner = planners[i];
+      const leads = await this.leadService.findLeadsByPlannerId({
+        plannerId: planner._id
+      });
+      if (!leads.length) continue;
+      for (let j = 0; j < leads.length; j++) {
+        const lead = leads[j];
+        if (!lead.email) continue;
+        try {
+          await NodemailerClient.sendEmailToLead({
+            email: lead.email,
+            title: planner.title,
+            description: planner.description
+          });
+          await this.leadService.deletePlannerId({ id: lead._id, plannerId: planner._id });
+        } catch (error) {
+          console.log("Nodemailer error---(", error);
+        }
+      }
+    }
+    return new SuccessResult({ success: true, message: `${planners.length} planners` }, SuccessMessageModel);
+  }
+
+  @Post("/send-sms")
+  @Returns(200, SuccessResult).Of(Object)
+  public async sendSMSWebhook() {
+    const planners = await this.plannerService.findPlannerByTime({ socialAction: SocialAction.sms });
+    if (!planners.length) return;
+    for (let i = 0; i < planners.length; i++) {
+      const planner = planners[i];
+      const leads = await this.leadService.findLeadsByPlannerId({
+        plannerId: planner._id
+      });
+      if (!leads.length) continue;
+      const phoneNumbers = leads.map((lead) => lead.phone);
+      await TwilioClient.sendSmsToLead({ to: phoneNumbers, body: planner.description });
+      await this.leadService.deletePlannerByIds({ plannerId: planner._id });
+    }
+    return new SuccessResult({ success: true, message: `${planners.length} planners` }, SuccessMessageModel);
   }
 }

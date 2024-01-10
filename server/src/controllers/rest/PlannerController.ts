@@ -5,12 +5,12 @@ import { PlannerResultModel } from "../../models/RestModels";
 import { Pagination, SuccessArrayResult, SuccessResult } from "../../util/entities";
 import { ADMIN } from "../../util/constants";
 import { BodyParams, Context } from "@tsed/platform-params";
-import { NotFound, Unauthorized } from "@tsed/exceptions";
-import { ADMIN_NOT_FOUND, CATEGORY_NOT_FOUND } from "../../util/errors";
+import { Unauthorized } from "@tsed/exceptions";
+import { ADMIN_NOT_FOUND } from "../../util/errors";
 import { PlannerService } from "../../services/PlannerService";
 import { SocialAction } from "../../../types";
 import { normalizeData, normalizeObject } from "../../helper";
-import { CategoryService } from "../../services/CategoryService";
+import { LeadService } from "../../services/LeadsService";
 
 class PlannerBodyTypes {
   @Required() public readonly title: string;
@@ -25,7 +25,7 @@ class PlannerBodyTypes {
 export class PlannerController {
   @Inject() private adminService: AdminService;
   @Inject() private plannerService: PlannerService;
-  @Inject() private categoryService: CategoryService;
+  @Inject() private leadService: LeadService;
 
   @Get()
   @Returns(200, SuccessArrayResult).Of(Pagination).Nested(PlannerResultModel)
@@ -42,8 +42,6 @@ export class PlannerController {
     const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN] }, context.get("user"));
     if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
     const { title, action, description, startDate, timeOfExecution, source } = body;
-    const category = await this.categoryService.findCategoryByName(source.toLocaleLowerCase());
-    if (!category) throw new NotFound(CATEGORY_NOT_FOUND);
     const response = await this.plannerService.createPlanner({
       title,
       source,
@@ -52,6 +50,8 @@ export class PlannerController {
       timeOfExecution,
       startDate
     });
+
+    await this.leadService.updateLeadPlannerIds({ source: response.source, plannerId: response._id, socialAction: response.action });
     return new SuccessResult(normalizeObject(response), PlannerResultModel);
   }
 }

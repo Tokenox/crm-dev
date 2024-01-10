@@ -9,6 +9,10 @@ export class SaleRepService {
   @Inject() private availabilityService: AvailabilityService;
 
   //! Find
+  public async findAll() {
+    return await this.saleRep.find();
+  }
+
   public async findSaleRep() {
     const saleRep = await this.saleRep.find().sort({ score: -1 }).limit(5);
     if (!saleRep.length) return false;

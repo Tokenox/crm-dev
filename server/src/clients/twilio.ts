@@ -2,7 +2,7 @@
 import { Twilio } from "twilio";
 
 type SendSMSParam = {
-  to: string;
+  to: string[];
   body: string;
 };
 
@@ -13,18 +13,18 @@ const from = process.env.TWILIO_PHONE_NUMBER;
 const client = new Twilio(accountSid, authToken);
 
 export class TwilioClient {
-  public static async sendVerificationSMS({ to, body }: SendSMSParam) {
-    try {
-      const message = await client.messages.create({
-        body,
-        from,
-        to
-      });
-      console.log("Message response-----)",message);
-      return message;
-    } catch (error) {
-      console.log(error);
-      return null;
+  public static async sendSmsToLead({ to, body }: SendSMSParam) {
+    for (let i = 0; i < to.length; i++) {
+      try {
+        const response = await client.messages.create({
+          body,
+          from,
+          to: to[i]
+        });
+        console.log("Twilio response---", response);
+      } catch (error) {
+        console.log("Twilio error---", error);
+      }
     }
   }
 }

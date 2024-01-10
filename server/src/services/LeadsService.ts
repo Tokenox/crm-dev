@@ -92,6 +92,10 @@ export class LeadService {
     });
   }
 
+  public async findLeadsByPlannerId({ plannerId }: { plannerId: string }) {
+    return this.lead.find({ plannerIds: { $in: [plannerId] } }).limit(5);
+  }
+
   //! Create
   public async createLead({ ...params }: CreateLeadParams) {
     return this.lead.create({
@@ -156,6 +160,19 @@ export class LeadService {
     );
   }
 
+  public async updateLeadPlannerIds({ source, plannerId }: { source: string; plannerId: string }) {
+    const leads = await this.lead.find({ source });
+    const leadIds = leads.map((lead) => lead._id);
+    return this.lead.updateMany(
+      {
+        _id: { $in: leadIds }
+      },
+      {
+        $push: { plannerIds: plannerId }
+      }
+    );
+  }
+
   //! Delete
   public async deleteLead(id: string) {
     await this.lead.findByIdAndDelete({ _id: id });
@@ -165,5 +182,25 @@ export class LeadService {
 
   public async deleteLeadsByCategoryId(categoryId: string) {
     return this.lead.deleteMany({ categoryId });
+  }
+
+  public async deletePlannerId({ id, plannerId }: { id: string; plannerId: string }) {
+    return await this.lead.findByIdAndUpdate(
+      { _id: id },
+      {
+        $pull: { plannerIds: plannerId }
+      }
+    );
+  }
+
+  public async deletePlannerByIds({ plannerId }: { plannerId: string }) {
+    return await this.lead.updateMany(
+      {
+        plannerIds: { $in: [plannerId] }
+      },
+      {
+        $pull: { plannerIds: plannerId }
+      }
+    );
   }
 }

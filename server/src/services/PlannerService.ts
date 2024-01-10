@@ -25,6 +25,16 @@ export class PlannerService {
     return await this.planner.findById({ _id: id });
   }
 
+  // find planner by timeOfExecution and startDate, if timeOfExecution is come or past and startDate is today
+  public async findPlannerByTime({ socialAction }: { socialAction: SocialAction }) {
+    const response = await this.planner.find({
+      timeOfExecution: { $lte: new Date().getTime() },
+      startDate: { $eq: new Date() },
+      action: socialAction
+    });
+    return response;
+  }
+
   //! Create
   public async createPlanner({ title, action, source, description, timeOfExecution, startDate }: CreatePlannerParam) {
     return await this.planner.create({

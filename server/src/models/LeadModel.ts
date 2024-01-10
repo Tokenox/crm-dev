@@ -1,7 +1,7 @@
-import { Default, Property, Enum } from "@tsed/schema";
+import { Default, Property, Enum, CollectionOf } from "@tsed/schema";
 import { Model, ObjectID, Ref } from "@tsed/mongoose";
 import { CategoryModel } from "./CategoryModel";
-import { LeadStatusEnum } from "../../types";
+import { LeadStatusEnum, SocialAction } from "../../types";
 import { SaleRepModel } from "./SaleRepModel";
 
 @Model({ name: "leads" })
@@ -39,6 +39,10 @@ export class LeadModel {
 
   @Property()
   saleRepId: string;
+
+  @CollectionOf(String)
+  @Default([])
+  plannerIds: string[];
 
   @Property()
   @Default(new Date())
