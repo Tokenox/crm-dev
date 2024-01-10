@@ -99,7 +99,7 @@ export type LeadValueTypes = {
 
 export enum SocialActionClient {
   email = 'email',
-  message = 'message',
+  sms = 'sms',
   instagram = 'instagram',
   facebook = 'facebook',
   youtube = 'youtube'

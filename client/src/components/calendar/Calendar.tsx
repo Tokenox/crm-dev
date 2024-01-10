@@ -3,7 +3,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './calendar.scss';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, TextField } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import SmsIcon from '@mui/icons-material/Sms';
 import HistoryIcon from '@mui/icons-material/History';
@@ -18,7 +18,6 @@ import createAbortController from '../../utils/createAbortController';
 import { getCategories } from '../../redux/middleware/category';
 import { CategoryResponseTypes, SocialActionClient } from '../../types';
 import { categorySelector } from '../../redux/slice/categorySlice';
-import { TransitionProps } from '@mui/material/transitions';
 
 interface CalendarProps {
   value: string;
@@ -71,6 +70,7 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
 
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [actionValue, setActionValue] = useState('');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isPlannerModalOpen, setPlannerIsModalOpen] = useState<boolean>(false);
   const [addFormValues, setAddFormValues] = React.useState<PlannerState>(initialState);
@@ -126,6 +126,8 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
   const handleDropdownAction = (value) => {
     // Handle the action when an item in the dropdown is selected
     // For example, you can perform some action and then close the dropdown
+    setActionValue('Schedule ' + value.toUpperCase());
+    setAddFormValues({ ...addFormValues, action: value });
     setIsModalOpen(true);
     closeDropdown();
   };
@@ -177,6 +179,8 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
       switch (value) {
         case 'email':
           return <EmailIcon fontSize={'small'} htmlColor="#676666" />;
+        case 'sms':
+          return <SmsIcon fontSize={'small'} htmlColor="#676666" />;
         case 'post':
           return <SmsIcon fontSize={'small'} htmlColor="#bdbdbd" />;
         case 'story':
@@ -197,17 +201,18 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
               gap: '8px',
               alignItems: 'center',
               padding: '4px 0',
-              cursor: action.value === 'email' ? 'pointer' : 'no-drop'
+              cursor: action.value === 'email' || 'sms' ? 'pointer' : 'no-drop'
             }}
             onClick={() => {
               action.value === 'email' && handleDropdownAction(action.value);
+              action.value === 'sms' && handleDropdownAction(action.value);
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center' }}>{getIcon(action.value)}</div>
             <div
               style={{
                 ...itemStyle,
-                color: action.value === 'email' ? '#676666' : '#bdbdbd',
+                color: action.value === 'email' || 'sms' ? '#676666' : '#bdbdbd',
                 marginTop: '2px'
               }}
             >
@@ -240,7 +245,7 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
         scrollToTime={scrollToTime}
       />
       {dropdownVisible && renderDropdown()}
-      <CustomModal title="Add Event" open={isModalOpen} setOpen={setIsModalOpen} handleSubmit={submitPlan}>
+      <CustomModal title={actionValue} open={isModalOpen} setOpen={setIsModalOpen} handleSubmit={submitPlan}>
         <PlannerForm
           state={addFormValues}
           categories={categories}
@@ -350,16 +355,21 @@ const ACTIONS: ActionTypes[] = [
   },
   {
     id: 2,
+    name: 'Schedule Sms',
+    value: 'sms'
+  },
+  {
+    id: 3,
     name: 'Schedule Post',
     value: 'post'
   },
   {
-    id: 3,
+    id: 4,
     name: 'Schedule Story',
     value: 'story'
   },
   {
-    id: 4,
+    id: 5,
     name: 'Schedule Ad',
     value: 'ad'
   }
