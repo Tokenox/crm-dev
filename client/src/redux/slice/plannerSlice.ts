@@ -24,7 +24,10 @@ const plannerSlice = createSlice({
         return {
           title: planner.title,
           start: new Date(planner.startDate),
-          end: new Date(Number(planner.timeOfExecution))
+          end: new Date(Number(planner.timeOfExecution)),
+          desc: planner.description,
+          source: planner.source,
+          action: planner.action
         };
       });
     });

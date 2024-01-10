@@ -51,7 +51,8 @@ export class PlannerController {
       startDate
     });
 
-    await this.leadService.updateLeadPlannerIds({ source: response.source, plannerId: response._id, socialAction: response.action });
+    await this.leadService.updateLeadPlannerIds({ source: response.source, plannerId: response._id });
     return new SuccessResult(normalizeObject(response), PlannerResultModel);
   }
 }
+//, socialAction: response.action

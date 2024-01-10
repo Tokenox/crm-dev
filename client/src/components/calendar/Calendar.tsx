@@ -3,7 +3,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './calendar.scss';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, TextField } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import SmsIcon from '@mui/icons-material/Sms';
 import HistoryIcon from '@mui/icons-material/History';
@@ -18,6 +18,7 @@ import createAbortController from '../../utils/createAbortController';
 import { getCategories } from '../../redux/middleware/category';
 import { CategoryResponseTypes, SocialActionClient } from '../../types';
 import { categorySelector } from '../../redux/slice/categorySlice';
+import { TransitionProps } from '@mui/material/transitions';
 
 interface CalendarProps {
   value: string;
@@ -42,6 +43,24 @@ const initialState: PlannerState = {
   source: ''
 };
 
+export type PlannerModalState = {
+  title: string;
+  desc: string;
+  action: string;
+  source: string;
+  startDate: string;
+  endDate: string;
+};
+
+const initialModalState: PlannerModalState = {
+  title: '',
+  desc: '',
+  action: '',
+  source: '',
+  startDate: null,
+  endDate: null
+};
+
 const localizer = momentLocalizer(moment);
 
 const MyCalendar = ({ value, getActionData }: CalendarProps) => {
@@ -53,7 +72,9 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isPlannerModalOpen, setPlannerIsModalOpen] = useState<boolean>(false);
   const [addFormValues, setAddFormValues] = React.useState<PlannerState>(initialState);
+  const [modalPlannerData, setModalPlannerData] = React.useState<PlannerModalState>(initialModalState);
   const [error, setError] = React.useState<{ title: string; description: string }>({
     title: '',
     description: ''
@@ -84,7 +105,18 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
     setAddFormValues({ ...addFormValues, startDate: dayjs(start) });
   }, []);
 
-  const handleSelectEvent = useCallback((event) => window.alert(event.title), []);
+  const handleSelectEvent = useCallback((event) => {
+    setModalPlannerData({
+      ...modalPlannerData,
+      title: event.title,
+      desc: event.desc,
+      action: event.action,
+      source: event.source,
+      startDate: moment(event.start).toString(),
+      endDate: moment(event.end).toString()
+    });
+    setPlannerIsModalOpen(true);
+  }, []);
 
   const closeDropdown = () => {
     // Close the dropdown
@@ -220,6 +252,84 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
           error={error}
         />
       </CustomModal>
+      <Dialog
+        open={isPlannerModalOpen}
+        onClose={() => {
+          setPlannerIsModalOpen(false);
+        }}
+        sx={{ width: '100%' }}
+      >
+        <DialogTitle>{'Planner Detail'}</DialogTitle>
+        <DialogContent sx={{ width: '100%', display: 'flex', gap: '20px' }}>
+          <TextField
+            disabled
+            label="Title"
+            defaultValue={modalPlannerData.title}
+            InputProps={{
+              readOnly: true
+            }}
+            variant="standard"
+          />
+          <TextField
+            disabled
+            label="Description"
+            defaultValue={modalPlannerData.desc}
+            InputProps={{
+              readOnly: true
+            }}
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogContent sx={{ width: '100%', display: 'flex', gap: '20px' }}>
+          <TextField
+            disabled
+            label="Start Date"
+            defaultValue={modalPlannerData.startDate}
+            InputProps={{
+              readOnly: true
+            }}
+            variant="standard"
+          />
+          <TextField
+            disabled
+            label="Time of Execution"
+            defaultValue={modalPlannerData.endDate}
+            InputProps={{
+              readOnly: true
+            }}
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogContent sx={{ width: '100%', display: 'flex', gap: '20px' }}>
+          <TextField
+            disabled
+            label="Source"
+            defaultValue={modalPlannerData.source}
+            InputProps={{
+              readOnly: true
+            }}
+            variant="standard"
+          />
+          <TextField
+            disabled
+            label="Action"
+            defaultValue={modalPlannerData.action}
+            InputProps={{
+              readOnly: true
+            }}
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setPlannerIsModalOpen(false);
+            }}
+          >
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
