@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { getCategories } from '../redux/middleware/category';
-import { getLeadBySource, leadsForSuperAdmin } from '../redux/middleware/lead';
+import { deleteLead, getLeadBySource, leadsForSuperAdmin } from '../redux/middleware/lead';
 import { categorySelector } from '../redux/slice/categorySlice';
 import { leadState, loadingLead } from '../redux/slice/leadSlice';
 import { CategoryResponseTypes } from '../types';
@@ -54,6 +54,13 @@ const DynamicLead = () => {
   const getAllLeadsForSuperAdmin = async () => {
     setIsAllLeads(true);
     setSourceName('');
+    await dispatch(leadsForSuperAdmin({ skip: 0, take: 10, sort: 'desc', search: '' }));
+  };
+
+  //! Delete lead
+  const handleDeleteLead = async (e, row) => {
+    e.stopPropagation();
+    await dispatch(deleteLead({ id: row.id }));
     await dispatch(leadsForSuperAdmin({ skip: 0, take: 10, sort: 'desc', search: '' }));
   };
 
@@ -145,7 +152,13 @@ const DynamicLead = () => {
               ) : (
                 <>
                   {allLeads && allLeads.length ? (
-                    <CustomTable data={allLeads} headLabel={headLabelForSuperAdmin} loading={allLeadsLoading} />
+                    <CustomTable
+                      data={allLeads}
+                      headLabel={headLabelForSuperAdmin}
+                      loading={allLeadsLoading}
+                      isAllLeads={isAllLeads}
+                      onDeleteClick={handleDeleteLead}
+                    />
                   ) : (
                     <Box p={2}>No leads found for super admin</Box>
                   )}
@@ -161,7 +174,7 @@ const DynamicLead = () => {
               ) : (
                 <>
                   {leadsData && leadsData.length ? (
-                    <CustomTable data={leadsData} headLabel={headLabel} loading={leadLoading} />
+                    <CustomTable data={leadsData} headLabel={headLabel} loading={leadLoading} isAllLeads={false} />
                   ) : (
                     <Box p={2}>No leads found</Box>
                   )}

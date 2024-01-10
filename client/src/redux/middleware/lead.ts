@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { get, post, put } from '../../libs/client/apiClient';
+import { destroy, get, post, put } from '../../libs/client/apiClient';
 import { setAlert } from '../slice/alertSlice';
 
 const getLeads = createAsyncThunk(
@@ -59,18 +59,6 @@ const updateLead = createAsyncThunk('lead/update', async ({ lead, signal }: { le
   try {
     const { data } = await put('/dynamic/update', lead);
     dispatch(setAlert({ message: 'Lead updated successfully', type: 'success' }));
-    return data.data;
-  } catch (error) {
-    const { message } = error.response.data;
-    dispatch(setAlert({ message, type: 'error' }));
-    throw error;
-  }
-});
-
-const deleteLead = createAsyncThunk('lead/delete', async ({ id, tableId }: { id: string; tableId: string }, { dispatch }) => {
-  try {
-    const { data } = await post(`/dynamic/delete/${id}`, { tableId });
-    dispatch(setAlert({ message: 'Lead deleted successfully', type: 'success' }));
     return data.data;
   } catch (error) {
     const { message } = error.response.data;
@@ -142,6 +130,18 @@ const claimLead = createAsyncThunk('lead/claimLead', async ({ id }: { id: string
   try {
     const { data } = await post('/lead/claim', { id });
     dispatch(setAlert({ message: 'Lead claimed successfully', type: 'success' }));
+    return data.data;
+  } catch (error) {
+    const { message } = error.response.data;
+    dispatch(setAlert({ message, type: 'error' }));
+    throw error;
+  }
+});
+
+const deleteLead = createAsyncThunk('lead/delete', async ({ id }: { id: string }, { dispatch }) => {
+  try {
+    const { data } = await destroy(`/lead/${id}`);
+    dispatch(setAlert({ message: 'Lead deleted successfully', type: 'success' }));
     return data.data;
   } catch (error) {
     const { message } = error.response.data;

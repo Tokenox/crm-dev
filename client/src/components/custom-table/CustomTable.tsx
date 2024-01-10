@@ -15,9 +15,10 @@ interface CustomTableProps {
   onEditClick?: (e: any, row: any) => void;
   onDeleteClick?: (e: any, row: any) => void;
   loading?: boolean;
+  isAllLeads?: boolean;
 }
 
-export default function CustomTable({ data, headLabel, loading, onEditClick, onDeleteClick }: CustomTableProps) {
+export default function CustomTable({ data, headLabel, loading, isAllLeads, onEditClick, onDeleteClick }: CustomTableProps) {
   const { data: admin } = useAppSelector(authSelector);
 
   // const [clickedRow, setClickedRow] = React.useState();
@@ -42,28 +43,28 @@ export default function CustomTable({ data, headLabel, loading, onEditClick, onD
   }));
 
   const tableHeader = [
-    ...columnFields
-    // {
-    //   field: 'actions',
-    //   headerName: 'Actions',
-    //   description: 'Actions column.',
-    //   sortable: false,
-    //   width: 160,
-    //   renderCell: (params) => {
-    //     return (
-    //       <Box display="flex" gap={1}>
-    //         <Button onClick={(e) => onDeleteClick(e, params.row)} variant="contained">
-    //           Delete
-    //         </Button>
-    //         <Button onClick={(e) => onEditClick(e, params.row)} variant="contained">
-    //           Edit
-    //         </Button>
-    //       </Box>
-    //     );
-    //   }
-    // }
+    ...columnFields,
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      description: 'Actions column.',
+      sortable: false,
+      width: 160,
+      renderCell: (params) => {
+        return (
+          <Box display="flex" gap={1}>
+            <Button onClick={(e) => onDeleteClick(e, params.row)} variant="contained">
+              Delete
+            </Button>
+            {/* <Button onClick={(e) => onEditClick(e, params.row)} variant="contained">
+              Edit
+            </Button> */}
+          </Box>
+        );
+      }
+    }
   ];
-  if (!admin.isSuperAdmin) {
+  if (!admin.isSuperAdmin || !isAllLeads) {
     tableHeader.pop();
   }
 
