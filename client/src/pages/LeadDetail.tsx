@@ -107,7 +107,7 @@ const LeadDetail = () => {
               variant={source === SocialActionClient.facebook ? 'contained' : 'outlined'}
               onClick={() => setSource(SocialActionClient.facebook)}
             >
-              Facebook
+              EMAIL
             </Button>
           </Box>
         </Box>
