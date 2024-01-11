@@ -9,6 +9,7 @@ import alertSlice from './slice/alertSlice';
 import plannerSlice from './slice/plannerSlice';
 import roleSlice from './slice/roleSlice';
 import availabilitySlice from './slice/availabilitySlice';
+import chatSlice from './slice/chatSlice';
 
 const rootReducer = combineReducers({
   auth: authSlice,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   alert: alertSlice,
   planner: plannerSlice,
   role: roleSlice,
-  availability: availabilitySlice
+  availability: availabilitySlice,
+  chat: chatSlice
 });
 
 const persistConfig = {

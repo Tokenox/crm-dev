@@ -347,3 +347,12 @@ export class SaleRepDetailsResultModel extends LeadResultModel {
   @Property() public readonly saleRepName: string;
   @Property() public readonly saleRepEmail: string[];
 }
+
+export class ChatResultModel {
+  @Property() public readonly _id: string;
+  @Property() public readonly source: string;
+  @Property() public readonly message: string;
+  @Property() public readonly leadId: string;
+  @Property() public readonly createdAt: string;
+  @Property() public readonly updatedAt: string;
+}

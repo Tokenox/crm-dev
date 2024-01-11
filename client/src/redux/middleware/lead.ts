@@ -7,7 +7,6 @@ const getLeads = createAsyncThunk(
   async ({ categoryId, signal }: { categoryId: string; signal?: AbortSignal }, { dispatch }) => {
     try {
       const { data } = await get(`/dynamic/${categoryId}`, { signal });
-
       return data.data;
     } catch (error) {
       const { message } = error.response.data;

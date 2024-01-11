@@ -7,7 +7,9 @@ import { authSelector } from '../redux/slice/authSlice';
 import { getLeadById } from '../redux/middleware/lead';
 import { leadState } from '../redux/slice/leadSlice';
 import { Box, Button, Card, CircularProgress, Container } from '@mui/material';
-import { LeadDetailResponseTypes } from '../types';
+import { LeadDetailResponseTypes, SocialActionClient } from '../types';
+import { getChats } from '../redux/middleware/chat';
+import { chatState } from '../redux/slice/chatSlice';
 
 const LeadDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,6 +23,9 @@ const LeadDetail = () => {
     leadDetails: LeadDetailResponseTypes | undefined;
     loading: boolean;
   } = useAppSelector(leadState);
+  const { data: chatData, loading: chatLoading } = useAppSelector(chatState);
+
+  const [source, setSource] = React.useState<SocialActionClient>(SocialActionClient.sms);
 
   useEffect(() => {
     if (!id) return;
@@ -32,6 +37,17 @@ const LeadDetail = () => {
       abort();
     };
   }, []);
+
+  useEffect(() => {
+    if (!id) return;
+    (async () => {
+      await dispatch(getChats({ leadId: id, source, signal }));
+    })();
+
+    return () => {
+      abort();
+    };
+  }, [source]);
 
   return (
     <Fragment>
@@ -80,21 +96,34 @@ const LeadDetail = () => {
         </Card>
         <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-end'}>
           <h2>Messages</h2>
-          <Box mb={1}>
-            <Button variant="outlined">SMS</Button>
-            <Button>Facebook</Button>
+          <Box mb={1} display={'flex'} gap={1}>
+            <Button
+              variant={source === SocialActionClient.sms ? 'contained' : 'outlined'}
+              onClick={() => setSource(SocialActionClient.sms)}
+            >
+              SMS
+            </Button>
+            <Button
+              variant={source === SocialActionClient.facebook ? 'contained' : 'outlined'}
+              onClick={() => setSource(SocialActionClient.facebook)}
+            >
+              Facebook
+            </Button>
           </Box>
         </Box>
         <Card sx={{ p: 2, minHeight: '38vh' }}>
-          {loading ? (
+          {!chatData?.length && !chatLoading && <Box p={2}>No messages found</Box>}
+          {chatLoading ? (
             <Box p={2}>
               <CircularProgress size={24} />
             </Box>
           ) : (
             <Box display={'flex'} flexDirection={'column-reverse'} alignItems={'flex-end'} height={'34vh'} gap={1} pr={3}>
-              <Box textTransform={'capitalize'} sx={{ backgroundColor: '#cdedd2', p: 1, color: '#373737', borderRadius: '4px' }}>
-                <p style={{ margin: 0 }}>{leadDetails?.message || ''}</p>
-              </Box>
+              {chatData?.map((chat) => (
+                <Box textTransform={'capitalize'} sx={{ backgroundColor: '#cdedd2', p: 1, color: '#373737', borderRadius: '4px' }}>
+                  <p style={{ margin: 0 }}>{chat.message}</p>
+                </Box>
+              ))}
             </Box>
           )}
         </Card>

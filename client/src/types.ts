@@ -112,3 +112,12 @@ export type LeadBySaleTypes = {
 };
 
 export type LeadDetailResponseTypes = LeadsTypes & LeadBySaleTypes;
+
+export type ChatResponseTypes = {
+  _id: string;
+  source: string;
+  message: string;
+  leadId: string;
+  createdAt: string;
+  updatedAt: string;
+};
