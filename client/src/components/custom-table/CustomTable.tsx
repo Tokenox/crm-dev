@@ -11,14 +11,14 @@ interface CustomTableProps {
     key: string;
     name: string;
   }[];
-  onRowClick?: (row: any) => void;
+  onRowClick: (e: any, row: any) => void;
   onEditClick?: (e: any, row: any) => void;
   onDeleteClick?: (e: any, row: any) => void;
   loading?: boolean;
   isAllLeads?: boolean;
 }
 
-export default function CustomTable({ data, headLabel, loading, isAllLeads, onEditClick, onDeleteClick }: CustomTableProps) {
+export default function CustomTable({ data, headLabel, loading, isAllLeads, onRowClick, onEditClick, onDeleteClick }: CustomTableProps) {
   const { data: admin } = useAppSelector(authSelector);
 
   // const [clickedRow, setClickedRow] = React.useState();
@@ -43,6 +43,21 @@ export default function CustomTable({ data, headLabel, loading, isAllLeads, onEd
   }));
 
   const tableHeader = [
+    {
+      // add button for details
+      field: 'details',
+      headerName: 'Details',
+      description: 'Details column.',
+      sortable: false,
+      width: 160,
+      renderCell: (params) => {
+        return (
+          <Button onClick={(e) => onRowClick(e, params.row)} variant="outlined">
+            Details
+          </Button>
+        );
+      }
+    },
     ...columnFields,
     {
       field: 'actions',

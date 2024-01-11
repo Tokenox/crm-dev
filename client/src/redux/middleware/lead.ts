@@ -17,17 +17,6 @@ const getLeads = createAsyncThunk(
   }
 );
 
-const getLead = createAsyncThunk('lead/get', async ({ id }: { id: string }, { dispatch }) => {
-  try {
-    const { data } = await get(`/lead/${id}`);
-    return data.data;
-  } catch (error) {
-    const { message } = error.response.data;
-    dispatch(setAlert({ message, type: 'error' }));
-    throw error;
-  }
-});
-
 const createLead = createAsyncThunk('dynamic/insert', async ({ lead, signal }: { lead: any; signal: AbortSignal }, { dispatch }) => {
   try {
     const { data } = await post('/dynamic/insert', lead);
@@ -126,6 +115,17 @@ const getLeadBySource = createAsyncThunk(
   }
 );
 
+const getLeadById = createAsyncThunk('lead/get', async ({ id, signal }: { id: string; signal?: AbortSignal }, { dispatch }) => {
+  try {
+    const { data } = await get(`/lead/detail/${id}`);
+    return data.data;
+  } catch (error) {
+    const { message } = error.response.data;
+    dispatch(setAlert({ message, type: 'error' }));
+    throw error;
+  }
+});
+
 const claimLead = createAsyncThunk('lead/claimLead', async ({ id }: { id: string }, { dispatch }) => {
   try {
     const { data } = await post('/lead/claim', { id });
@@ -152,7 +152,7 @@ const deleteLead = createAsyncThunk('lead/delete', async ({ id }: { id: string }
 
 export {
   getLeads,
-  getLead,
+  getLeadById,
   createLead,
   createBulkLead,
   updateLead,

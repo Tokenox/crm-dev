@@ -13,10 +13,12 @@ import createAbortController from '../utils/createAbortController';
 import CustomTable from '../components/custom-table/CustomTable';
 import { authSelector } from '../redux/slice/authSlice';
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import { useNavigate } from 'react-router-dom';
 
 const DynamicLead = () => {
   // get the admin from redux store
   const { data: admin } = useAppSelector(authSelector);
+  const navigate = useNavigate();
 
   const categories: CategoryResponseTypes[] = useAppSelector(categorySelector);
   // const categoryLoading = useAppSelector(loadingCategory);
@@ -157,6 +159,10 @@ const DynamicLead = () => {
                       headLabel={headLabelForSuperAdmin}
                       loading={allLeadsLoading}
                       isAllLeads={isAllLeads}
+                      onRowClick={(e, row) => {
+                        navigate(`/dashboard/lead/detail/${row.id}`);
+                        console.log(row);
+                      }}
                       onDeleteClick={handleDeleteLead}
                     />
                   ) : (
@@ -174,7 +180,16 @@ const DynamicLead = () => {
               ) : (
                 <>
                   {leadsData && leadsData.length ? (
-                    <CustomTable data={leadsData} headLabel={headLabel} loading={leadLoading} isAllLeads={false} />
+                    <CustomTable
+                      data={leadsData}
+                      headLabel={headLabel}
+                      loading={leadLoading}
+                      isAllLeads={false}
+                      onRowClick={(e, row) => {
+                        navigate(`/dashboard/lead/detail/${row.id}`);
+                        console.log(row);
+                      }}
+                    />
                   ) : (
                     <Box p={2}>No leads found</Box>
                   )}

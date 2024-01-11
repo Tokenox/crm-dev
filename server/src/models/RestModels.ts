@@ -341,3 +341,9 @@ export class AllLeadsResultModel {
   @Property() public readonly source: string;
   @Property() public readonly leadId: string;
 }
+
+export class SaleRepDetailsResultModel extends LeadResultModel {
+  @Property() public readonly saleRepScore: number;
+  @Property() public readonly saleRepName: string;
+  @Property() public readonly saleRepEmail: string[];
+}
