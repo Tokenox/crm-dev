@@ -116,10 +116,11 @@ export class Webhook {
       });
       if (!leads.length) continue;
       const phoneNumbers = leads.map((lead) => lead.phone);
+      const leadIds = leads.map((lead) => lead._id);
       await TwilioClient.sendSmsToLead({ to: phoneNumbers, body: `${planner.title} - ${planner.description}` });
-      await this.leadService.deletePlannerByIds({ plannerId: planner._id });
+      await this.leadService.deletePlannerByIds({ _leadIds: leadIds, plannerId: planner._id });
       await this.chatService.createChat({
-        source: planner.source,
+        source: SocialAction.sms,
         message: `${planner.title} - ${planner.description}`,
         leadIds: leads.map((lead) => lead._id)
       });
