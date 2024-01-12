@@ -62,6 +62,6 @@ export class PlannerController {
     const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN, SALESREP] }, context.get("user"));
     if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
     await this.plannerService.deletePlanner(id);
-    return new SuccessResult({ success: true, message: "Timeslot deleted successfully" }, SuccessMessageModel);
+    return new SuccessResult({ success: true, message: "Planner event deleted successfully" }, SuccessMessageModel);
   }
 }
