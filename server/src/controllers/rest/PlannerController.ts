@@ -17,7 +17,7 @@ class PlannerBodyTypes {
   @Required() public readonly title: string;
   @Required() @Enum(SocialAction) public readonly action: SocialAction;
   @Property() public readonly description: string;
-  @Property() public readonly startDate: Date;
+  @Property() public readonly startDate: number;
   @Required() public readonly timeOfExecution: number;
   @Required() public readonly source: string;
 }
@@ -65,4 +65,3 @@ export class PlannerController {
     return new SuccessResult({ success: true, message: "Timeslot deleted successfully" }, SuccessMessageModel);
   }
 }
-//, socialAction: response.action

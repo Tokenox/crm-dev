@@ -9,7 +9,7 @@ type CreatePlannerParam = {
   action: SocialAction;
   description: string;
   timeOfExecution: number;
-  startDate: Date;
+  startDate: number;
 };
 
 @Injectable()
@@ -27,9 +27,13 @@ export class PlannerService {
 
   // find planner by timeOfExecution and startDate, if timeOfExecution is come or past and startDate is today
   public async findPlannerByTime({ socialAction }: { socialAction: SocialAction }) {
+    console.log("socialAction-------", socialAction);
     const response = await this.planner.find({
-      timeOfExecution: { $lte: new Date().getTime() },
-      startDate: { $eq: new Date() },
+      // find by timeOfExecution is past before 1 hour and current time
+      // timeOfExecution: { $lte: new Date().getTime() },
+      timeOfExecution: { $lte: new Date().getTime(), $gte: new Date().getTime() - 3600000 },
+      //start date is in numbers and now filter by current date in numbers
+      startDate: { $lte: new Date().getTime() },
       action: socialAction
     });
     return response;

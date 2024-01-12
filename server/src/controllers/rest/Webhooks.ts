@@ -71,13 +71,6 @@ export class Webhook {
     return new SuccessResult({ success: true, message: `${leads.length} open` }, SuccessMessageModel);
   }
 
-  @Post("/sms")
-  @Returns(200, SuccessResult).Of(Object)
-  public async smsWebhook(@BodyParams() body: any) {
-    await TwilioClient.sendVerificationSMS({ to: body.phone, body: "Hello from Twilio!" });
-    return new SuccessResult({ success: true, message: "sms webhook" }, SuccessMessageModel);
-  }
-
   @Post("/send-emails")
   @Returns(200, SuccessResult).Of(Object)
   public async sendEmailWebhook() {
@@ -111,6 +104,7 @@ export class Webhook {
   @Returns(200, SuccessResult).Of(Object)
   public async sendSMSWebhook() {
     const planners = await this.plannerService.findPlannerByTime({ socialAction: SocialAction.sms });
+    console.log("planners---", planners);
     if (!planners.length) return;
     for (let i = 0; i < planners.length; i++) {
       const planner = planners[i];
@@ -119,7 +113,7 @@ export class Webhook {
       });
       if (!leads.length) continue;
       const phoneNumbers = leads.map((lead) => lead.phone);
-      await TwilioClient.sendSmsToLead({ to: phoneNumbers, body: planner.description });
+      await TwilioClient.sendSmsToLead({ to: phoneNumbers, body: `${planner.title} - ${planner.description}` });
       await this.leadService.deletePlannerByIds({ plannerId: planner._id });
     }
     return new SuccessResult({ success: true, message: `${planners.length} planners` }, SuccessMessageModel);
