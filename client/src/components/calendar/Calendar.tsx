@@ -3,7 +3,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './calendar.scss';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, TextField } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import SmsIcon from '@mui/icons-material/Sms';
 import HistoryIcon from '@mui/icons-material/History';
@@ -12,7 +12,7 @@ import CustomModal from '../modals/CustomModal';
 import PlannerForm from '../planner-form/PlannerForm';
 import dayjs, { Dayjs } from 'dayjs';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { createPlanner, getPlanners } from '../../redux/middleware/planner';
+import { createPlanner, deletePlanner, getPlanners } from '../../redux/middleware/planner';
 import { plannerSelector } from '../../redux/slice/plannerSlice';
 import createAbortController from '../../utils/createAbortController';
 import { getCategories } from '../../redux/middleware/category';
@@ -72,6 +72,7 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [actionValue, setActionValue] = useState('');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [plannerID, setPlannerID] = useState<string>('');
   const [isPlannerModalOpen, setPlannerIsModalOpen] = useState<boolean>(false);
   const [addFormValues, setAddFormValues] = React.useState<PlannerState>(initialState);
   const [modalPlannerData, setModalPlannerData] = React.useState<PlannerModalState>(initialModalState);
@@ -115,9 +116,15 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
       startDate: moment(event.start).toString(),
       endDate: moment(event.end).toString()
     });
+    setPlannerID(event.id);
     setPlannerIsModalOpen(true);
   }, []);
 
+  const deletePlannerEvent = async () => {
+    await dispatch(deletePlanner({ id: plannerID }));
+    setPlannerIsModalOpen(false);
+    await dispatch(getPlanners({ signal }));
+  };
   const closeDropdown = () => {
     // Close the dropdown
     setDropdownVisible(false);
@@ -326,6 +333,13 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
           />
         </DialogContent>
         <DialogActions>
+          <Button
+            onClick={() => {
+              deletePlannerEvent();
+            }}
+          >
+            Delete
+          </Button>
           <Button
             onClick={() => {
               setPlannerIsModalOpen(false);

@@ -1,16 +1,17 @@
 import { Controller, Inject } from "@tsed/di";
-import { Enum, Get, Post, Property, Required, Returns } from "@tsed/schema";
+import { Delete, Enum, Get, Post, Property, Required, Returns } from "@tsed/schema";
 import { AdminService } from "../../services/AdminService";
-import { PlannerResultModel } from "../../models/RestModels";
+import { IdModel, PlannerResultModel, SuccessMessageModel } from "../../models/RestModels";
 import { Pagination, SuccessArrayResult, SuccessResult } from "../../util/entities";
-import { ADMIN } from "../../util/constants";
-import { BodyParams, Context } from "@tsed/platform-params";
+import { ADMIN, SALESREP } from "../../util/constants";
+import { BodyParams, Context, PathParams } from "@tsed/platform-params";
 import { Unauthorized } from "@tsed/exceptions";
 import { ADMIN_NOT_FOUND } from "../../util/errors";
 import { PlannerService } from "../../services/PlannerService";
 import { SocialAction } from "../../../types";
 import { normalizeData, normalizeObject } from "../../helper";
 import { LeadService } from "../../services/LeadsService";
+import { response } from "express";
 
 class PlannerBodyTypes {
   @Required() public readonly title: string;
@@ -53,6 +54,15 @@ export class PlannerController {
 
     await this.leadService.updateLeadPlannerIds({ source: response.source, plannerId: response._id });
     return new SuccessResult(normalizeObject(response), PlannerResultModel);
+  }
+
+  @Delete("/:id")
+  @Returns(200, SuccessResult).Of(SuccessMessageModel)
+  public async deleteAvailability(@PathParams() { id }: IdModel, @Context() context: Context) {
+    const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN, SALESREP] }, context.get("user"));
+    if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
+    await this.plannerService.deletePlanner(id);
+    return new SuccessResult({ success: true, message: "Timeslot deleted successfully" }, SuccessMessageModel);
   }
 }
 //, socialAction: response.action
