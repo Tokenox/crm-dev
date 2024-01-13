@@ -1,13 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { get, post, put } from '../../libs/client/apiClient';
+import { destroy, get, post, put } from '../../libs/client/apiClient';
 import { setAlert } from '../slice/alertSlice';
 
 const getLeads = createAsyncThunk(
   'dynamic/get',
-  async ({ categoryId, signal }: { categoryId: string; signal: AbortSignal }, { dispatch }) => {
+  async ({ categoryId, signal }: { categoryId: string; signal?: AbortSignal }, { dispatch }) => {
     try {
       const { data } = await get(`/dynamic/${categoryId}`, { signal });
-
       return data.data;
     } catch (error) {
       const { message } = error.response.data;
@@ -16,17 +15,6 @@ const getLeads = createAsyncThunk(
     }
   }
 );
-
-const getLead = createAsyncThunk('lead/get', async ({ id }: { id: string }, { dispatch }) => {
-  try {
-    const { data } = await get(`/lead/${id}`);
-    return data.data;
-  } catch (error) {
-    const { message } = error.response.data;
-    dispatch(setAlert({ message, type: 'error' }));
-    throw error;
-  }
-});
 
 const createLead = createAsyncThunk('dynamic/insert', async ({ lead, signal }: { lead: any; signal: AbortSignal }, { dispatch }) => {
   try {
@@ -67,10 +55,10 @@ const updateLead = createAsyncThunk('lead/update', async ({ lead, signal }: { le
   }
 });
 
-const deleteLead = createAsyncThunk('lead/delete', async ({ id, tableId }: { id: string; tableId: string }, { dispatch }) => {
+//! New Lead APIs
+const getLeadsForClaim = createAsyncThunk('lead/getLeadsForClaim', async ({ signal }: { signal: AbortSignal }, { dispatch }) => {
   try {
-    const { data } = await post(`/dynamic/delete/${id}`, { tableId });
-    dispatch(setAlert({ message: 'Lead deleted successfully', type: 'success' }));
+    const { data } = await get(`/lead/claim`, { signal });
     return data.data;
   } catch (error) {
     const { message } = error.response.data;
@@ -79,23 +67,20 @@ const deleteLead = createAsyncThunk('lead/delete', async ({ id, tableId }: { id:
   }
 });
 
-const getLeadsForClaim = createAsyncThunk('dynamic/getLeadsForClaim', async ({ signal }: { signal: AbortSignal }, { dispatch }) => {
-  try {
-    const { data } = await get(`/dynamic/claim/leads`, { signal });
-    return data.data;
-  } catch (error) {
-    const { message } = error.response.data;
-    dispatch(setAlert({ message, type: 'error' }));
-    throw error;
-  }
-});
-
-const claimLead = createAsyncThunk(
-  'dynamic/claimLead',
-  async ({ id, leadId, sourceId }: { id: string; leadId: string; sourceId: string }, { dispatch }) => {
+const leadsForSuperAdmin = createAsyncThunk(
+  'lead/leadForSuperAdmin',
+  async (
+    {
+      skip,
+      take,
+      sort = 'desc',
+      search,
+      signal
+    }: { skip: number; take: number; search: string; sort: 'asc' | 'desc'; signal?: AbortSignal },
+    { dispatch }
+  ) => {
     try {
-      const { data } = await post('/dynamic/claim/lead', { id, leadId, sourceId });
-      dispatch(setAlert({ message: 'Lead claimed successfully', type: 'success' }));
+      const { data } = await get(`/lead/all?skip=${skip}&take=${take}&search=${search}&sort=${sort}`);
       return data.data;
     } catch (error) {
       const { message } = error.response.data;
@@ -105,7 +90,77 @@ const claimLead = createAsyncThunk(
   }
 );
 
-export { getLeads, getLead, createLead, createBulkLead, updateLead, deleteLead, getLeadsForClaim, claimLead };
+const getLeadBySource = createAsyncThunk(
+  'lead/getLeadBySource',
+  async (
+    {
+      skip,
+      take,
+      sort = 'desc',
+      search,
+      source,
+      signal
+    }: { skip: number; take: number; search: string; sort: 'asc' | 'desc'; source: string; signal?: AbortSignal },
+    { dispatch }
+  ) => {
+    try {
+      const { data } = await get(`/lead/${source}?skip=${skip}&take=${take}&search=${search}&sort=${sort}`, { signal });
+      return data.data;
+    } catch (error) {
+      const { message } = error.response.data;
+      dispatch(setAlert({ message, type: 'error' }));
+      throw error;
+    }
+  }
+);
+
+const getLeadById = createAsyncThunk('lead/get', async ({ id, signal }: { id: string; signal?: AbortSignal }, { dispatch }) => {
+  try {
+    const { data } = await get(`/lead/detail/${id}`);
+    return data.data;
+  } catch (error) {
+    const { message } = error.response.data;
+    dispatch(setAlert({ message, type: 'error' }));
+    throw error;
+  }
+});
+
+const claimLead = createAsyncThunk('lead/claimLead', async ({ id }: { id: string }, { dispatch }) => {
+  try {
+    const { data } = await post('/lead/claim', { id });
+    dispatch(setAlert({ message: 'Lead claimed successfully', type: 'success' }));
+    return data.data;
+  } catch (error) {
+    const { message } = error.response.data;
+    dispatch(setAlert({ message, type: 'error' }));
+    throw error;
+  }
+});
+
+const deleteLead = createAsyncThunk('lead/delete', async ({ id }: { id: string }, { dispatch }) => {
+  try {
+    const { data } = await destroy(`/lead/${id}`);
+    dispatch(setAlert({ message: 'Lead deleted successfully', type: 'success' }));
+    return data.data;
+  } catch (error) {
+    const { message } = error.response.data;
+    dispatch(setAlert({ message, type: 'error' }));
+    throw error;
+  }
+});
+
+export {
+  getLeads,
+  getLeadById,
+  createLead,
+  createBulkLead,
+  updateLead,
+  deleteLead,
+  getLeadsForClaim,
+  claimLead,
+  leadsForSuperAdmin,
+  getLeadBySource
+};
 
 type FieldTypes = {
   name: string;

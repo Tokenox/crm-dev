@@ -25,8 +25,8 @@ export type AvailabilityPlanState = {
 
 const initialState: AvailabilityPlanState = {
   events: [],
-  startDate: '',
-  endDate: '',
+  startDate: null,
+  endDate: null,
   clickedEvent: {}
 };
 
@@ -106,8 +106,8 @@ const WeekCalender = ({ value, getActionData }: CalendarProps) => {
   const submitAvailability = async () => {
     setNewAavailability();
     const data = {
-      startDate: addFormValues.startDate.toString(),
-      endDate: addFormValues.endDate.toString()
+      startTime: new Date(addFormValues.startDate).getTime(),
+      endTime: new Date(addFormValues.endDate).getTime()
     };
     await dispatch(createAvailability({ availability: data }));
     await dispatch(getAvailability({ signal }));

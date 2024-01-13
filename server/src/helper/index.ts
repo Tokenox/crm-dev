@@ -2,8 +2,6 @@ import { model, Schema } from "mongoose";
 import { SaleRepModel } from "src/models/SaleRepModel";
 import { LeadStatusEnum } from "../../types";
 
-
-
 export const createSchema = ({ tableName, columns }: { tableName: string; columns: any }) => {
   let dynamicModel;
   try {
@@ -43,15 +41,6 @@ export const createSchema = ({ tableName, columns }: { tableName: string; column
   return dynamicModel;
 };
 
-// normalize data
-export const normalizeData = (data: any) => {
-  const result = data.map((item: any) => {
-    const { __v, createdAt, updatedAt, orgId, categoryId, category, ...rest } = item._doc;
-    return rest;
-  });
-  return result;
-};
-
 // get columns for raw data
 export const getColumns = (data: any) => {
   const columns: any = [];
@@ -65,24 +54,17 @@ export const getColumns = (data: any) => {
   return columns;
 };
 
-// write algorithm to assign lead to sales rep based on availability and 15 min duration and score of sale rep
-// const assignLeadToSaleRep = async (lead: any, adminId: string) => {
-//   const { _id, name, email, phone, address, createdAt, updatedAt } = lead;
-//   const saleRep = await SaleRepModel.find({ availabilityStatus: true, durationStatus: true, adminId: adminId }).sort({ score: -1 }).limit(1);
-//   if (saleRep.length) {
-//     const { _id: saleRepId } = saleRep[0];
-//     const saleRepData = {
-//       leadId: _id,
-//       name,
-//       email,
-//       phone,
-//       address,
-//       createdAt,
-//       updatedAt,
-//       adminId: adminId,
-//       availabilityId: saleRep[0].availabilityId,
-//       saleRepId
-//     };
-//     await SaleRepModel.create(saleRepData);
-//   }
-// }
+// normalize data
+export const normalizeData = (data: any) => {
+  const result = data.map((item: any) => {
+    const { __v, createdAt, updatedAt, orgId, categoryId, category, ...rest } = item._doc;
+    return rest;
+  });
+  return result;
+};
+
+// normalize mongooes object to plain object
+export const normalizeObject = (data: any) => {
+  const { __v, createdAt, updatedAt, ...rest } = data._doc;
+  return rest;
+};

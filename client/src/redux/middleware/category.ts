@@ -3,7 +3,7 @@ import { get, post, put, destroy } from '../../libs/client/apiClient';
 import { CategoryTypes, FieldTypes } from '../../types';
 import { setAlert } from '../slice/alertSlice';
 
-const getCategories = createAsyncThunk('category/all/get', async ({ signal }: { signal: AbortSignal }, { dispatch }) => {
+const getCategories = createAsyncThunk('category/all/get', async ({ signal }: { signal?: AbortSignal }, { dispatch }) => {
   try {
     const { data } = await get('/category', { signal });
     return data.data;

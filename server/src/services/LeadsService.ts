@@ -1,8 +1,21 @@
 import { Inject, Injectable } from "@tsed/di";
-import { LeadModel } from "../models/LeadsModel";
-import { FieldTypes, LeadTypes, LeadsParamTypes } from "../../types";
+import { LeadModel } from "../models/LeadModel";
+import { LeadStatusEnum, PaginationTypes } from "../../types";
 import { MongooseModel } from "@tsed/mongoose";
 import { CategoryModel } from "../models/CategoryModel";
+import { SaleRepService } from "./SaleRepService";
+
+type CreateLeadParams = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  message: string;
+  source: string;
+  categoryId: string;
+  saleRepId: string;
+  status: LeadStatusEnum;
+};
 
 @Injectable()
 export class LeadService {
@@ -10,82 +23,205 @@ export class LeadService {
     @Inject(LeadModel) private lead: MongooseModel<LeadModel>,
     @Inject(CategoryModel) private category: MongooseModel<CategoryModel>
   ) {}
+  @Inject() private saleRepService: SaleRepService;
 
-  public async findLeadsByOrgId(orgId: string) {
-    return this.lead.find({ orgId });
+  //! Find
+  public async findLeads({ skip, take, search, sort = "desc" }: PaginationTypes) {
+    const leads = await this.lead
+      .find({
+        firstName: { $regex: search, $options: "i" },
+        lastName: { $regex: search, $options: "i" },
+        email: { $regex: search, $options: "i" },
+        phone: { $regex: search, $options: "i" }
+      })
+      .skip(skip || 0)
+      .limit(take || 10)
+      .sort({ createdAt: sort });
+    return leads;
   }
 
-  public async findLeadById(id: string) {
+  public async findLeadsBySource({
+    saleRepId,
+    status,
+    source,
+    skip,
+    take,
+    sort = "desc"
+  }: { saleRepId: string; status: LeadStatusEnum } & PaginationTypes) {
+    const leads = await this.lead
+      .find({
+        saleRepId,
+        source: source?.toLocaleLowerCase(),
+        status
+      })
+      .skip(skip || 0)
+      .limit(take || 10)
+      .sort({ createdAt: sort });
+    const count = await this.lead.countDocuments({ saleRepId, source });
+    return { leads, count };
+  }
+
+  public async findLead(id: string) {
     return this.lead.findById({ _id: id });
   }
-  public async findByLeadId(leadId: string) {
-    return this.lead.findOne({ leadId });
-  }
-  public async findLeadsByName(email: string) {
+
+  public async findLeadByEmail(email: string) {
     return this.lead.findOne({ email });
   }
 
-  public async createLead({ source, status, leadId, categoryId, adminId }: LeadsParamTypes) {
-    return this.lead.create({
-      source,
+  public async findLeadsByStatus(status: LeadStatusEnum) {
+    return this.lead.find({ status });
+  }
+
+  public async findLeadByStatusAndRep({ status, saleRepId }: { status: LeadStatusEnum; saleRepId: string }) {
+    return this.lead.find({
       status,
-      leadId,
-      categoryId,
-      adminId
+      saleRepId
     });
   }
 
-  public async createBulkLeads({ body, orgId }: { body: LeadTypes[]; orgId: string }) {
-    let findCategory = await this.category.findOne({ orgId, name: "All" });
-    if (!findCategory) {
-      findCategory = await this.category.create({ name: "All", orgId });
-    }
-    const leads = body.map((lead) => {
-      return {
-        firstName: lead.firstName,
-        lastName: lead.lastName,
-        email: lead.email,
-        phone: lead.phone,
-        categoryId: findCategory?.id,
-        orgId
-      };
+  public async getLeadsCount() {
+    return this.lead.countDocuments();
+  }
+
+  public async findLeadByTime({ status }: { status: LeadStatusEnum }) {
+    const time = new Date(new Date().getTime() - 15 * 60000);
+    return this.lead.find({
+      status,
+      updatedAt: { $lte: time }
     });
-    // create many leads with mongoose
-    const response = await this.lead.create(leads);
-    return response;
   }
 
-  public async updateLead({ leadId, adminId }: LeadsParamTypes) {
-    const lead = await this.findLeadById(leadId!);
-    if (!lead) return false;
-    return this.lead.findByIdAndUpdate({ _id: lead._id }, { adminId });
+  public async findLeadsByPlannerId({ plannerId }: { plannerId: string }) {
+    return this.lead.find({ plannerIds: { $in: [plannerId] } }).limit(5);
   }
 
-  public async updateLeadStatus({ leadId, adminId, status }: LeadsParamTypes) {
-    console.log("leadId-----------------", leadId);
-    const lead = await this.findLeadById(leadId!);
-    console.log("lead-----------------", lead);
-    if (!lead) return false;
-    return this.lead.findByIdAndUpdate({ _id: lead._id }, { adminId, status });
+  public async findLeadBySource({ source }: { source: string }) {
+    return this.lead.find({ source });
   }
 
+  //! Create
+  public async createLead({ ...params }: CreateLeadParams) {
+    return this.lead.create({
+      ...params
+    });
+  }
+
+  //! Update
+  public async updateLead({ _id, firstName, lastName, email, phone, isNotify, status, saleRepId }: LeadModel) {
+    return this.lead.findByIdAndUpdate(
+      { _id },
+      {
+        firstName,
+        lastName,
+        email,
+        phone,
+        isNotify,
+        status,
+        saleRepId
+      }
+    );
+  }
+
+  public async updateLeadStatus({ id, status }: { id: string; status: LeadStatusEnum }) {
+    return this.lead.findByIdAndUpdate(
+      { _id: id },
+      {
+        status
+      }
+    );
+  }
+
+  public async updateLeadSaleRep({ id, saleRepId }: { id: string; saleRepId: string }) {
+    return this.lead.findByIdAndUpdate(
+      { _id: id },
+      {
+        saleRepId,
+        updatedAt: new Date()
+      }
+    );
+  }
+
+  public async updateLeadStatusAndRep({ _id, status, saleRepId }: LeadModel) {
+    return this.lead.findByIdAndUpdate(
+      { _id },
+      {
+        status,
+        saleRepId
+      }
+    );
+  }
+
+  public async updateLeadsTime(leadIds: string[]) {
+    const time = new Date();
+    return this.lead.updateMany(
+      {
+        _id: { $in: leadIds }
+      },
+      {
+        updatedAt: new Date()
+      }
+    );
+  }
+
+  public async updateLeadPlannerIds({ source, plannerId }: { source: string; plannerId: string }) {
+    const leads = await this.lead.find({ source });
+    const leadIds = leads.map((lead) => lead._id);
+    return this.lead.updateMany(
+      {
+        _id: { $in: leadIds }
+      },
+      {
+        $push: { plannerIds: plannerId }
+      }
+    );
+  }
+
+  //! Delete
   public async deleteLead(id: string) {
-    return this.lead.findByIdAndDelete({ _id: id });
+    await this.lead.findByIdAndDelete({ _id: id });
+    await this.saleRepService.deleteLeadId(id);
+    return true;
   }
 
   public async deleteLeadsByCategoryId(categoryId: string) {
     return this.lead.deleteMany({ categoryId });
   }
 
-  public async deleteByLeadId(leadId: string) {
-    return this.lead.deleteMany({ leadId });
+  public async deletePlannerId({ id, plannerId }: { id: string; plannerId: string }) {
+    return await this.lead.findByIdAndUpdate(
+      { _id: id },
+      {
+        $pull: { plannerIds: plannerId }
+      }
+    );
   }
 
-  public async getOpenLeads({ status }: LeadsParamTypes) {
-    return this.lead.find({ status });
+  public async deletePlannerByIds({ _leadIds, plannerId }: { _leadIds: string[]; plannerId: string }) {
+    return this.lead.updateMany(
+      {
+        _id: { $in: _leadIds }
+      },
+      {
+        $pull: { plannerIds: plannerId }
+      }
+    );
   }
 
-  public async getOpenLeadsByAdminId({ adminId, status }: LeadsParamTypes) {
-    return this.lead.find({ adminId, status });
+  public async deleteAllPlannerIds(plannerId: string) {
+    return this.lead.updateMany(
+      {},
+      {
+        $pull: { plannerIds: plannerId }
+      }
+    );
   }
 }
+// return await this.lead.updateMany(
+//   {
+//     plannerIds: { $in: [plannerId] }
+//   },
+//   {
+//     $pull: { plannerIds: plannerId }
+//   }
+// );

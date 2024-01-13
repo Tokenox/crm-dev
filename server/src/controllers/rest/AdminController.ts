@@ -1,9 +1,9 @@
 import { Controller, Inject } from "@tsed/di";
-import { BadRequest, Unauthorized } from "@tsed/exceptions";
+import { Unauthorized } from "@tsed/exceptions";
 import { BodyParams, Context } from "@tsed/platform-params";
 import { Enum, Get, Post, Property, Put, Required, Returns } from "@tsed/schema";
-import { ADMIN_NOT_FOUND, ORG_NOT_FOUND } from "../../util/errors";
-import { AdminResultModel, AdminRoleModel, IdModel, SaleRefResultModel, SuccessMessageModel } from "../../models/RestModels";
+import { ADMIN_NOT_FOUND } from "../../util/errors";
+import { AdminResultModel, AdminRoleModel, SaleRefResultModel, SuccessMessageModel } from "../../models/RestModels";
 import { AdminService } from "../../services/AdminService";
 import { SuccessArrayResult, SuccessResult } from "../../util/entities";
 import { ADMIN } from "../../util/constants";
@@ -55,21 +55,6 @@ export class AdminController {
         role: admin?.role
       },
       AdminRoleModel
-    );
-  }
-
-  @Post("/create/sale-rep")
-  @Returns(200, SuccessResult).Of(SaleRefResultModel)
-  public async createSaleRep(@BodyParams() { _adminId }: { _adminId: string }, @Context() context: Context) {
-    const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN] }, context.get("user"));
-    if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
-    const saleRep = await this.saleRepService.createSaleRep({ adminId: _adminId });
-    return new SuccessResult(
-      {
-        success: true,
-        message: `Sale Rep created successfully ${saleRep}`
-      },
-      SuccessMessageModel
     );
   }
 }

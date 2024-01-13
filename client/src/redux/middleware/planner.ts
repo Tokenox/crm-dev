@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { get, post } from '../../libs/client/apiClient';
+import { destroy, get, post } from '../../libs/client/apiClient';
 import { PlannerDataTypes } from '../../types';
 import { setAlert } from '../slice/alertSlice';
 
@@ -26,4 +26,16 @@ const createPlanner = createAsyncThunk('planner/create', async ({ planner }: { p
   }
 });
 
-export { getPlanners, createPlanner };
+const deletePlanner = createAsyncThunk('planner/delete', async ({ id }: { id: string }, { dispatch }) => {
+  try {
+    const { data } = await destroy(`/planner/${id}`);
+    dispatch(setAlert({ message: 'Planner deleted successfully', type: 'success' }));
+    return data.data;
+  } catch (error) {
+    const { message } = error.response.data;
+    dispatch(setAlert({ message, type: 'error' }));
+    throw error;
+  }
+});
+
+export { getPlanners, createPlanner, deletePlanner };

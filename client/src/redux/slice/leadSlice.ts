@@ -1,13 +1,36 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { LeadsTypes } from '../../types';
-import { getLead, getLeads, createLead, createBulkLead, updateLead, deleteLead, getLeadsForClaim, claimLead } from '../middleware/lead';
+import { LeadDetailResponseTypes, LeadsTypes } from '../../types';
+import {
+  getLeadById,
+  getLeads,
+  createLead,
+  createBulkLead,
+  updateLead,
+  deleteLead,
+  getLeadsForClaim,
+  claimLead,
+  leadsForSuperAdmin,
+  getLeadBySource
+} from '../middleware/lead';
 
-const initialState: { data: LeadsTypes[]; claimData: any; loading: boolean; isModalOpen: boolean; error: any } = {
+const initialState: {
+  data: LeadsTypes[];
+  leadDetails: LeadDetailResponseTypes;
+  claimData: LeadsTypes[];
+  allLeads: LeadsTypes[];
+  loading: boolean;
+  allLeadsLoading: boolean;
+  isModalOpen: boolean;
+  error: any;
+} = {
   loading: false,
   data: [],
+  leadDetails: null,
   claimData: [],
+  allLeads: [],
   error: null,
-  isModalOpen: false
+  isModalOpen: false,
+  allLeadsLoading: false
 };
 
 const leadSlice = createSlice({
@@ -35,15 +58,15 @@ const leadSlice = createSlice({
       state.loading = false;
     });
 
-    // Get Lead
-    builder.addCase(getLead.pending, (state) => {
+    // Get Lead By Id
+    builder.addCase(getLeadById.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(getLead.fulfilled, (state, action) => {
-      state.data = action.payload;
+    builder.addCase(getLeadById.fulfilled, (state, action) => {
+      state.leadDetails = action.payload;
       state.loading = false;
     });
-    builder.addCase(getLead.rejected, (state, action) => {
+    builder.addCase(getLeadById.rejected, (state, action) => {
       state.error = action.error;
       state.loading = false;
     });
@@ -127,12 +150,49 @@ const leadSlice = createSlice({
       state.error = action.error;
       state.loading = false;
     });
+
+    // Get Leads for Super Admin
+    builder.addCase(leadsForSuperAdmin.pending, (state) => {
+      state.allLeadsLoading = true;
+    });
+    builder.addCase(leadsForSuperAdmin.fulfilled, (state, action) => {
+      const { items } = action.payload;
+      const leads = items?.map((lead) => ({
+        id: lead._id,
+        ...lead
+      }));
+      state.allLeads = leads;
+      state.allLeadsLoading = false;
+    });
+    builder.addCase(leadsForSuperAdmin.rejected, (state, action) => {
+      state.error = action.error;
+      state.allLeadsLoading = false;
+    });
+
+    // Get Leads by Source
+    builder.addCase(getLeadBySource.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getLeadBySource.fulfilled, (state, action) => {
+      const { items } = action.payload;
+      const leads = items?.map((lead) => ({
+        id: lead._id,
+        ...lead
+      }));
+      state.data = leads;
+      state.loading = false;
+    });
+    builder.addCase(getLeadBySource.rejected, (state, action) => {
+      state.error = action.error;
+      state.loading = false;
+    });
   }
 });
 
 export const leadsList = (state) => state.lead.data;
-export const leadState = (state: { lead: { data: LeadsTypes[]; claimData: any; loading: boolean; isModalOpen: boolean; error: any } }) =>
-  state.lead;
+export const leadState = (state: {
+  lead: { data: LeadsTypes[]; claimData: any; allLeads; leadDetails; loading: boolean; allLeadsLoading; isModalOpen: boolean; error: any };
+}) => state.lead;
 export default leadSlice.reducer;
 export const { openModal } = leadSlice.actions;
 export const loadingLead = (state) => state.lead.loading;

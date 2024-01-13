@@ -455,11 +455,15 @@ export default function VCDashboardAppPage() {
                 {/* {!claimData.length && <Typography sx={{ p: 2 }}>No lead is available for claim </Typography>} */}
                 {claimData.map((item, index) => (
                   <ListItem key={index} divider>
-                    <ListItemText sx={{ textTransform: 'capitalize' }} primary={item.source || ''} secondary={item.name || ''} />
+                    <ListItemText
+                      sx={{ textTransform: 'capitalize' }}
+                      primary={item.source || ''}
+                      secondary={`${item.firstName || ''} ${item.lastName || ''}` || ''}
+                    />
                     <Button
                       variant="outlined"
                       onClick={async () => {
-                        await dispatch(claimLead({ id: item._id, leadId: item.leadId, sourceId: item.categoryId }));
+                        await dispatch(claimLead({ id: item._id }));
                         await getClaimableLeads();
                       }}
                     >

@@ -11,7 +11,6 @@ export interface JWTPayload {
   email: string;
   id: string;
   role: string;
-  company?: string;
   ip?: string;
   device?: string;
 }
@@ -38,9 +37,7 @@ export enum RoleEnum {
 export type CategoryBodyTypes = {
   name: string;
   description?: string;
-  adminId?: string;
-  orgId?: string;
-  fields: CategoryFieldType[];
+  saleRepId?: string;
 };
 
 export type RoleBodyTypes = {
@@ -63,6 +60,7 @@ export type FieldTypes = {
 
 export enum SocialAction {
   email = "email",
+  sms = "sms",
   instagram = "instagram",
   facebook = "facebook",
   youtube = "youtube"
@@ -80,8 +78,8 @@ export type PlannerDataTypes = {
 };
 
 export type AvailabilityDataTypes = {
-  startDate: string;
-  endDate: string;
+  startDate: number;
+  endDate: number;
   adminId?: string;
 };
 
@@ -89,7 +87,10 @@ export enum LeadStatusEnum {
   open = "open",
   claim = "claim",
   close = "close",
-  pending = "pending"
+  pending = "pending",
+  reject = "reject",
+  recommend = "recommend",
+  contact = "contact" // sales rep already contacted the lead
 }
 
 export type LeadsParamTypes = {
@@ -99,3 +100,5 @@ export type LeadsParamTypes = {
   adminId?: string;
   categoryId?: string;
 };
+
+export type PaginationTypes = { source?: string; skip?: number; take?: number; search?: string; sort?: "asc" | "desc" };

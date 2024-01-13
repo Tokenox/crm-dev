@@ -1,13 +1,16 @@
 import { Controller, Inject } from "@tsed/di";
-import { BadRequest } from "@tsed/exceptions";
+import { BadRequest, Unauthorized } from "@tsed/exceptions";
 import { BodyParams, Context, PathParams, QueryParams } from "@tsed/platform-params";
 import { Delete, Get, Post, Property, Put, Required, Returns } from "@tsed/schema";
 import { AdminService } from "../../services/AdminService";
-import { EMAIL_EXISTS, ORG_NOT_FOUND } from "../../util/errors";
-import { ADMIN, MANAGER } from "../../util/constants";
-import { SuccessArrayResult, SuccessResult } from "../../util/entities";
+import { ADMIN_NOT_FOUND, SALE_REP_NOT_FOUND } from "../../util/errors";
+import { ADMIN, MANAGER, SALESREP } from "../../util/constants";
+import { Pagination, SuccessArrayResult, SuccessResult } from "../../util/entities";
 import { LeadService } from "../../services/LeadsService";
-import { IdModel, LeadResultModel, SuccessMessageModel } from "../../models/RestModels";
+import { IdModel, LeadResultModel, SaleRepDetailsResultModel, SuccessMessageModel } from "../../models/RestModels";
+import { normalizeData, normalizeObject } from "../../helper";
+import { SaleRepService } from "../../services/SaleRepService";
+import { LeadStatusEnum } from "../../../types";
 
 class LeadBodyParam {
   @Required() public firstName: string;
@@ -17,12 +20,106 @@ class LeadBodyParam {
   @Required() public categoryId: string;
 }
 
+export class PaginationParams {
+  @Property() public skip: number;
+  @Property() public take: number;
+  @Property() public search: string;
+  @Property() public sort: "asc" | "desc";
+}
+
 @Controller("/lead")
 export class LeadController {
   @Inject()
   private adminService: AdminService;
   @Inject()
   private leadService: LeadService;
+  @Inject()
+  private saleRepService: SaleRepService;
+
+  @Get("/all")
+  @Returns(200, SuccessResult).Of(LeadResultModel)
+  public async getAllLeads(@QueryParams() { skip, take, search, sort }: PaginationParams, @Context() context: Context) {
+    const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN] }, context.get("user"));
+    if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
+    const leads = await this.leadService.findLeads({ skip, take, search, sort });
+    const leadCount = await this.leadService.getLeadsCount();
+    return new SuccessResult(new Pagination(normalizeData(leads), leadCount, LeadResultModel), Pagination);
+  }
+
+  @Get("/claim")
+  @Returns(200, SuccessResult).Of(LeadResultModel)
+  public async getClaimLeads(@Context() context: Context) {
+    const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN, SALESREP] }, context.get("user"));
+    if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
+    const saleRep = await this.saleRepService.findSaleRepByAdminId(adminId);
+    if (!saleRep) throw new BadRequest(SALE_REP_NOT_FOUND);
+    const leads = await this.leadService.findLeadByStatusAndRep({ status: LeadStatusEnum.open, saleRepId: saleRep._id });
+    return new SuccessResult(normalizeData(leads), LeadResultModel);
+  }
+
+  @Get("/:source")
+  @Returns(200, SuccessResult).Of(LeadResultModel)
+  public async getLeadsBySource(
+    @PathParams() { source }: { source: string },
+    @QueryParams() { skip, take, search, sort }: PaginationParams,
+    @Context() context: Context
+  ) {
+    const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN, SALESREP] }, context.get("user"));
+    if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
+    const saleRep = await this.saleRepService.findSaleRepByAdminId(adminId);
+    if (!saleRep) throw new BadRequest(SALE_REP_NOT_FOUND);
+    const leads = await this.leadService.findLeadsBySource({
+      saleRepId: saleRep._id,
+      status: LeadStatusEnum.claim,
+      source,
+      skip,
+      take,
+      search,
+      sort
+    });
+    return new SuccessResult(new Pagination(normalizeData(leads.leads), leads.count, LeadResultModel), Pagination);
+  }
+
+  @Get("/detail/:id")
+  @Returns(200, SuccessResult).Of(SaleRepDetailsResultModel)
+  public async getLeadById(@PathParams() { id }: IdModel, @Context() context: Context) {
+    const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN, SALESREP] }, context.get("user"));
+    if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
+    const lead = await this.leadService.findLead(id);
+    if (!lead) throw new BadRequest("Lead not found");
+    const saleRep = await this.saleRepService.findSaleRepById(lead.saleRepId);
+    if (!saleRep) throw new BadRequest(SALE_REP_NOT_FOUND);
+    const admin = await this.adminService.findAdminById(saleRep.adminId);
+    if (!admin) throw new BadRequest(ADMIN_NOT_FOUND);
+    const response = normalizeObject(lead);
+    const result = {
+      ...response,
+      saleRepId: saleRep._id,
+      saleRepScore: saleRep.score,
+      saleRepName: admin.name,
+      saleRepEmail: admin.email
+    };
+    return new SuccessResult(result, SaleRepDetailsResultModel);
+  }
+
+  @Post("/claim")
+  @Returns(200, SuccessResult).Of(LeadResultModel)
+  public async claimLead(@BodyParams() { id }: IdModel, @Context() context: Context) {
+    const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN, SALESREP] }, context.get("user"));
+    if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
+    const response = await this.leadService.updateLeadStatus({ id, status: LeadStatusEnum.claim });
+    await this.saleRepService.deleteLeadId(id);
+    return new SuccessResult(normalizeObject(response), LeadResultModel);
+  }
+
+  @Delete("/:id")
+  @Returns(200, SuccessResult).Of(SuccessMessageModel)
+  public async deleteLead(@PathParams() { id }: IdModel, @Context() context: Context) {
+    const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN] }, context.get("user"));
+    if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
+    await this.leadService.deleteLead(id);
+    return new SuccessResult({ success: true, message: "Lead deleted successfully" }, SuccessMessageModel);
+  }
 
   // @Get("/")
   // @Returns(200, SuccessArrayResult).Of(LeadResultModel)

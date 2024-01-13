@@ -40,16 +40,12 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const navigate = useNavigate();
 
-
-  
-
   // Function to handle navigation
   const handleNavigation = (path) => {
     handleClose(); // Close the popover
     navigate(path); // Navigate to the specified path
   };
   const dispatch = useAppDispatch();
-
 
   const { data } = useAppSelector(authSelector);
   const [open, setOpen] = useState(null);
@@ -104,10 +100,10 @@ export default function AccountPopover() {
         }}
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography  variant="subtitle2" noWrap sx={{ textTransform: 'uppercase' }}>
+          <Typography variant="subtitle2" noWrap sx={{ textTransform: 'uppercase' }}>
             {data?.name}
           </Typography>
-          <Typography  variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
             {data?.email}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
@@ -122,14 +118,13 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem  key={option.label} onClick={() => handleNavigation(option.actionLink)} >
+            <MenuItem key={option.label} onClick={() => handleNavigation(option.actionLink)}>
               {option.label}
             </MenuItem>
           ))}
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
-
 
         {/* Logout Button */}
         <MenuItem
@@ -142,7 +137,7 @@ export default function AccountPopover() {
             }
             dispatch(setAlert({ message: 'Logout successful', type: 'success', open: true }));
             handleClose();
-            localStorage.removeItem('persist:root')
+            localStorage.removeItem('persist:root');
             navigate('/login', { replace: true });
           }}
         >

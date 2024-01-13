@@ -1,48 +1,44 @@
 import { Inject, Injectable } from "@tsed/di";
 import { MongooseModel } from "@tsed/mongoose";
-import { AvailabilityDataTypes } from "../../types";
 import { AvailabilityModel } from "../models/AvailabilityModel";
-import { SaleRepModel } from "../models/SaleRepModel";
+
+type CreateAvailabilityParams = {
+  saleRepId: string;
+  startTime: number;
+  endTime: number;
+};
 
 @Injectable()
 export class AvailabilityService {
-  // constructor(@Inject(PlannerModel) private planner: MongooseModel<PlannerModel>) {}
   @Inject(AvailabilityModel) private availability: MongooseModel<AvailabilityModel>;
-  @Inject(SaleRepModel) private saleRep: MongooseModel<SaleRepModel>;
 
-  public async findAvailability() {
-    return await this.availability.find();
+  //! Find
+  public async findAvailabilityBySaleRep(saleRepId: string) {
+    return await this.availability.find({ saleRepId });
   }
 
-  public async findAvailabilityById(id: string) {
-    return await this.availability.findById({ _id: id });
+  public async findAvailabilityByDateAndRep(saleRepId: string) {
+    const currentDate = new Date().getTime();
+    const availability = await this.availability.findOne({
+      startTime: { $lte: currentDate },
+      endTime: { $gte: currentDate },
+      saleRepId
+    });
+    if (availability) return false;
+    return true;
   }
 
-  public async createAvailability({ startDate, endDate, adminId }: AvailabilityDataTypes) {
+  //! Create
+  public async createAvailability({ saleRepId, startTime, endTime }: CreateAvailabilityParams) {
     return await this.availability.create({
-      startDate,
-      endDate,
-      adminId
+      saleRepId,
+      startTime,
+      endTime
     });
   }
+
+  //! Delete
   public async deleteAvailability(id: string) {
     return await this.availability.deleteOne({ _id: id });
-  }
-
-  public async findAvailabilityByAdminId(adminId: string) {
-    return await this.availability.find({ adminId });
-  }
-
-  // find availability that does not greater than the current date
-  public async findAvailabilityByDateAndRep(repId: string) {
-    const currentDate = new Date().getTime();
-    const availability = await this.availability.find({
-      startDate: { $lte: currentDate },
-      endDate: { $gte: currentDate },
-      adminId: repId
-    });
-    // console.log("availability-----------", availability);
-    if (availability.length) return false;
-    return true;
   }
 }
