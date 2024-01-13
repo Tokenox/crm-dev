@@ -11,6 +11,7 @@ import { PlannerState } from '../calendar/Calendar';
 import { Dayjs } from 'dayjs';
 import { CategoryResponseTypes } from '../../types';
 import CustomSelectField from '../custom-select-field/CustomSelectField';
+import DateTimePickerValue from '../DateTimePicker';
 
 interface PlannerProps {
   state: PlannerState;
@@ -47,7 +48,7 @@ const PlannerForm = ({ state, error, getFormData, categories }: PlannerProps) =>
         error={error.description}
       />
       <Box mt={1.5}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={['DateTimePicker', 'DatePicker', 'TimeClock']}>
             <DatePicker
               label="Start Event"
@@ -58,18 +59,22 @@ const PlannerForm = ({ state, error, getFormData, categories }: PlannerProps) =>
               <TimeClock
                 ampm
                 ampmInClock
+                referenceDate={state.startDate}
                 value={state.timeOfExecution}
                 onChange={(newValue) => {
                   getFormData({ name: 'timeOfExecution', value: newValue });
                 }}
               />
             </Box>
-            {/* <MultiSectionDigitalClock
-            value={state.timeOfExecution}
-            onChange={(newValue) => getFormData({ name: 'timeOfExecution', value: newValue })}
-          /> */}
           </DemoContainer>
-        </LocalizationProvider>
+        </LocalizationProvider> */}
+        <DateTimePickerValue
+          label="Time of Execution"
+          value={state.startDate}
+          onChange={(value) => {
+            getFormData({ name: 'timeOfExecution', value });
+          }}
+        />
       </Box>
     </Box>
   );
