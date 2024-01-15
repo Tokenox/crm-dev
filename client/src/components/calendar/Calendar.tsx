@@ -3,7 +3,18 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './calendar.scss';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Slide,
+  TextField
+} from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import SmsIcon from '@mui/icons-material/Sms';
 import HistoryIcon from '@mui/icons-material/History';
@@ -13,7 +24,7 @@ import PlannerForm from '../planner-form/PlannerForm';
 import dayjs, { Dayjs } from 'dayjs';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { createPlanner, deletePlanner, getPlanners } from '../../redux/middleware/planner';
-import { plannerSelector } from '../../redux/slice/plannerSlice';
+import { plannerLoading, plannerSelector } from '../../redux/slice/plannerSlice';
 import createAbortController from '../../utils/createAbortController';
 import { getCategories } from '../../redux/middleware/category';
 import { CategoryResponseTypes, SocialActionClient } from '../../types';
@@ -67,6 +78,7 @@ const localizer = momentLocalizer(moment);
 const MyCalendar = ({ value, getActionData }: CalendarProps) => {
   const dispatch = useAppDispatch();
   const { data: plannerData, events } = useAppSelector(plannerSelector);
+  const loading = useAppSelector(plannerLoading);
   const categories: CategoryResponseTypes[] = useAppSelector(categorySelector);
   const { signal, abort } = createAbortController();
 
@@ -259,7 +271,7 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
         scrollToTime={scrollToTime}
       />
       {dropdownVisible && renderDropdown()}
-      <CustomModal title={actionValue} open={isModalOpen} setOpen={setIsModalOpen} handleSubmit={submitPlan}>
+      <CustomModal title={actionValue} open={isModalOpen} setOpen={setIsModalOpen} handleSubmit={submitPlan} loading={loading}>
         <PlannerForm
           state={addFormValues}
           categories={categories}
@@ -340,23 +352,35 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            color="error"
-            onClick={async () => {
-              await dispatch(deletePlanner({ id: modalPlannerData.id }));
-              await dispatch(getPlanners({ signal }));
-              setPlannerIsModalOpen(false);
-            }}
-          >
-            Delete
-          </Button>
-          <Button
-            onClick={() => {
-              deletePlannerEvent();
-            }}
-          >
-            Delete
-          </Button>
+          {/* {loading ? (
+            <Button autoFocus>
+              <CircularProgress size="18px" sx={{ color: '#4F7942' }} />
+            </Button>
+          ) : (
+            <Button
+              color="error"
+              onClick={async () => {
+                await dispatch(deletePlanner({ id: modalPlannerData.id }));
+                await dispatch(getPlanners({ signal }));
+                setPlannerIsModalOpen(false);
+              }}
+            >
+              Delete
+            </Button>
+          )} */}
+          {loading ? (
+            <Button autoFocus>
+              <CircularProgress size="18px" sx={{ color: '#4F7942' }} />
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                deletePlannerEvent();
+              }}
+            >
+              Delete
+            </Button>
+          )}
           <Button
             onClick={() => {
               setPlannerIsModalOpen(false);
