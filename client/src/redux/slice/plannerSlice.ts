@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PlannerResponseTypes } from '../../types';
-import { createPlanner, deletePlanner, getPlanners } from '../middleware/planner';
+import { createPlanner, getPlanners, deletePlanner } from '../middleware/planner';
 
 const initialState: { data: PlannerResponseTypes[]; events: { title: string; start: Date; end: Date }[]; loading: boolean; error: any } = {
   loading: false,
@@ -25,7 +25,7 @@ const plannerSlice = createSlice({
           id: planner._id,
           title: planner.title,
           start: new Date(planner.startDate),
-          end: new Date(Number(planner.timeOfExecution)),
+          end: new Date(planner.timeOfExecution),
           desc: planner.description,
           source: planner.source,
           action: planner.action

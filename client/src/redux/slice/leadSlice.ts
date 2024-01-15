@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { LeadsTypes } from '../../types';
+import { LeadDetailResponseTypes, LeadsTypes } from '../../types';
 import {
-  getLead,
+  getLeadById,
   getLeads,
   createLead,
   createBulkLead,
@@ -15,8 +15,9 @@ import {
 
 const initialState: {
   data: LeadsTypes[];
-  claimData: any;
-  allLeads: any;
+  leadDetails: LeadDetailResponseTypes;
+  claimData: LeadsTypes[];
+  allLeads: LeadsTypes[];
   loading: boolean;
   allLeadsLoading: boolean;
   isModalOpen: boolean;
@@ -24,6 +25,7 @@ const initialState: {
 } = {
   loading: false,
   data: [],
+  leadDetails: null,
   claimData: [],
   allLeads: [],
   error: null,
@@ -56,15 +58,15 @@ const leadSlice = createSlice({
       state.loading = false;
     });
 
-    // Get Lead
-    builder.addCase(getLead.pending, (state) => {
+    // Get Lead By Id
+    builder.addCase(getLeadById.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(getLead.fulfilled, (state, action) => {
-      state.data = action.payload;
+    builder.addCase(getLeadById.fulfilled, (state, action) => {
+      state.leadDetails = action.payload;
       state.loading = false;
     });
-    builder.addCase(getLead.rejected, (state, action) => {
+    builder.addCase(getLeadById.rejected, (state, action) => {
       state.error = action.error;
       state.loading = false;
     });
@@ -189,7 +191,7 @@ const leadSlice = createSlice({
 
 export const leadsList = (state) => state.lead.data;
 export const leadState = (state: {
-  lead: { data: LeadsTypes[]; claimData: any; allLeads; loading: boolean; allLeadsLoading; isModalOpen: boolean; error: any };
+  lead: { data: LeadsTypes[]; claimData: any; allLeads; leadDetails; loading: boolean; allLeadsLoading; isModalOpen: boolean; error: any };
 }) => state.lead;
 export default leadSlice.reducer;
 export const { openModal } = leadSlice.actions;

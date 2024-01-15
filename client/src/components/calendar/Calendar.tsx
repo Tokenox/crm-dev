@@ -43,6 +43,7 @@ const initialState: PlannerState = {
 };
 
 export type PlannerModalState = {
+  id: string;
   title: string;
   desc: string;
   action: string;
@@ -52,6 +53,7 @@ export type PlannerModalState = {
 };
 
 const initialModalState: PlannerModalState = {
+  id: '',
   title: '',
   desc: '',
   action: '',
@@ -81,6 +83,8 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
     description: ''
   });
 
+  console.log('events----------', events);
+
   useEffect(() => {
     (async () => {
       await dispatch(getPlanners({ signal }));
@@ -109,6 +113,7 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
   const handleSelectEvent = useCallback((event) => {
     setModalPlannerData({
       ...modalPlannerData,
+      id: event.id,
       title: event.title,
       desc: event.desc,
       action: event.action,
@@ -141,21 +146,22 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
 
   //! submit planner form
   const submitPlan = async () => {
-    debugger;
     if (!addFormValues.title || !addFormValues.description) {
       setError({ title: 'Please enter title', description: 'Please enter description' });
       return;
     }
 
+    const time = new Date(addFormValues.timeOfExecution?.format()).getTime();
     const data = {
       title: addFormValues.title,
       description: addFormValues.description,
       action: addFormValues.action,
       startDate: addFormValues.startDate.toDate().getTime(),
-      timeOfExecution: addFormValues.timeOfExecution.toDate().getTime(),
+      timeOfExecution: time,
       source: addFormValues.source
     };
-    await dispatch(createPlanner({ planner: data }));
+    const response = await dispatch(createPlanner({ planner: data }));
+    if (!response.payload) return;
     setIsModalOpen(false);
     await dispatch(getPlanners({ signal }));
   };
@@ -334,6 +340,16 @@ const MyCalendar = ({ value, getActionData }: CalendarProps) => {
           />
         </DialogContent>
         <DialogActions>
+          <Button
+            color="error"
+            onClick={async () => {
+              await dispatch(deletePlanner({ id: modalPlannerData.id }));
+              await dispatch(getPlanners({ signal }));
+              setPlannerIsModalOpen(false);
+            }}
+          >
+            Delete
+          </Button>
           <Button
             onClick={() => {
               deletePlannerEvent();

@@ -96,6 +96,10 @@ export class LeadService {
     return this.lead.find({ plannerIds: { $in: [plannerId] } }).limit(5);
   }
 
+  public async findLeadBySource({ source }: { source: string }) {
+    return this.lead.find({ source });
+  }
+
   //! Create
   public async createLead({ ...params }: CreateLeadParams) {
     return this.lead.create({
@@ -193,14 +197,31 @@ export class LeadService {
     );
   }
 
-  public async deletePlannerByIds({ plannerId }: { plannerId: string }) {
-    return await this.lead.updateMany(
+  public async deletePlannerByIds({ _leadIds, plannerId }: { _leadIds: string[]; plannerId: string }) {
+    return this.lead.updateMany(
       {
-        plannerIds: { $in: [plannerId] }
+        _id: { $in: _leadIds }
       },
       {
         $pull: { plannerIds: plannerId }
       }
     );
   }
+
+  public async deleteAllPlannerIds(plannerId: string) {
+    return this.lead.updateMany(
+      {},
+      {
+        $pull: { plannerIds: plannerId }
+      }
+    );
+  }
 }
+// return await this.lead.updateMany(
+//   {
+//     plannerIds: { $in: [plannerId] }
+//   },
+//   {
+//     $pull: { plannerIds: plannerId }
+//   }
+// );

@@ -3,9 +3,9 @@ import { Delete, Enum, Get, Post, Property, Required, Returns } from "@tsed/sche
 import { AdminService } from "../../services/AdminService";
 import { IdModel, PlannerResultModel, SuccessMessageModel } from "../../models/RestModels";
 import { Pagination, SuccessArrayResult, SuccessResult } from "../../util/entities";
-import { ADMIN, SALESREP } from "../../util/constants";
+import { ADMIN } from "../../util/constants";
 import { BodyParams, Context, PathParams } from "@tsed/platform-params";
-import { Unauthorized } from "@tsed/exceptions";
+import { NotFound, Unauthorized } from "@tsed/exceptions";
 import { ADMIN_NOT_FOUND } from "../../util/errors";
 import { PlannerService } from "../../services/PlannerService";
 import { SocialAction } from "../../../types";
@@ -43,6 +43,8 @@ export class PlannerController {
     const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN] }, context.get("user"));
     if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
     const { title, action, description, startDate, timeOfExecution, source } = body;
+    const lead = await this.leadService.findLeadBySource({ source: source.toLocaleLowerCase() });
+    if (!lead.length) throw new NotFound("Lead not found with this source");
     const response = await this.plannerService.createPlanner({
       title,
       source,
@@ -58,10 +60,10 @@ export class PlannerController {
 
   @Delete("/:id")
   @Returns(200, SuccessResult).Of(SuccessMessageModel)
-  public async deleteAvailability(@PathParams() { id }: IdModel, @Context() context: Context) {
-    const { adminId } = await this.adminService.checkPermissions({ hasRole: [ADMIN, SALESREP] }, context.get("user"));
-    if (!adminId) throw new Unauthorized(ADMIN_NOT_FOUND);
+  public async deletePlanner(@PathParams() { id }: IdModel, @Context() context: Context) {
+    await this.adminService.checkPermissions({ hasRole: [ADMIN] }, context.get("user"));
     await this.plannerService.deletePlanner(id);
-    return new SuccessResult({ success: true, message: "Planner event deleted successfully" }, SuccessMessageModel);
+    await this.leadService.deleteAllPlannerIds(id);
+    return new SuccessResult({ success: true, message: "Planner has been deleted" }, SuccessMessageModel);
   }
 }

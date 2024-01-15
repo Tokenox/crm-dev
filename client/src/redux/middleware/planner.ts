@@ -29,7 +29,7 @@ const createPlanner = createAsyncThunk('planner/create', async ({ planner }: { p
 const deletePlanner = createAsyncThunk('planner/delete', async ({ id }: { id: string }, { dispatch }) => {
   try {
     const { data } = await destroy(`/planner/${id}`);
-    dispatch(setAlert({ message: data.data.message, type: 'success' }));
+    dispatch(setAlert({ message: 'Planner deleted successfully', type: 'success' }));
     return data.data;
   } catch (error) {
     const { message } = error.response.data;

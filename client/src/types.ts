@@ -104,3 +104,20 @@ export enum SocialActionClient {
   facebook = 'facebook',
   youtube = 'youtube'
 }
+
+export type LeadBySaleTypes = {
+  saleRepScore: number;
+  saleRepName: string;
+  saleRepEmail: string;
+};
+
+export type LeadDetailResponseTypes = LeadsTypes & LeadBySaleTypes;
+
+export type ChatResponseTypes = {
+  _id: string;
+  source: string;
+  message: string;
+  leadId: string;
+  createdAt: string;
+  updatedAt: string;
+};
