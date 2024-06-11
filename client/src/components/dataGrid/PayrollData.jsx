@@ -222,7 +222,7 @@ export default function PayrollData(props) {
   );
 
   useEffect(() => {
-    fetch(`${baseURL}/auth/crmPayroll`, {
+    fetch(`${baseURL}/crmPayroll`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

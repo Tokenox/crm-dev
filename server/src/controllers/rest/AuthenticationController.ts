@@ -757,7 +757,7 @@ export class AuthenticationController {
     return new SuccessResult({ deals: results }, CrmDealResultCollection);
   }
 
-  @Put("/reset-password")
+  @Put("/auth/reset-password")
   @Returns(200, SuccessResult).Of(SuccessMessageModel)
   public async resetPassword(@BodyParams() body: UpdateAdminPasswordParams) {
     const { code, password } = body;
@@ -768,7 +768,7 @@ export class AuthenticationController {
     return new SuccessResult({ success: true, message: "Password updated successfully" }, SuccessMessageModel);
   }
 
-  @Put("/complete-verification")
+  @Put("/auth/complete-verification")
   @Returns(200, SuccessResult).Of(SuccessMessageModel)
   public async completeVerification(@BodyParams() body: VerificationSuccessModel) {
     const { email, code } = body;
@@ -783,7 +783,7 @@ export class AuthenticationController {
     );
   }
 
-  @Post("/logout")
+  @Post("/auth/logout")
   @Returns(200, SuccessResult).Of(SuccessMessageModel)
   public async adminLogout(@Req() req: Req, @Res() res: Res) {
     const sessionCookie = req.cookies.session || "";

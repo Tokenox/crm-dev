@@ -184,7 +184,7 @@ export default function DealsData(props) {
   });
 
   useEffect(() => {
-    fetch(`${baseURL}/auth/crmDeals`, {
+    fetch(`${baseURL}/crmDeals`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

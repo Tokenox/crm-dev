@@ -133,7 +133,7 @@ export default function ActiveRates(props) {
   );
 
   useEffect(() => {
-    fetch(`${baseURL}/auth/crmRatesActive`, {
+    fetch(`${baseURL}/crmRatesActive`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

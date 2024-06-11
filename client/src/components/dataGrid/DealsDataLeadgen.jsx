@@ -177,7 +177,7 @@ export default function DealsDataLeadgen(props) {
   });
 
   useEffect(() => {
-    fetch(`${baseURL}/auth/crmDealsLeadgen`, {
+    fetch(`${baseURL}/crmDealsLeadgen`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

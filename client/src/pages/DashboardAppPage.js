@@ -41,7 +41,7 @@ export default function DashboardAppPage() {
 
   const fetchAhjTimelineData = async () => {
     try {
-      const response = await fetch(`${baseURL}/auth/crmAHJTimelines`, {
+      const response = await fetch(`${baseURL}/crmAHJTimelines`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -80,7 +80,7 @@ export default function DashboardAppPage() {
 
   const fetchDealsData = async () => {
     try {
-      const response = await fetch(`${baseURL}/auth/crmDealsGlobal`, {
+      const response = await fetch(`${baseURL}/crmDealsGlobal`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -136,7 +136,7 @@ export default function DashboardAppPage() {
 
   const fetchDealsAvgData = async () => {
     try {
-      const response = await fetch(`${baseURL}/auth/crmAvgTimelines`, {
+      const response = await fetch(`${baseURL}/crmAvgTimelines`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

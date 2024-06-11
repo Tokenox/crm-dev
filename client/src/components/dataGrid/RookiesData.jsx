@@ -199,7 +199,7 @@ export default function RookieData(props) {
   });
 
   useEffect(() => {
-    fetch(`${baseURL}/auth/crmDealsRookie`, {
+    fetch(`${baseURL}/crmDealsRookie`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

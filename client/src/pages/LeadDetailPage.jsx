@@ -148,7 +148,7 @@ const LeadDetailPage = () => {
   //details
 
   useEffect(() => {
-    fetch(`${baseURL}/auth/crmDeal`, {
+    fetch(`${baseURL}/crmDeal`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

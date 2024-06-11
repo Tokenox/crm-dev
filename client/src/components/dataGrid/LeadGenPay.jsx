@@ -200,7 +200,7 @@ export default function LeadGenPay(props) {
   );
 
   useEffect(() => {
-    fetch(`${baseURL}/auth/CRMPayrollLeadGen`, {
+    fetch(`${baseURL}/CRMPayrollLeadGen`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

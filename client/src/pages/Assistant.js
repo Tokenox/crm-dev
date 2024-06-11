@@ -19,7 +19,7 @@ function Assistant() {
     setIsProcessing(true); // Set processing to true
 
     try {
-      const response = await fetch(`${baseURL}/auth/askOpenAI`, {
+      const response = await fetch(`${baseURL}/askOpenAI`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
