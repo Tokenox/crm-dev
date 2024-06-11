@@ -2,7 +2,7 @@ import axios from 'axios';
 import { urls } from '../../apiConfig';
 
 const env = process.env.REACT_APP_STAGE || 'development';
-export const baseURL = urls[env] || 'https://voltaiccrm-7dd827fb5012.herokuapp.com/rest';
+export const baseURL = urls[env];
 
 const apiClient = axios.create({
   baseURL: baseURL,
