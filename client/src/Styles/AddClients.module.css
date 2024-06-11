@@ -1,0 +1,35 @@
+.modal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    background-color: rebeccapurple;
+    z-index: 20;
+    height: 100vh;
+}
+
+
+.submitButton{
+    /* background-color: rebeccapurple; */
+    padding-top: 1em;
+}
+.formRow{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* background-color: wheat; */
+}
+
+.label{
+    /* background-color: rebeccapurple; */
+    padding: 5px;
+}
+.input{
+    padding-left: 10px;
+    background-color: rgb(236, 236, 236);
+    color: black;
+    border: none;
+    border-radius: 5px;
+    width: 80%;
+    height: 30px;
+}

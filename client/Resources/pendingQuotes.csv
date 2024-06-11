@@ -1,0 +1,251 @@
+System ID #,FDA Notes,CP Notes,Engineering Rejection Notes,PTO Rejection Reason,Monitor Reporting Active Rejection Note,Primary Customer Name,Installation Address,Contract Type,Voltaic Comments,Voltaic Quotes
+BX005834373,Reason #1: Image of the IQ controller required to verify correct model quoted.,"	
+Reason #1: Please make sure battery clearances are met for out door installations.
+6 inches top/bottom and 6 inches from the sides.",Reason #1: Please submit battery commissioning package.,,,YESENIA REYES,"2240 Hidden Spring , Blythe, CA 92225",Loan Storage,,
+GR005891802,Reason #1: Please provide the complete CP for a complete review. Please clarify if this system is pending a battery CP.,,,,,Darell Gacho,"1418 Montage Glen , Escondido, CA 92029",Lease Storage,,
+MD005908166,,,,,,Consepa Marcaida,"4519 Deer Way , Antioch, CA 94531",PPA-EZ,,
+TF004153742,,"Case comments Part 1: Please see the rest of the case comments below
+
+NOTE: Case comments were split into two parts
+
+
+The CP shows 14 modules on roof MP2, while the design is showing 15. Please clarify. Please ensure that the design and installation are matching
+
+The cantilever limit of 16 inches is shown to be exceeded for the 7 modules in portrait orientation on roof MP1. Please amend the installation accordingly by adding additional mounts. Please submit images of the fix.
+The latest CP is showing conflicting information. An Enphase combiner box is seen. Please ensure that we are getting the latest and correct images.
+
+Page 61 of the CP is showing improper roof conduit penetration flashing, per manufacturer’s installation manual, flashing of conduit entrance is required not to exceed the leading edge of the shingle, a half circle needs to be cut from the preceding shingle for proper installation and to prevent weather degradation of flashing plate. Please provide a picture of the conduit entrance flashing properly installed. Please make sure any previous holes in the roof are properly sealed.
+
+Please provide an image of the non-back up inverter wiring serial number and RGM serial number. No images were provided
+
+Please provide a screenshot of system in operation - simulating grid outage (Backup test).
+
+Please provide a compliance report for each inverter
+
+Please provide an image of each array from both ends to verify the rockit mount and coupling installation
+
+Please provide screenshots showing RGM/LTE Kit status. Cell modem and RGM must both be connected and activated for both inverters
+
+Please provide an Screenshot showing the number of SnapRS installed per PVLink. Please ensure that the stringing is provided from both inverters. Please ensure that there are no duplicate images. Please ensure that the design and installation’s stringing are matching
+
+The 30A disconnect seen on page 55 of the latest CP is improperly sized for the non back up inverter output. Please upsize the AC disconnect and provide an image of the new disconnect’s wiring and rating. Please ensure that the wire sizing is correct",Reason #1: Please submit the derate package upon its completion,,,Chanton Herrera,"4780 Howe Ln , Auburn, CA 95602",Loan Storage,,
+AT004213451,,"Reason #1: Per Ecofasten, please ensure that at least 4 rockit mounts are grasping each module on either edge of the array. In this case 3 extra mounts are needed to properly secure the top and bottom of the module. It is also recommended to use the load bearing foot for coupling brackets. Please the installation accordingly and submit images of the fix
+
+Reason #2: No image of the neutral wiring was seen at the disconnects. Please clarify how the neutral wires are wired.
+
+Please provide Sunnova access to the Envoy monitoring service. Information regarding the Envoy’s access can be sent to enphase.monitoring@sunnova.com. After giving Sunnova access, please be sure the system is up to 'Stage 4.1' of the activation process.",Reason #1: Please submit the MPU package upon its completion,,-Site ID#4056088 - Production verified - Enphase Integrated Production. Meter enabled-Pending to see production in Meter Measurements. CP/FD&A Rejection Priority - HIGH. Unable to proceed until deficiencies are corrected.,Albert Jang,"567 Homer Ave , Palo Alto, CA 94301",Loan,,
+CN004269890,"Reason #1: Reason #1: Hello Infinity, Too many discrepancies were noticed with this particular installation that a rereview is now required. Two different designs were shown and a discrepancy between where a load center was used or an Envoy. Please submit the correct FDA and please only submit the latest and correct photos on the CP for review. Please also note that the existing PV system is shown to be landed with the new system. These two system have two different contracts and must be measured separately. Please either redesign the system to have the existing and new system separated or please ensure that 3 Envoys are installed (all three Envoys must be on the same portal) One Envoy that runs the system has PLC comms and production metering for all micros and is used to measure consumption. All mircos must be paired to this one. (new envoy) One for contract CN004269890 that only meters contract CN004269890 micros -- no PLC 202151097415 One for contract SQ001999229 that only meters contract SQ001999229 micros -- no PLC. 121810050262 with all micros and communicating with the commkit. Please ensure that all wiring is done correctly. ","Reason #1: Reason #1: Hello Infinity, Too many discrepancies were noticed with this particular installation that a rereview is now required. Two different designs were shown and a discrepancy between where a load center was used or an Envoy. Please submit the correct FDA and please only submit the latest and correct photos on the CP for review. Please also note that the existing PV system is shown to be landed with the new system. These two system have two different contracts and must be measured separately. Please either redesign the system to have the existing and new system separated or please ensure that 3 Envoys are installed (all three Envoys must be on the same portal) One Envoy that runs the system has PLC comms and production metering for all micros and is used to measure consumption. All mircos must be paired to this one. (new envoy) One for contract CN004269890 that only meters contract CN004269890 micros -- no PLC 202151097415 One for contract SQ001999229 that only meters contract SQ001999229 micros -- no PLC. 121810050262 with all micros and communicating with the commkit. Please ensure that all wiring is done correctly. ",Reason #1: Please provide a photo showing the side where the tie down bracket is connected/screwed. The battery breakers show 2 hold down kits installed Please install on all 3 breakers. Please ensure that all hold down kits are compatible with the panel. Please ensure that all breakers had the predrilled hole. Please ensure that all equipment is operating and reporting normally to verify the operation of the system,,Site ID#3184239 - Microinverters Not Reporting - 8 OF 35 are not reporting. CP/FD&A Rejection Priority - HIGH. Unable to proceed until deficiencies are corrected.,David Williams,"2500 SALINAS RD , SAN JUAN BAUTISTA, CA 95045",Loan Storage,,
+EN004421442,Reason #1: Please also submit the updated CP to verify the FDA. Reason #2: Please ensure that the lugged connection at the MSP is properly sized for the MSP stabs and is compatible.  Please note that the 70A breaker seen at the essential loads panel is improperly sized for 3 Encharge 10 batteries. Reason #4: Please clarify where the AC disconnect seen on page 17 on the FDA's EL.,"Reason #1: Please ensure that the interconnection point at the MSP is properly labeled. Reason #2: Please ensure that the lugged connection at the MSP is properly sized for the MSP stabs and is compatible. Reason #3: Page 29 of the CP shows a damaged dead front cover of the IQ combiner. Please clarify. Please ensure it is covered. Reason #4: Please add the ""Do not add loads"" label to the MSP. Please ensure that the branch breaker load limit label at the essential loads panel is showing 60A. Reason #5: Please provide an image of the complete MSP label to verify the installation. Please provide an image of the essential loads panel’s panel label to verify the installation. Panel on page 32 of the CP. Please provide an image entire MSP with the dead front cover on and off. Reason #6: Please ensure that all breakers installed at the MSP are compatible with the panel’s required list. Reason #7: Please note that the 70A breaker seen at the essential loads panel is improperly sized for 3 Encharge 10 batteries. Please amend the installation accordingly. Reason #8: Please remove the screw from the subpanel on page 29 of the CP, please ensure that neutral to ground bonding is only done at the MSP. Reason #9: Please provide an image of the complete wiring of the IQ system controller in one image. Reason #10: Please install hold down kits for each battery breaker at the Battery load center. Pleas install a hold down kit for the battery breaker at the IQ system controller. Reason #11: Please note that portal is not showing the batteries as commissioned. Please ensure that all equipment is commissioned and is operating properly on the monitoring portal. Reason #12: Please ensure that the consumption CTs are installed to the correct combiner box with the wireless communication kit and measuring the consumption from all loads for the proper operation of the system. Reason #13: Please provide the battery serial numbers or the gateway serial number to verify the installation. Please provide images of the batteries financed by Sunnova without the cover on to verify the quote. Per the image provided, we got an image of the preinstalled battery. Reason #14: Please clarify where the AC disconnect seen on page 17 on the FDA's ELD. Please ensure that the grounding is continuous at this AC disconnect. Reason #15: Please provide a stand back image of the equipment around the MSP and a better image of the equipment around the batteries to verify the installation. Reason #16: Please provide an image of the battery load center without the dead front on to verify the installation.",,,,ROBERT ADE,"7454 CANYON DR , YUCCA VALLEY, CA 92284",Battery Loan,,
+CG004450493,"Reason #1: Unfortunately, there are missing photos of the equipment labels and the quoted equipment cannot be verified at this time. Please submit the photos requested in the CP rejections, and please reverify the quote to ensure the quote matches the installed equipment. Reason #2: The quote shows there to be P340 optimizers on 400W modules. This could lead to a high clipping rate. Please reverify the equipment. Note: The plans show P401 optimizers. This may need to be updated upon verification. Reason #3: Based on satellite imagery, the array layout is showing to be two rows: one row of 6 modules and one row of 9 module. Please update the array layout to reflect the installed system.","Reason #1: The photo of the installed array is of the existing 10 module array. Please provide a photo of the newly installed 9 module array. Reason #2: Please provide photos of the roof conduit run, any conduit penetrations, and conduit run to the inverter. Reason #3: Please be sure to label both PV backfeed breakers. Reason #4: Page 8 shows backfeed breakers of 25A and 20A. These breaker exceed the 120% rule. Please replace the 25A with a breaker of 20A, as detailed in the ELD, to satisfy the 120% rule. Reason #5: Please provide a photo of the physical tilt measurement of the 9 module array. Please take the measurement from the surface of a module and not the roof. Reason #6: Please provide a photo of the side profile of the racking to confirm the quote. Reason #7: The quote calls P340 optimizers on 400W modules. If this is the case, the installation is unacceptable and will need to be replaced with an appropriately sized optimizer. Please reverify the equipment installed, provide photos of the equipment, and update the quote accordingly. Reason #8: Please provide Sunnova access to the SolarEdge monitoring site, Please use the email solaredgemonitoring_rgm@sunnova.com and set the Access level to View and Edit. Make sure to create/complete the Physical and Logical Layouts and activate/enable and add the corresponding meter(s) into the monitoring account. All optimizers must be paired, shown within the account.",,,,CHRISTIAN TIMARIO,"13506 CHASE ST , ARLETA, CA 91331",Loan,,
+BG004697387,Reason #1: The MSP shown on the design is a parallel source panel while the installation shows a non-code compliant 225A busbar/200A main breaker MSP. Please clarify. Reason #1: The MSP shown on the design is a parallel source panel while the installation shows a non-code compliant 225A busbar/200A main breaker MSP. Please clarify. Please clarify if this installation is pending an MPU.,Reason #1: The MSP shown on the design is a parallel source panel while the installation shows a non-code compliant 225A busbar/200A main breaker MSP. Please clarify. Please clarify if this installation is pending an MPU.,,,,FABIO PONCE III,"12558 Powerhouse Rd , Potter Valley, CA 95469",PPA-EZ,,
+OK005948147,Reason #1: Please provide the complete CP for a complete review. Or please clarify if the a Battery CP is needed.,,,,,Amanda Robertson,"7645 Brookhaven Rd , San Diego, CA 92114",Lease Storage,,
+DC005973003,Reason #1: Please provide the complete CP for a complete review of the both the FDA and CP or please provide a declaration if this system is pending a battery commissioning package,,,,,Linda Bode,"26462 Mirar Vista Dr , Mission Viejo, CA 92692",Lease Storage,,
+GY005978822,,"Reason #1: No storage or system controllers installed, please  provide photos of completed installation or confirm request of a battery CP. Reason #2: Please ensure that a cellular modem is properly installed and configured in each IQ gateway, none seen in the enphase portal.",,,,Noory Parween,"29617 Branwin St , Murrieta, CA 92563",Lease Storage,,
+PW006036518,,Reason #1: Incomplete package. Please provide a complete CP package for a full review.,,,,Cyd Balque,"1224 Ashbridge Dr , West Carson, CA 90710",Lease Storage,,
+CM006072147,,Reason #1: Please note that the Battery Commissioning package is only to be used with Tesla Batteries. Please provide a complete CP package for a full review,,,,Wanda Thrower,"2080 Biscay Drive , Pittsburg, CA 94565",Lease Storage,,
+JH006089134,Reason #1: Please provide an image of the 6 module array. It's structural assembly as well.,Reason #1: Please provide the home electrical load calculations,"Reason #1: Enlighten account shows the consumption readings strongly correlated to the Production, Please properly relocate the Consumption CT to measure the residence load/consumption. make sure the consumption meter setting, ""Net"" or ""Total"" in Enlighten is the correct one corresponding to the consumption CT location with respect to the PV circuit, a call to Enlighten support is needed if the setting have to be corrected. Reason #2: Please include the label to 50A breaker, please clarify if Stove or Range breaker, other wise please relocate to a no back up loads panel. Reason #3: Please provide portal access to the Tesla Monitoring portal. Reason #4: Please remove the ground jumper as the Backup Gateway is not the service entrance.",,,Steve Takata,"7848 Zilli Drive , Tracy, CA 95304",Lease Storage,,
+JA006359666,,Reason #1: Please provide the complete CP for a complete review. Incomplete package was provided.,,,,ERIK RIOS,"13350 CIBOLA CT , VICTORVILLE, CA 92392",Lease Storage,,
+AC006590860,,Reason #1: No CP was uploaded to review. Please rectify,,,,GURMEET SINGH,"5702 Baguette Avenue , Bakersfield, CA 93313",Loan,,
+DP006595988,,Reason #1: No CP was uploaded to review. Please rectify,,,,Onkar Singh,"5700 Glen Rose Avenue , Bakersfield, CA 93313",Loan,,
+HP004808819,,"Reason #1: Please provide the complete CP for a complete review. CP provided was incomplete. Please also note, that records show an existing system HB001555226. Please ensure that this system is included in the design and CP photos where required.",,,,SOPHON MANCHAROEN,"11300 HILLMER CT , MORENO VALLEY, CA 92557",Loan Storage,,
+CY003617700,,"Case-07188043 - 1. Please provide image of Wiring compartment for each battery.
+
+2. Please provide image of DC switch with indicator light showing proper operation
+
+3. Please provide image of Each Encharge serial number
+
+4. Please provide image of Enpower Smart Switch with breaker ratings, connections and torque marks clearly visible, Hold down kit for Encharge breaker, Enpower serial number.
+
+5. Please provide image of Communication kit serial number.
+
+6. The main service panel was to be upgraded in the approved design, please install the upgraded panel to comply with NEC 120% Rule.
+
+7. The wiring connection is not completed in the photos provided in combiner panel.
+Please provide Sunnova ownership access to the Envoy monitoring service. Information regarding the Envoy’s access can be sent to enphase.monitoring@sunnova.com.",,,,BRIANA COOPER,"1040 CREEKSIDE CT , MORGAN HILL, CA 95037",Loan Storage,,
+VI003908629,"
+5. Please clarify installation as SE portal shows only one inverter for both systems
+
+6. Please rectify the FDA as per installation done on site.
+
+7. The capacity of the inverter does not fall within the Sunnova limit of 80-135% based on the size of the PV Array (STC and PTC). Please reconfigure the system. (7x325=2.275W inverter used is SE3800 therefore 2.275/3.800=0.59%)
+","Case-06432908 - Reason #1: Please provide interconnection image in CP
+
+Please clarify installation and ensure photos, fda, and quote reflect latest system",,,,BENITO HERNANDEZ,"20815 COVELLO ST , WINNETKA, CA 91306",Loan,,
+FB005132291," Ensure that the array layout on the design and installation are matching
+","Case-13669542 - Reason #1: Please correct the block configuration for each ballast bay to the installation guides requirements and ensure all instructions are followed. Ensure that the PE stamped design is followed.
+
+2. Please ensure that the arrays are level.
+
+3. Please ensure the block count per bay is followed according to the Unirac U-builder report. and PE stamped design
+
+4. Unirac Flashloc RM is shown to be used with the Unirac RM10 system, please provide compatibility documentation from Unirac that verifies this installation.",,,Site ID#4354144 - Production verified. Pending dealer to address CP/FDA corrections.,YUXIN CHEN,"740 S Norfolk St , San Mateo, CA 94401",Loan,,
+ZD005331267,"
+Reason #2: Please provide better image of the tree trimming clearly showing what was cut and the tree height and density. Current shading report shows significantly less solar access than what was quoted. Showing a solar access of 41.9% which is below the Sunnova minimum of 50%. Please also provide your shading report for verification.
+
+(Updated shade study was attached, and shows a SA of 46, please provide photos showing tree sizes to allow for confirmation)
+
+","Reason #1: Please provide the PE stamped snow load calculations verifying the structural integrity against snow loads at this region. Please be sure to take into account which mounts are attached to rafters and which are deck mounted. Please amend the installation as required by the PE. Provide an image of the structural assembly before and after the fix
+",,,Site ID#3851032 -Production verified. CP/FD&A Rejection Priority - HIGH. Unable to proceed until deficiencies are corrected.,GERALD RIDENOUR,"22914 Fuller Rd , Twain Harte, CA 95383",Loan,,
+HU005333129,"Please ensure that PE stamped design will match the installation and vice versa if amendments to the installation will be needed per PE.
+","
+
+Reason #2: Please ensure that holes created by the nails nailed to the roof conduit penetration flashing plate are properly sealed to prevent moisture ingress into the enclosure",Reason #1: Please submit the battery commissioning package upon its completion. Please include images of everything on the electrical line diagram from the combiner box to the MSP.Please provide a stand back image of the equipment post install completion. Please ensure that the interconnection point at the MSP is properly sized for the panel and ensure that it is compatible. Please ensure that the IQ combiner is no less than 3ft off the ground.,,,Jenna Golden,"22715 GIBBS AVE , ONYX, CA 93255",Loan Storage,,
+RY005409656,,"Reason #1: Please remove the green screw from the panel downstream
+
+Reason #2: Please enable the meters and ensure that all equipment is operating and reporting normally.
+
+Reason #3: Please complete the commissioning process on the monitoring portal",,,,PENI ULUAVE,"427 Larch Ave , South San Francisco, CA 94080",Loan,,
+JQ005464897,,,Reason #1: No clear fix was seen. The rockit coupling is not properly being used to join the modules at the 14 module array. Please rectify. Please see the image attached to the case. Please verify that the coupling is properly joining the modules at all arrays to avoid rolling multiple trucks. Rejection pushed to final with an exception,,,RICHARD THOMPSON,"26067 ORANGE ST , TAFT, CA 93268",Loan,,
+OL005473850,,"Reason #1: Please ensure that the pier pipe depth is within the limits set by the PE stamped letter. 
+
+Reason #2: Please ensure that the house subpanel breaker is in the position furthest away from the main breaker at the MSP and ensure it is also label for solar
+
+Reason #3: Monitoring portal is now showing consumption and production as matching. Please ensure that the consumption CTs are installed and configured properly.",,,,Jacqueline Heffington,"8417 AVENUE 25 1/2 , CHOWCHILLA, CA 93610",Loan,,
+GI005509138,,"Reason #1: Please provide an image of the wiring of the AC combiner post relocation.
+",,,,Phyllis Milder,"716 Colusa Avenue , Berkeley, CA 94707",Loan,,
+IM005497912,,"Reason #1: Please provide a declaration if this panel is pending a MPU and please provide the existing system's inverters' model number information
+",,,,GINA OKERSON,"2334 Lincoln Ave , Clovis, CA 93611",PPA-EZ,,
+XA005558840,"Reason #1: Please update the array layout as per installation
+
+Array(1): Panels 12, Azimuth: ??, Tilt: ??, Solar access: 98%
+Array(2): Panels 3, Azimuth: 354, Tilt: 18, Solar access: 98%
+Array(3): Panels 11, Azimuth: 264, Tilt: 18, Solar access: 99%
+Array(4): Panels 5, Azimuth: ??, Tilt: ??, Solar access: 96%
+
+Please note that the tilt of the 5 module array is shown to be below the Sunnova minimum of 5 degrees. Please amend then the installation accordingly. (also verify the tilt of the 12 module array)
+
+Please clarify the azimuths and tilts of the 12 and 5 module array as that is unclear from the installation photos. Ensure that the design, CP, and quote are matching. No clear fix was seen. For the azimuth verification, an image of the array tilt relative to the horizon will assist.
+
+Please update the array layout on the quote as per installation
+Array(1): Panels 12, Azimuth: ??, Tilt: ??, Solar access: 98%
+Array(2): Panels 3, Azimuth: 354, Tilt: 18, Solar access: 98%
+Array(3): Panels 11, Azimuth: 264, Tilt: 18, Solar access: 99%
+Array(4): Panels 5, Azimuth: ??, Tilt: ??, Solar access: 96%","Reason #1: Please note that the tilt of the 5 module array (also verify the tilt of the 12 module array) is shown to be below the Sunnova minimum of 5 degrees. Please amend the design and then the installation accordingly. Please change the tilt on the design and quote accordingly.
+
+Provide an image structural assembly of the 5 and 12 module array *post fixes*
+
+Please ensure that the span between the roof attachments is not exceeding 4 ft and cantilever is not exceeding 16 inches for the 5 and 12 module arrays. Unclear if the fix was done to all arrays.
+
+Modules are not shown to be secured to by the end clamps at the 5-module array. Ensure installation is amended for all arrays. No clear fix was seen
+
+Provide complete array photos post fixes
+
+Verify the end and mid-clamp installation for all arrays
+
+Please complete the Enphase portal activation process
+New tilt measurement images will be needed post fixe",,,,ERNIE HARVEY,"1819 Freeman St , Marysville, CA 95901",Loan,,
+GJ005535680,,"Reason #1: Page 8 of the latest CP shows a conduit penetration from the top of the IQ combiner was sealed. Please note that this is not allowed since the rating of the combiner is now compromised.
+
+Per Enphase installation requirements, this is not allowed. Please replace the combiner box and provide new images of the fix. Sealing is not acceptable in this case. Please rectify. Please ensure that the conduit entrances at the IQ combiner are properly grounded using the conduit grounding bushing/locknut",,,,Lee Jaitt,"8011 Opal Ct , Ventura, CA 93004",PPA-EZ,,
+CX005591142,,"Reason #1: Please show the IQ combiner module number from the label. Image provided is cropped
+
+Reason #2: Please ensure that the roof conduit penetration flashing plate is fully flush with the roof shingles and is not interaction with any of the existing roof equipment",Reason #1: Please submit the battery commissioning package upon its completion. Please include images of everything on the electrical line diagram from the junction boxes to the MSP. Please provide a stand back image of the equipment post install completion. Please ensure that the interconnection point at the MSP is properly sized for the panel and ensure that it is compatible. Please add the “Do not add loads” Label to the MSP. ,,,KENNETH LUYSTER,"2742 Little John Rd , Copperopolis, CA 95228",Loan Storage,,
+LB005639511,"Reason #1: Please quote an average weighted solar access that is no more than 81.4% or please provide images of any tree trimming done.
+
+After reviewing the system, the weighted AVERAGE Solar access in the contract (88.74%) is higher than the actual weighted AVERAGE (78.4%).  If any tree trim/cut was done on-site please provide photos for review so we can validate the latest site conditions.
+",,Reason #1: Please submit the Derate commissioning Package after its completion,,,DEBORAH HALL PATTI,"4632 Del Moreno Dr , Los Angeles, CA 91364",PPA-EZ,,
+ZQ005644065,,Reason #1: Please provide the combiner box label to verify the quote and portal. Reason #2: Please install a 30A challenger or Eaton breaker at the MSP. Reason #3: Please provide the access of Enphase Enlighten portal.,,,,Linda Morrison,"806 Stanislaus St , Maricopa, CA 93252",Loan,,
+XZ005648869,,"Reason #1: Please provide a clear photo of the interconnection point, please ensure that the interconnection complies with panel and NEC Code. Reason #2: Please provide a clear photo of array of 4 panels at 225 azimuth. Reason #3: Please ensure that the proper hold down kits are installed on all PV and Storage breakers in the ESS and IQ Combiner panel. Reason #4: Please provide a clear photo of the main OCPD for the Essential loads panel. Please ensure that the panel complies with NEC 705 and 706.",,,,Yolanda Reyes,"2144 Arden Dr W , Fresno, CA 93703",Loan Storage,,
+BM005634213,,Reason #1: Please provide a pull back photo for array of 3 modules. Reason #2: Please provide Conduit Run/Penetration. The Commissioning Package are incomplete please provide the Complete Commissioning Package for sunnova review.,Reason #1: Please submit the battery commissioning package upon its completion. Please include images of everything on the electrical line diagram from the combiner box to the MSP. Please provide a stand back image of the equipment post install completion. Please ensure that the interconnection point at the MSP is properly sized for the panel and ensure that it is compatible. System size (PV + Battery) = 44.56A. MPU rated at 125A.,,,KATHERINE BERRY,"1807 Capell Dr , Lodi, CA 95242",Loan Storage,,
+RO005639633,,"Reason #1: Please provide an image of the splicing done at the junction box
+
+Reason #2: The improper installation of the junction box is seen on page 14 of the CP. The junction box is not facing the correct direction and seems to be improperly placed over the flashing plate. Please amend the installation as per Ecofasten requirements",Reason #1: Please submit the battery commissioning package upon its completion. Please include images of everything on the electrical line diagram from the junction boxes to the MSP. Please provide a stand back image of the equipment post install completion. Please ensure that the interconnection points at the MSP and the Load center #9 are properly sized for the panel and ensure that it is compatible. Please add the “Do not add loads” Label to the MSP,,,laura ramirez-hernandez,"3583 Crestview Dr , Pittsburg, CA 94565",Lease Storage,,
+CE005686892,"Reason #1: Provided shade report was approved. Please amend the quote as follows.
+
+After modeling this house, residence shows significantly more solar access (86.7%) than the quoted solar access levels. The actual production guarantee per the on-site analysis falls outside of the limit, please amend the quote with the accurate shading information to the array.
+Array(1): Panels 25, Azimuth: 195, Tilt: 20, Solar access: 86.7%",,,,,DENNIS GARDNER,"38977 Marigold Ln , Oakhurst, CA 93644",PPA-EZ,,
+ZY005706499,,Reason #1: Please provide an image of the main service panel label,,,,Gerald Graham,"1351 El Rancho Dr , Tehachapi, CA 93561",Loan,,
+ZZ005708395,,,Reason #1: Please provide a complete MPU package.,,,PAUL GONZALES,"3390 Old Ditch Dr , Placerville, CA 95667",PPA,,
+HR005739122,,"	
+Reason #1: Page 29 of the CP shows an exposed roof with missing tiles. Please clarify if this was done during the installation. Please rectify.
+
+Reason #2: Please complete the MPU and provide images of the completed wiring of the IQ combiner and AC disconnect. Please provide an image of the MSP with the dead front cover on and off, the PV breaker, and the MSP label",,,,RONNIE LITTLEJOHN,"615 V ST , BAKERSFIELD, CA 93304",PPA-EZ,,
+WP005735247,,"Reason #1: Please provide Sunnova access to the Enphase portal, ensure Sunnova is set as maintainer.",Reason #1: Please submit the MPU package upon its completion. Please provide an image of everything on the ELD from the combiner box to the MSP post MPU,,,BARBARA HERRON,"4521 E Washington Ave , Fresno, CA 93702",Loan,,
+CD005839460,,,Reason #1: Please submit the battery commissioning package upon its completion. Please include images of everything on the electrical line diagram from the junction boxes to the MSP. Please provide a stand back image of the equipment post install completion. Please ensure that the interconnection point at the MSP is properly sized for the panel and ensure that it is compatible. Please add the “Do not add loads” Label to the MSP,,"Site ID#4367552 - Production verified. FD&A-High - Reason #1: After modeling this house, residence still shows significantly less solar access 94.9%) than the quoted solar access levels. The actual production guarantee per the on-site analysis falls outside of the limit, please amend the quote with the accurate shading information to the array. Array(1): Panels 14, Azimuth: 172, Tilt: 23, Solar access: 94.9%. ED-HIgh - Reason #1: Please submit the battery commissioning package upon its completion. Please include images of everything on the electrical line diagram from the junction boxes to the MSP. Please provide a stand back image of the equipment post install completion. Please ensure that the interconnection point at the MSP is properly sized for the panel and ensure that it is compatible. Please add the “Do not add loads” Label to the MSP. Unable to proceed until deficiencies are corrected.",CHRISTINA DEVISH,"1417 S Citrus Ave , Escondido, CA 92027",Loan Storage,,
+HA005891102,,,"Reason #1: Please include the 200A main breaker at the Tesla gateway on the ELD. Please provide an image of the MSP label. Please clarify what is the point of interconnection at the main service panel (Show on the planset). The lugs seems to have been used. Please clarify their rating. Please provide an image of the back up loads panel. Please show it with the dead front cover on and off. Please provide an image of the panel’s label/busbar label Reason #2: Please provide access to the Enphase portal. Reason #3: Please provide Sunnova access to the Tesla portal. GF2230680002KB (Note to Sunnova Engineering, pending Serial number confirmation from Tesla portal). Reason #4: Please provide an image of the completed wiring of the AC combiner post Battery installation",,,KYLE KUZINICH,"7595 SLY PARK RD , PLACERVILLE, CA 95667",Loan Storage,,
+QU004936023,,,Reason #1: Please submit MPU package to allow for final system review,,,Andrew Castillou,"18751 GRACE ST , LINDEN, CA 95236",Loan,,
+UQ004951684,"Reason #1: The wires between the AC combiner and the AC disconnect are improperly sized for the 60A fuses, please either down the size the fuses properly or upsize the wires. Please amend the FDA accordingly
+
+","Case comments Part 1: Please see the rest of the case comments below
+
+NOTE: Case comments were split into two parts
+
+
+The CP shows 14 modules on roof MP2, while the design is showing 15. Please clarify. Please ensure that the design and installation are matching
+
+The cantilever limit of 16 inches is shown to be exceeded for the 7 modules in portrait orientation on roof MP1. Please amend the installation accordingly by adding additional mounts. Please submit images of the fix.
+The latest CP is showing conflicting information. An Enphase combiner box is seen. Please ensure that we are getting the latest and correct images.
+
+Page 61 of the CP is showing improper roof conduit penetration flashing, per manufacturer’s installation manual, flashing of conduit entrance is required not to exceed the leading edge of the shingle, a half circle needs to be cut from the preceding shingle for proper installation and to prevent weather degradation of flashing plate. Please provide a picture of the conduit entrance flashing properly installed. Please make sure any previous holes in the roof are properly sealed.
+
+Please provide an image of the non-back up inverter wiring serial number and RGM serial number. No images were provided
+
+Please provide a screenshot of system in operation - simulating grid outage (Backup test).
+
+Please provide a compliance report for each inverter
+
+Please provide an image of each array from both ends to verify the rockit mount and coupling installation
+
+Please provide screenshots showing RGM/LTE Kit status. Cell modem and RGM must both be connected and activated for both inverters
+
+Please provide an Screenshot showing the number of SnapRS installed per PVLink. Please ensure that the stringing is provided from both inverters. Please ensure that there are no duplicate images. Please ensure that the design and installation’s stringing are matching
+
+The 30A disconnect seen on page 55 of the latest CP is improperly sized for the non back up inverter output. Please upsize the AC disconnect and provide an image of the new disconnect’s wiring and rating. Please ensure that the wire sizing is correct. 
+
+Case comments Part 2:
+
+Please note that the current ATS breaker at the MSP is improperly sized for the stabs 87.5A while the current position only allows 70A. Please amend the installation accordingly. Please provide a form of verification that clarifies if installing this 4 stab breaker at this panel is allowed by Siemens.
+
+Please replace the two 40A Eaton breakers at the MSP with Siemens ones as per the panel requirements
+
+Please ensure that only Eaton breakers are installed at the protected loads panel
+
+Per the Generac portal, only inverter is shown and only 5 PV links are seen. Please clarify what is installation and ensure that the design and installation are matching
+
+The DC disconnect is improperly sized for the three 30A inputs into the inverter with the ATS. Please install a DC disconnect for each Rebus terminal (2 DC disconnects for the two strings going into the Inverter connected to the ATS, and one DC disconnect for the battery going the backup inverter). For the inverter with that is connected to the ATS (for each Rebus terminal), from the PVlink side, the Positive (red) and negative (black) wires will terminate on the line side of the disconnect, as they are the source. Black would go to L1, Red to L2. On the load side of the disconnect Black will go the L1, and red to L2. from the load side of the disconnect you will go to the REbus terminals at the inverter. Please ensure that the same is done for the battery DC disconnect to ensure NEC code compliance. Please provide an image of each DC disconnect’s wiring post fix. Please provide an image of the wiring of the inverter post fix and ensure that each Rebus terminal at the inverter is labeled. We need to ensure that both the L1 and L2 lines are interrupted.
+
+Please resolve all errors on the monitoring portal
+
+Please remove all unused breakers from the MSP and Protected loads panel and add breaker blanks
+
+Please provide an image of each junction box. Only one junction box was shown
+
+Please ensure that the generac consumption CTs are measuring the consumption from all loads
+",,,,TRINIDAD PAZ-RAMIREZ,"1826 S Crenshaw St , Visalia, CA 93277",Loan,,
+ZZ004030163,"Reason #1: Please make sure the module quantity is correct for each string installed to the Generac system.
+
+Reason #2: Quote calls out DCB battery modules but CP shows EX batteries, please update quote. Latest review still shows quote stating DCB batteries.","Reason #1: Please provide updated PV links sizing tool with proper module referenced to validate 7 module string
+
+Reason #2: Please provide photos showing the number of SnapRS in each string ensuring the FDA line diagram matches the photos
+
+Reason #3: Please provide sunnova access to and ownership of the system in the generac portal
+
+Reason #4: Please provide an inverter screenshot showing the system operating in island mode",,,,Doua Vang Lee,"145 North Cypress Avenue , Clovis, CA 93611",Loan Storage,,
+VN004223542,,"Reason #1: Please provide a clear photo of the AC Disconnect.
+
+Reason #2: Please clarify the bonding of the ground and neutral as it cannot be seen in the Meter.
+
+Reason #3: Please provide a clear photo of the essential loads panel. Please note that the resolution is difficult to see.
+
+Reason #4: Please provide access and ownership to the Tesla monitoring portal.
+
+Reason #5: Please terminate the drain wire from the ""IN"" port in the final Powerwall of the chain.",,,,DAVID SEILHYMER,"5872 PENNYROYAL DR , POLLOCK PINES, CA 95726",Loan Storage,,
+WM004510603,,Reason #1: Please provide an image of the interconnection point. Clearly labeled and identified. Reason #2: Please provide a better image of the wiring and breakers of the AC combiner. Please ensure it is properly wired. Page 34 of the CP seems to show improper wiring. Reason #3: Please amend the array layout on the monitoring portal as per installation. Portal is missing one inverter and one module. Reason #4: Please enable the production meter on the monitoring portal,,,,ANAIS VANDENBOSCH,"22245 LEADWELL ST , CANOGA PARK, CA 91303",Loan,,
+ST003118110,,"Reason #1: Per the latest images, please ensure that the 8 inches clearance right of the generac inverter is not exceeded. Reason #2: Please provide an image showing the DC disconnect installed. Please show its wiring and rating. Please ensure that the DC disconnect is disconnect both the + and – negative lines of the both the PV links and the battery. Reason #3: Please provide an image showing the completed install of the MSP and load center. No loads were seen at the MSP. Please ensure FDA and CP are matching. Reason #4: Please ensure that the N1 is not wired as this is a Generac requirement for when the ATS is installed. Reason #5: Please provide a screenshot showing RGM/LTE Kit status. Cell modem and RGM must both be connected and activated. Please provide a screenshot showing the battery’s Min SOC Reserve = 10% or 20% & Minimum SOC Abs = 5%. Reason #6: Please provide an image showing the production CTs installed at the inverter.",,,,DEDRICK BROWN,"1050 W 48TH ST , LOS ANGELES, CA 90037",Loan Storage,,
+BQ005966052,,"Reason #1: Please provide a complete CP to allow for clearance of substantial stage PB's. Need photos showing PV electrical wiring including inverter(s) and AC combiner if applicable, all installed modules and all other roof / penetration photos per the Quick reference guide. EG Note: Re-Review Required",Reason #1: Please submit Battery CP to allow for final system review,,,KIAMRAN RADJABLI,"33044 ST. EMILION CT , WINCHESTER, CA 92596",Lease Storage,,
+IP005911035,Reason #1: Please provide the home electrical load calculations for the essential loads panel to verify the installation,Reason #1: Please ensure that the 36 inch clearance under the IQ system controller is met. Please relocate the essential loads panel from underneath it. Reason #2: Please add the do not add loads label to the MSP. Reason #3: Please provide an image of the house subpanel. Showing all of its breakers clearly and label. Please provide an image of the battery AC disconnect installed. Please provide an image of the MSP label. Reason #4: Please ensure that the breaker space of the deadfront cover of the the MSP is sealed as per NEC requirements. Reason #5: Please install a rubber boot at the roof conduit penetration. Reason #6: Please show how the junction box on page 10 of the CP is secured to the rail. Reason #7: Please install a hold down kit for the battery breaker at the IQ system controller.,,,,ANGELINA LUGO,"117 Silver Bell Way , Oakley, CA 94561",Loan Storage,,
+LT006030433,,,Reason #1: Please submit the battery commissioning package upon its completion. Please include images of everything on the electrical line diagram from the IQ combiner to the MSP. Please provide a stand back image of the equipment post install completion. Please ensure that the interconnection point at the MSP is properly sized for the panel and ensure that it is compatible. Please add the “Do not add loads” Label to the MSP,,Site ID#4355850 - Pending dealer to complete the Activation Checklist in Enlighten.,LUIS GALVAN JR,"6050 Robin Ave , Livingston, CA 95334",Lease Storage,,
+QZ006096673,,,Reason #1: Please submit the battery commissioning package upon its completion. Please include images of everything on the electrical line diagram from the junction boxes to the MSP. Please provide a stand back image of the equipment post install completion. Please ensure that the interconnection point at the MSP is properly sized for the panel and ensure that it is compatible. Please add the “Do not add loads” Label to the MSP,,,Robert Ribero,"12521 Quail Meadow Dr , Auburn, CA 95603",Lease Storage,,
+BZ006104398,,,Reason #1: Please submit the battery commissioning package upon its completion. Please include images of everything on the electrical line diagram from the junction boxes to the MSP. Please provide a stand back image of the equipment post install completion. Please ensure that the interconnection point at the MSP is properly sized for the panel and ensure that it is compatible. Please add the “Do not add loads” Label to the MSP,,,Kevin Hall,"9505 Eagle Oak Dr , Bakersfield, CA 93311",Loan Storage,,
+JI006193853,,Reason #1: Please clarify what is installed. The CP shows IQ8+ inverters with Qpeak G1-+/t 400 modules. , Please submit the battery commissioning package upon its completion. Please include images of everything on the electrical line diagram from the junction boxes to the MSP. Please provide a stand back image of the equipment post install completion. Please ensure that the interconnection point at the MSP is properly sized for the panel and ensure that it is compatible,,,LUPE NAVA,"133 S OLIVE ST , SANTA PAULA, CA 93060",Lease Storage,,
+MV006299151,,Reason #1: Please provide a stand back image of the Tesla powerwall. Reason #2: Please add the do not add loads label to the MSP. Reason #3: Please provide an image of the label of the GE house subpanel shown on page 27 of the latest CP. Reason #4: A 40A breaker is seen at the back up loads panel. Please relocate and update the design and installation accordingly. Reason #5: Please ensure that the Tesla consumption CTs are installed at the MSP and are measuring the consumption from the 50A AC load in addition to all loads at teh MSP. Monitoring portal is showing that the Envoy is connected to Enlighten via WIFI only. Please ensure that it is also connected to Enlighten via cellular by installing a cell modem.,,,,Weihua Li,"40182 LESLIE ST , FREMONT, CA 94538",Lease Storage,,
+GR006378797,,,Reason #1: Please submit the battery commissioning package upon its completion. Please include images of everything on the electrical line diagram from the junction boxes to the MSP. Please provide a stand back image of the equipment post install completion. Please ensure that the interconnection point at the MSP is properly sized for the panel and ensure that it is compatible. Please add the “Do not add loads” Label to the MSP,,,Lilian Rebuyaco,"5273 HUCKLEBERRY OAK ST , SIMI VALLEY, CA 93063",Lease Storage,,
+RP006437828,,,Reason #1: Please submit the battery commissioning package upon its completion. Please include images of everything on the electrical line diagram from the junction boxes to the MSP. Please provide a stand back image of the equipment post install completion. Please ensure that the interconnection point at the MSP is properly sized for the panel and ensure that it is compatible. Please add the “Do not add loads” Label to the MSP,,,CHRISTOPHER RODMAN,"6209 SCENIC WAY , BAKERSFIELD, CA 93309",Loan Storage,,
+FD006477488,,,Reason #1: Please submit the Load Transfer package upon its completion. Please provide images of the completed wiring of the IQ combiner and AC disconnect post MPU,,,Bryan Madrid,"3248 W Mendocino Ave , Stockton, CA 95204",PPA-EZ,,
+BY006574932,,Reason #1: Please provide an image of the MSP label/busbar rating,,,,IQBAL SINGH,"5910 Baguette Avenue , Bakersfield, CA 93313",Loan,,
+FF006564982,,"Reason #1: Please provide an image of the combiner box wiring. Reason #2: Only two tilt measurements were provided. Please ensure we are getting all three. Reason #3: Please provide a close up image of one of the roof hooks and the screws used to secure it to the rafter. Reason #4: Please provide an image of the combiner box label. Please provide an image of the MSP label. Reason #5: Note: pending portal review post combiner box label image.
+",,,,CONCEPCION VILLALOBOS,"1117 PORT CT , MC FARLAND, CA 93250",Loan,,
+JM006710403,,"Reason #1: Please relocate the 100A breaker at the non-essential loads panel to the position furthest away from the main breaker and ensure it is labeled for solar as well. Reason #2: Please provide an image of the back up loads panel without the dead front cover on. lease provide an image of the MSP label.Reason #3: Conflicting information is seen. Please remove all unused breaker from the MSP and install breaker blanks. Reason #4: Please ensure that the 100A breaker at the Siemens panel is a Siemens breaker. Reason #5: Please ensure that the battery AC disconnect enclosure is properly grounded. Please ensure that the interconnection OCPD at the MSP is compliant with the panel requirements. Reason #6: Please install hold down kits for the battery and IQ combiner breaker at the IQ system controller 2. Please install hold down kits for the PV breakers at the IQ combiner breaker. Reason #7: Please provide Sunnova access to the monitoring portal 202328127930. Reason #8: Please ensure that the Enphase consumption CTs are measuring consumption from all loads. 
+
+
+",,,,MICHAEL TRUEBLOOD,"2370 ASH ST , LIVE OAK, CA 95953",Lease Storage,,

@@ -1,0 +1,13 @@
+.callButton{
+    background-color: #00bfa5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin: 10px;
+    width: 100%;
+    height: 100%;
+ 
+}
